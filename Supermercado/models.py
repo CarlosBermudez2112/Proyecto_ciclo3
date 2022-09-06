@@ -67,7 +67,7 @@ class WORKINGHOURS(models.Model):
     
     
 class EMPLOYEEPAYROLL(models.Model):
-    PAY_Id=models.IntegerField(primary_key=True, auto_created=True, Unique=True)
+    PAY_Id=models.IntegerField(primary_key=True, auto_created=True, unique=True)
     PAY_EM_User=models.ForeignKey(EMPLOYEES, on_delete=models.CASCADE)
     PAY_NIT=models.ForeignKey(BUSINESS, on_delete=models.CASCADE)
     PAY_Hours=models.IntegerField(null=True)
