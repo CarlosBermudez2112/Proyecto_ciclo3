@@ -81,3 +81,11 @@ class EXPENSES(models.Model):
     EGR_TEGR_Code = models.ForeignKey(TypeExpenses, on_delete=models.CASCADE)
     EGR_Fecha = models.DateField(auto_now=True)
     EGR_Total = models.IntegerField(max_length=50,null=False)
+
+class PRODUCTS(models.Model):
+    PRO_Code=models.CharField(primary_key=True, max_length=50,null=False)
+    PRO_Name=models.CharField(max_length=50,null=False)
+    PRO_Cost=models.IntegerField(null=False)
+    PRO_Description=models.TextField(max_length=50,null=False)
+    PRO_Stock=models.IntegerField(null=False)
+    
