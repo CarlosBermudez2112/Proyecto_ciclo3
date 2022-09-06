@@ -1,3 +1,4 @@
+from ast import mod
 from pyexpat import model
 from django.db import models
 
@@ -27,6 +28,7 @@ class BUSINESS(models.model):
     EM_DATECREATE=models.DateField()
     EM_PRODUCTIVE_SECTOR=models.TextField(max_length=50)
     EM_AD_USER=models.ForeignKey(ADMINISTRATOR,on_delete=models.CASCADE)
+
     
 ## Creación de la tabla empleados junto con sus campos
 
@@ -41,6 +43,22 @@ class EMPLOYEES(models.model):
     EMP_EM_NIT=models.ForeignKey(BUSINESS,on_delete=models.CASCADE)
     EMP_AD_USER=models.ForeignKey(ADMINISTRATOR,on_delete=models.CASCADE)
 
+
+class PRODUCTS(models.Model):
+    PRO_Code=models.CharField(primary_key=True, max_length=50,null=False)
+    PRO_Name=models.CharField(max_length=50,null=False)
+    PRO_Cost=models.IntegerField(null=False)
+    PRO_Description=models.TextField(max_length=50,null=False)
+    PRO_Stock=models.IntegerField(null=False)
+
+class INCOME(models.Model):
+    ING_Code = models.IntegerField(max_length=10,null=False,unique=True)
+    ING_EM_NIT=models.ForeignKey(BUSINESS, on_delete=models.CASCADE)
+    ING_EMP_User=models.ForeignKey(EMPLOYEES,on_delete=models.CASCADE)
+    ING_PRO_Code=models.ForeignKey(PRODUCTS, on_delete=models.CASCADE)
+    ING_Fecha= models.DateField(auto_now=True)
+    ING_Quantity= models.IntegerField(max_length=10,null=False)
+    ING_Total = models.IntegerField(max_length=10,null=False)
 
 class WORKINGHOURS(models.Model):
     WORH_Code=models.TextField(primary_key=True, max_length=50,null=True,unique=True)
