@@ -17,6 +17,7 @@ class ADMINISTRATOR(models.Model):
 
 ## Creación de la tabla empresas junto con sus campos
 
+
 class BUSINESS(models.model):
     EM_ID=models.BigIntegerField(max_length=50,null=False)
     EM_IDName=models.TextField(max_length=50,null=False)
@@ -41,6 +42,12 @@ class EMPLOYEES(models.model):
     EMP_EM_NIT=models.ForeignKey(BUSINESS,on_delete=models.CASCADE)
     EMP_AD_USER=models.ForeignKey(ADMINISTRATOR,on_delete=models.CASCADE)
 
+class PRODUCTS(models.Model):
+    PRO_Code=models.CharField(primary_key=True, max_length=50,null=False)
+    PRO_Name=models.CharField(max_length=50,null=False)
+    PRO_Cost=models.IntegerField(null=False)
+    PRO_Description=models.TextField(max_length=50,null=False)
+    PRO_Stock=models.IntegerField(null=False)
 
 class WORKINGHOURS(models.Model):
     WORH_Code=models.TextField(primary_key=True, max_length=50,null=True,unique=True)
@@ -82,10 +89,5 @@ class EXPENSES(models.Model):
     EGR_Fecha = models.DateField(auto_now=True)
     EGR_Total = models.IntegerField(max_length=50,null=False)
 
-class PRODUCTS(models.Model):
-    PRO_Code=models.CharField(primary_key=True, max_length=50,null=False)
-    PRO_Name=models.CharField(max_length=50,null=False)
-    PRO_Cost=models.IntegerField(null=False)
-    PRO_Description=models.TextField(max_length=50,null=False)
-    PRO_Stock=models.IntegerField(null=False)
+
     
