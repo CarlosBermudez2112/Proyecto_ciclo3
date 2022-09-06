@@ -19,7 +19,7 @@ class ADMINISTRATOR(models.Model):
 ## Creación de la tabla empresas junto con sus campos
 
 
-class BUSINESS(models.model):
+class BUSINESS(models.Model):
     EM_ID=models.BigIntegerField(max_length=50,null=False)
     EM_IDName=models.TextField(max_length=50,null=False)
     EM_NIT=models.IntegerField(primary_key=True,max_length=10,unique=True)
@@ -33,7 +33,7 @@ class BUSINESS(models.model):
     
 ## Creación de la tabla empleados junto con sus campos
 
-class EMPLOYEES(models.model):
+class EMPLOYEES(models.Model):
     EMP_USER=models.TextField(primary_key=True,max_length=50,null=False,unique=True)
     EMP_PASSWORD=models.IntegerField(max_length=10)
     EMP_EMAIL=models.TimeField(max_length=50,null=False)
