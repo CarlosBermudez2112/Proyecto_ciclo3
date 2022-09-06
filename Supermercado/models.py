@@ -33,15 +33,15 @@ class CUSTOMERS(models.Model):
     CLI_CellPhone= models.TextField(max_length=50,unique=True)
     CLI_AD_User= models.ForeignKey(ADMINISTRATOR, on_delete=models.CASCADE)
 
+
+
+class TypeExpenses(models.Model):
+    TEGR_Code = models.CharField(max_length=10,null=False,unique=True)
+    TEGR_NameExpenses = models.IntegerField(max_length=10,null=False,unique=True)
+    
 class EXPENSES(models.Model):
     EGR_Code = models.CharField(10,null=False,unique=True)
     EGR_EM_NIT = models.ForeignKey(BUSINESS, on_delete=models.CASCADE)
     EGR_TEGR_Code = models.ForeignKey(TypeExpenses, on_delete=models.CASCADE)
     EGR_Fecha = models.DateField(auto_now=True)
     EGR_Total = models.IntegerField(max_length=50,null=False)
-
-class TypeExpenses(models.Model):
-    TEGR_Code = models.CharField(max_length=10,null=False,unique=True)
-    TEGR_NameExpenses = models.IntegerField(max_length=10,null=False,unique=True)
-    
-    
