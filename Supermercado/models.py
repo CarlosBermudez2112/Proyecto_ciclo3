@@ -51,13 +51,6 @@ class PRODUCTS(models.Model):
     PRO_Description=models.TextField(max_length=50,null=False)
     PRO_Stock=models.IntegerField(null=False)
 
-class PRODUCTS(models.Model):
-    PRO_Code=models.CharField(primary_key=True, max_length=50,null=False)
-    PRO_Name=models.CharField(max_length=50,null=False)
-    PRO_Cost=models.IntegerField(null=False)
-    PRO_Description=models.TextField(max_length=50,null=False)
-    PRO_Stock=models.IntegerField(null=False)
-
 class INCOME(models.Model):
     ING_Code = models.IntegerField(max_length=10,null=False,unique=True)
     ING_EM_NIT=models.ForeignKey(BUSINESS, on_delete=models.CASCADE)
