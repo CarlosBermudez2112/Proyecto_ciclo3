@@ -9,7 +9,7 @@ from django.db import models
 
 class ADMINISTRATOR(models.Model):
     AD_USER=models.TextField(primary_key=True, max_length=50,null=False,unique=True)
-    AD_PASSWORD=models.IntegerField(max_length=10)
+    AD_PASSWORD=models.IntegerField(null=False)
     AD_EMAIL=models.TimeField(max_length=50,null=False)
     AD_NAMES=models.TextField(max_length=50,null=False)
     AD_LASTNAMES=models.TextField(max_length=50,null=False)
@@ -20,9 +20,9 @@ class ADMINISTRATOR(models.Model):
 
 
 class BUSINESS(models.Model):
-    EM_ID=models.BigIntegerField(max_length=50,null=False)
+    EM_ID=models.BigIntegerField(null=False)
     EM_IDName=models.TextField(max_length=50,null=False)
-    EM_NIT=models.IntegerField(primary_key=True,max_length=10,unique=True)
+    EM_NIT=models.IntegerField(primary_key=True,unique=True)
     EM_CITY=models.TextField(max_length=50)
     EM_ADDRESS=models.TextField(max_length=50)
     EM_CELLPHONE=models.TextField(max_length=10)
@@ -35,7 +35,7 @@ class BUSINESS(models.Model):
 
 class EMPLOYEES(models.Model):
     EMP_USER=models.TextField(primary_key=True,max_length=50,null=False,unique=True)
-    EMP_PASSWORD=models.IntegerField(max_length=10)
+    EMP_PASSWORD=models.IntegerField(null=False)
     EMP_EMAIL=models.TimeField(max_length=50,null=False)
     EMP_NAMES=models.TextField(max_length=50,null=False)
     EMP_LASTNAMES=models.TextField(max_length=50,null=False)
@@ -52,13 +52,13 @@ class PRODUCTS(models.Model):
     PRO_Stock=models.IntegerField(null=False)
 
 class INCOME(models.Model):
-    ING_Code = models.IntegerField(primary_key=True,max_length=10,null=False,unique=True)
+    ING_Code = models.IntegerField(primary_key=True,null=False,unique=True)
     ING_EM_NIT=models.ForeignKey(BUSINESS, on_delete=models.CASCADE)
     ING_EMP_User=models.ForeignKey(EMPLOYEES,on_delete=models.CASCADE)
     ING_PRO_Code=models.ForeignKey(PRODUCTS, on_delete=models.CASCADE)
     ING_Fecha= models.DateField(auto_now=True)
-    ING_Quantity= models.IntegerField(max_length=10,null=False)
-    ING_Total = models.IntegerField(max_length=10,null=False)
+    ING_Quantity= models.IntegerField(null=False)
+    ING_Total = models.IntegerField(null=False)
 
 class WORKINGHOURS(models.Model):
     WORH_Code=models.TextField(primary_key=True, max_length=50,unique=True)
@@ -96,14 +96,14 @@ class LISTBUY(models.Model):
 
 class TYPEEXPENSES(models.Model):
     TEGR_Code = models.CharField(primary_key=True, max_length=10,null=False,unique=True)
-    TEGR_NameExpenses = models.IntegerField(max_length=10,null=False,unique=True)
+    TEGR_NameExpenses = models.IntegerField(null=False,unique=True)
     
 class EXPENSES(models.Model):
     EGR_Code = models.CharField(primary_key=True, max_length=10,null=False,unique=True)
     EGR_EM_NIT = models.ForeignKey(BUSINESS, on_delete=models.CASCADE)
     EGR_TEGR_Code = models.ForeignKey(TYPEEXPENSES, on_delete=models.CASCADE)
     EGR_Fecha = models.DateField(auto_now=True)
-    EGR_Total = models.IntegerField(max_length=50,null=False)
+    EGR_Total = models.IntegerField(null=False)
 
 
     
