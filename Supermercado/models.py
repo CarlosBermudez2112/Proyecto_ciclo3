@@ -52,11 +52,8 @@ class PRODUCTS(models.Model):
     PRO_Stock=models.IntegerField(null=False)
 
 class INCOME(models.Model):
-<<<<<<< HEAD
     ING_Code = models.IntegerField(primary_key=True, max_length=10,null=False,unique=True)
-=======
     ING_Code = models.IntegerField(primary_key=True,max_length=10,null=False,unique=True)
->>>>>>> refs/remotes/origin/main
     ING_EM_NIT=models.ForeignKey(BUSINESS, on_delete=models.CASCADE)
     ING_EMP_User=models.ForeignKey(EMPLOYEES,on_delete=models.CASCADE)
     ING_PRO_Code=models.ForeignKey(PRODUCTS, on_delete=models.CASCADE)
