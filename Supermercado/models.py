@@ -4,6 +4,42 @@ from django.db import models
 # Create your models here.
 
 
+## Creación de la tabla administradores junto con sus campos
+
+class ADMINISTRATOR(models.Model):
+    AD_USER=models.TextField(max_length=50,null=False,unique=True)
+    AD_PASSWORD=models.IntegerField(max_length=10)
+    AD_EMAIL=models.TimeField(max_length=50,null=False)
+    AD_NAMES=models.TextField(max_length=50,null=False)
+    AD_LASTNAMES=models.TextField(max_length=50,null=False)
+    AD_CELLPHONE=models.TextField(max_length=50,null=False)
+    AD_ROL=models.TextField(max_length=50,null=False)
+
+## Creación de la tabla empresas junto con sus campos
+
+class BUSINESS(models.model):
+    EM_ID=models.BigIntegerField(max_length=50,null=False)
+    EM_IDName=models.TextField(max_length=50,null=False)
+    EM_NIT=models.IntegerField(max_length=10,unique=True)
+    EM_CITY=models.TextField(max_length=50)
+    EM_ADDRESS=models.TextField(max_length=50)
+    EM_CELLPHONE=models.TextField(max_length=10)
+    EM_DATECREATE=models.DateField()
+    EM_PRODUCTIVE_SECTOR=models.TextField(max_length=50)
+    EM_AD_USER=models.ForeignKey(ADMINISTRATOR,on_delete=models.CASCADE)
+    
+## Creación de la tabla empleados junto con sus campos
+
+class EMPLOYEES(models.model):
+    EMP_USER=models.TextField(max_length=50,null=False,unique=True)
+    EMP_PASSWORD=models.IntegerField(max_length=10)
+    EMP_EMAIL=models.TimeField(max_length=50,null=False)
+    EMP_NAMES=models.TextField(max_length=50,null=False)
+    EMP_LASTNAMES=models.TextField(max_length=50,null=False)
+    EMP_CELLPHONE=models.TextField(max_length=50,null=False)
+    EMP_ROLE=models.TextField(max_length=50,null=False)
+    EMP_EM_NIT=models.ForeignKey(BUSINESS,on_delete=models.CASCADE)
+    EMP_AD_USER=models.ForeignKey(ADMINISTRATOR,on_delete=models.CASCADE)
 
 
 class WORKINGHOURS(models.Model):
