@@ -52,7 +52,7 @@ class PRODUCTS(models.Model):
     PRO_Stock=models.IntegerField(null=False)
 
 class INCOME(models.Model):
-    ING_Code = models.IntegerField(max_length=10,null=False,unique=True)
+    ING_Code = models.IntegerField(primary_key=True, max_length=10,null=False,unique=True)
     ING_EM_NIT=models.ForeignKey(BUSINESS, on_delete=models.CASCADE)
     ING_EMP_User=models.ForeignKey(EMPLOYEES,on_delete=models.CASCADE)
     ING_PRO_Code=models.ForeignKey(PRODUCTS, on_delete=models.CASCADE)
@@ -66,7 +66,7 @@ class WORKINGHOURS(models.Model):
     WORH_Costs=models.IntegerField(null=True)
     
     
-class EmployeePayroll(models.Model):
+class EMPLOYEEPAYROLL(models.Model):
     PAY_Id=models.IntegerField(primary_key=True, auto_created=True, Unique=True)
     PAY_EM_User=models.ForeignKey(EMPLOYEES, on_delete=models.CASCADE)
     PAY_NIT=models.ForeignKey(BUSINESS, on_delete=models.CASCADE)
@@ -89,7 +89,7 @@ class CUSTOMERS(models.Model):
 
 
 
-class TypeExpenses(models.Model):
+class TYPEEXPENSES(models.Model):
     TEGR_Code = models.CharField(primary_key=True, max_length=10,null=False,unique=True)
     TEGR_NameExpenses = models.IntegerField(max_length=10,null=False,unique=True)
     
