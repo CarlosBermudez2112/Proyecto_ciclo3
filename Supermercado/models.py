@@ -52,7 +52,11 @@ class PRODUCTS(models.Model):
     PRO_Stock=models.IntegerField(null=False)
 
 class INCOME(models.Model):
+<<<<<<< HEAD
     ING_Code = models.IntegerField(primary_key=True, max_length=10,null=False,unique=True)
+=======
+    ING_Code = models.IntegerField(primary_key=True,max_length=10,null=False,unique=True)
+>>>>>>> refs/remotes/origin/main
     ING_EM_NIT=models.ForeignKey(BUSINESS, on_delete=models.CASCADE)
     ING_EMP_User=models.ForeignKey(EMPLOYEES,on_delete=models.CASCADE)
     ING_PRO_Code=models.ForeignKey(PRODUCTS, on_delete=models.CASCADE)
@@ -87,6 +91,11 @@ class CUSTOMERS(models.Model):
     CLI_CellPhone= models.TextField(max_length=50,unique=True)
     CLI_AD_User= models.ForeignKey(ADMINISTRATOR, on_delete=models.CASCADE)
 
+class LISTBUY(models.Model):
+    LBUY_Code = models.CharField(primary_key=True,max_length=10,null=False,unique=True)
+    LBUY_PRO_Code = models.ForeignKey(PRODUCTS,on_delete=models.CASCADE)
+    LBUY_CLI_User = models.ForeignKey(CUSTOMERS,on_delete=models.CASCADE)
+    LBUY_Fecha= models.DateField(auto_now=True)
 
 
 class TYPEEXPENSES(models.Model):
@@ -96,7 +105,7 @@ class TYPEEXPENSES(models.Model):
 class EXPENSES(models.Model):
     EGR_Code = models.CharField(primary_key=True, max_length=10,null=False,unique=True)
     EGR_EM_NIT = models.ForeignKey(BUSINESS, on_delete=models.CASCADE)
-    EGR_TEGR_Code = models.ForeignKey(TypeExpenses, on_delete=models.CASCADE)
+    EGR_TEGR_Code = models.ForeignKey(TYPEEXPENSES, on_delete=models.CASCADE)
     EGR_Fecha = models.DateField(auto_now=True)
     EGR_Total = models.IntegerField(max_length=50,null=False)
 
