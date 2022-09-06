@@ -61,7 +61,7 @@ class INCOME(models.Model):
     ING_Total = models.IntegerField(max_length=10,null=False)
 
 class WORKINGHOURS(models.Model):
-    WORH_Code=models.TextField(primary_key=True, max_length=50,null=True,unique=True)
+    WORH_Code=models.TextField(primary_key=True, max_length=50,unique=True)
     WORH_TipeHours=models.TextField(max_length=50,null=True,unique=True)
     WORH_Costs=models.IntegerField(null=True)
     
