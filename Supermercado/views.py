@@ -76,6 +76,7 @@ class BUSINESSView(View):
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
+    
     def get(self,request,EM_ID=""):
         if len(EM_ID)>0:
             Business=list(BUSINESS.objects.filter(EM_ID=EM_ID).values())
@@ -91,7 +92,6 @@ class BUSINESSView(View):
                 datos={"mensaje":"no hay empresas registradas"}
         return JsonResponse(datos)
     
-
     ##Actualizar empresa
     def put(self,request,EM_ID):
         
@@ -125,13 +125,15 @@ class BUSINESSView(View):
         return JsonResponse(mensaje)
     
     
+     
+
 class EMPLOYEEPAYROLLView(View):
      #metodos para utilisar json
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
     
-    def get(self,request,PAY_id=None):
+    def get(self,request,PAY_id=""):
         if len(PAY_id)>0:
             payemplo=list(EMPLOYEEPAYROLL.objects.filter(PAY_Id=PAY_id).values())
             if len(payemplo)>0:
@@ -279,15 +281,15 @@ class LISTBUYView(View):
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
     ## consultar lista compras
-    def get(self,request,LBUY_code=None):
-        if len(LBUY_code)>0:
+    def get(self,request,LBUY_code=""):
+        if len(str(LBUY_code))>0:
             buy_list=list(LISTBUY.objects.filter(LBUY_Code=LBUY_code).values())
             if len(buy_list)>0:
                 datos={"mensaje":buy_list}
             else:
                 datos={"mensaje":"no hay datos"}
         else:
-            buy_list=list(LBUY_code.objects.values())
+            buy_list=list(LISTBUY.objects.values())
             if len(buy_list)>0:
                 datos={"mensaje":buy_list}
             else:
