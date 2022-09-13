@@ -76,6 +76,7 @@ class BUSINESSView(View):
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
+    
     def get(self,request,EM_ID=""):
         if len(EM_ID)>0:
             Business=list(BUSINESS.objects.filter(EM_ID=EM_ID).values())
@@ -91,7 +92,28 @@ class BUSINESSView(View):
                 datos={"mensaje":"no hay empresas registradas"}
         return JsonResponse(datos)
     
-<<<<<<< HEAD
+    def post(self,request):
+        try:
+            dato=json.loads(request.body)
+            
+            admin=ADMINISTRATOR.objects.get(EM_AD_USER=dato['EM_AD_USER'])
+            Business=BUSINESS.objects.create( 
+                                                EM_ID=dato['EM_ID'],
+                                                EM_IDName=dato['EM_IDName'],
+                                                EM_NIT=dato['EM_NIT'],
+                                                EM_CITY=dato['EM_CITY'],
+                                                EM_ADDRESS=dato['EM_ADDRESS'],
+                                                EM_CELLPHONE=dato['EM_CELLPHONE'],
+                                                EM_DATECREATE=dato['EM_DATECREATE'],
+                                                EM_PRODUCTIVE_SECTOR=dato[' EM_PRODUCTIVE_SECTOR'],
+                                                EM_AD_USER=admin)
+            Business.save()
+            datos={'mensaje':'Empresa agregada'}  
+        except ADMINISTRATOR.DoesNotExist:
+            datos={'mensaje':'empresa no agregada administrador no existe'}
+        return JsonResponse(datos)
+    
+    
     ##Actualizar empresa
     def put(self,request,EM_ID):
         
@@ -125,10 +147,7 @@ class BUSINESSView(View):
         return JsonResponse(mensaje)
     
     
-=======
-     
 
->>>>>>> da2beb12c207a7f3c68d0cea63e4c858e2772840
 class EMPLOYEEPAYROLLView(View):
      #metodos para utilisar json
     @method_decorator(csrf_exempt)
