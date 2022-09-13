@@ -1,3 +1,158 @@
-from django.shortcuts import render
+#from django.shortcuts import render
+from ast import Delete
+import json
+from django.views import View
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
+from Supermercado.models import EMPLOYEEPAYROLL,EMPLOYEES,BUSINESS,WORKINGHOURS
+from django.http import JsonResponse
 
-# Create your views here.
+class EMPLOYEEPAYROLLView(View):
+     #metodos para utilisar json
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+    
+    def get(self,request,PAY_id=None):
+        if len(PAY_id)>0:
+            payemplo=list(EMPLOYEEPAYROLL.objects.filter(PAY_Id=PAY_id).values())
+            if len(payemplo)>0:
+                datos={"mensaje":payemplo}
+            else:
+                datos={"mensaje":"no hay datos"}
+        else:
+            payemplo=list(EMPLOYEEPAYROLL.objects.values())
+            if len(payemplo)>0:
+                datos={"mensaje":payemplo}
+            else:
+                datos={"mensaje":"no hay datos"}
+        return JsonResponse(datos)
+        
+    def post(self,request):
+        try:
+            dat=json.loads(request.body)
+            #llaves foraneas
+            emp=EMPLOYEES.objects.get(EMP_USER=dat['emp_user'])
+            em_nit=BUSINESS.objects.get(EM_NIT=dat['em_nit1'])
+            worh_code=WORKINGHOURS.objects.get(WORH_Code=dat['worh_code1'])
+            
+            
+            #creación de json para enviar
+            
+            newemployeepayroll=EMPLOYEEPAYROLL.objects.create(emp_user=emp,
+                                                              em_nit1=em_nit,
+                                                              PAY_Hours=dat['PAY_Hours'],
+                                                              PAY_ExtraHours=dat['PAY_ExtraHours'],
+                                                              PAY_parafiscal=dat['PAY_parafiscal'],
+                                                              worh_code1=worh_code,
+                                                              PAY_StartDate=dat['PAY_StartDate'],
+                                                              PAY_FinalDate=dat['PAY_FinalDate'],
+                                                              PAY_TotalSalary=dat['PAY_TotalSalary'])
+            newemployeepayroll.save()
+            datos={'mensaje':'nomina registrada'}
+        
+        except EMPLOYEES.DoesNotExist:
+            datos={'mensaje':'el empleado no existe'}
+        except BUSINESS.DoesNotExist:
+            datos={'mensaje':'la empresa no existe'}
+        except WORKINGHOURS.DoesNotExist:
+            datos={'mensaje':'ese estilo de hora no es posible ingresarla'}
+        return JsonResponse(datos)
+        
+    def put(self,request,PAY_id):
+        #crear conexion a body
+        data=json.loads(request.body)
+        #genero la busqueda con el dato
+        emp=list(EMPLOYEEPAYROLL.objects.filter(PAY_Id=PAY_id).values())
+        #genero la busqueda si hay valores con el dato de busqueda anterior
+        if len(emp)>0:
+            empPay=emp.objects.get(PAY_Id=PAY_id)
+            empPay.PAY_EM_User=data["PAY_EM_User"]
+            empPay.PAY_NIT=data["PAY_NIT"]
+            empPay.PAY_Hours=data["PAY_Hours"]
+            empPay.PAY_ExtraHours=data["PAY_ExtraHours"]
+            empPay.PAY_parafiscal=data['PAY_parafiscal']
+            empPay.PAY_WorkingHours=data["PAY_WorkingHours"]
+            empPay.PAY_StartDate=data["PAY_StartDate"]
+            empPay.PAY_FinalDate=data["PAY_FinalDate"]
+            empPay.PAY_TotalSalary=data["PAY_TotalSalary"]
+            empPay.save()
+            
+            mensaje={"mensaje":"se a actualizado la nomida requerida"}
+        else:
+            mensaje={"mensaje":"no existe la nomida requerida"}
+        return JsonResponse(mensaje)
+        
+    def delete(self,request,PAY_id):
+        
+        PAY_id=list(EMPLOYEEPAYROLL.objects.filter(PAY_Id=PAY_id).values())
+        if len(PAY_id)>0:
+            EMPLOYEEPAYROLL.objects.filter(PAY_Id=PAY_id).delete()
+            mensaje={"mensaje":"se a eliminado el registro"}
+        else:
+            mensaje={"mensaje":"no existe el dato, no se elimino nada"}
+        return JsonResponse(mensaje)
+        
+class WORKINGHOURSView(View):
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+    
+    def get(self,request,WORH_code=""):
+        if len(WORH_code)>0:
+            worhours=list(WORKINGHOURS.objects.filter(WORH_Code=WORH_code).values())
+            if len(worhours)>0:
+                datos={"mensaje":worhours}
+            else:
+                datos={"mensaje":"no hay datos"}
+        else:
+            worhours=list(WORKINGHOURS.objects.values())
+            if len(worhours)>0:
+                datos={"mensaje":worhours}
+            else:
+                datos={"mensaje":"no hay datos"}
+        return JsonResponse(datos)
+    
+    def post(self,request):
+        try:
+            dat=json.loads(request.body)
+        
+            #creación de json para enviar
+            
+            newemployeepayroll=EMPLOYEEPAYROLL.objects.create(WORH_Code=dat['WORH_Code'],
+                                                              WORH_TipeHours=dat['WORH_TipeHours'],
+                                                              WORH_Costs=dat['WORH_Costs'])
+                                                              
+            newemployeepayroll.save()
+            datos={'mensaje':'hora registrada'}
+        
+        except:
+            datos={'mensaje':'no se registro'}
+        return JsonResponse(datos)
+    
+    def put(self,request,WORH_code):
+        #crear conexion a body
+        data=json.loads(request.body)
+        #genero la busqueda con el dato
+        hours=list(WORKINGHOURS.objects.filter(WORH_Code=WORH_code).values())
+        #genero la busqueda si hay valores con el dato de busqueda anterior
+        if len(hours)>0:
+            hor=hours.objects.get(WORH_Code=WORH_code)
+            hor.WORH_TipeHours=data["PAY_EM_User"]
+            hor.WORH_Costs=data["PAY_NIT"]                        
+            mensaje={"mensaje":"se a actualizado la hora requerida"}
+        else:
+            mensaje={"mensaje":"no existe la hora requerida"}
+        return JsonResponse(mensaje)
+    
+    def delete(self,request,WORH_code):
+        #data=json.loads(request.body)
+        hours=list(WORKINGHOURS.objects.filter(WORH_Code=WORH_code).values())
+        if len(hours)>0:
+            WORKINGHOURS.objects.filter(WORH_Code=WORH_code).delete()
+            mensaje={"mensaje":"se a eliminado la hora"}
+        else:
+            mensaje={"mensaje":"no existe el dato, no se elimino nada"}
+        return JsonResponse(mensaje)
+        
+    
