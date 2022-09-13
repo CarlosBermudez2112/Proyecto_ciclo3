@@ -4,8 +4,74 @@ import json
 from django.views import View
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
-from Supermercado.models import EMPLOYEEPAYROLL,EMPLOYEES,BUSINESS,WORKINGHOURS
+from Supermercado.models import *
 from django.http import JsonResponse
+
+
+class ADMINISTRATORView(View):
+    ##consultar administradores
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request , *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+    
+    def get(self,request,AD_USER=""):
+        if len(AD_USER)>0:
+            UserAdmin =list(ADMINISTRATOR.objects.filter(AD_USE=AD_USER).values())
+            if len(UserAdmin)>0:
+                datos={"mensaje":UserAdmin}
+            else:
+                datos={'mensaje: No se encontro administrador'}
+        else:
+            UserAdmin =list(ADMINISTRATOR.objects.values())
+        if len(UserAdmin)>0:
+            datos={"mensaje":UserAdmin}
+        else:
+            datos={'mensaje: no se encontro Ningun administrador registrado'}
+
+        return JsonResponse(datos)
+    
+   
+    ##crear administrador
+    
+    def post(self,request):
+        data=json.loads(request.body) 
+        Libros=ADMINISTRATOR(AD_USER=data['AD_USER'],AD_PASSWORD=data['AD_PASSWORD'],AD_EMAIL=data['AD_EMAIL']
+                             , AD_NAMES=data[' AD_NAMES'],AD_LASTNAMES=data['AD_LASTNAMES'],
+                             AD_CELLPHONE=data['AD_CELLPHONE'],AD_ROL=data['AD_ROL'])
+        Libros.save()
+        datos={'Mensaje': 'Administrador registrado exitosamente'}
+        return JsonResponse(datos)
+    
+    ##Actualizar administrador
+
+    def put(self,request,AD_USER):
+        data=json.loads(request.body) 
+        UserAdmin =list(ADMINISTRATOR.objects.filter(AD_USE=AD_USER).values())
+        if len(UserAdmin)>0:
+            admin=UserAdmin.objects.get(AD_USE=AD_USER)
+            admin.AD_PASSWORD=data['AD_PASSWORD']
+            admin.AD_EMAIL=data['AD_EMAIL']
+            admin.AD_NAMES=data[' AD_NAMES']
+            admin.AD_LASTNAMES=data['AD_LASTNAMES']
+            admin. AD_CELLPHONE=data['AD_CELLPHONE']
+            admin.AD_ROL=data['AD_ROL']
+            admin.save()
+            datos={'Mensaje': 'Administrador actualizado exitosamente'}
+        else :
+            datos={'Mensaje': 'Administrador no encontrado para actualizar'}
+        return JsonResponse(datos)
+        
+    ##Borrar administrador
+    
+    def delete(self,request,AD_USER):
+        UserAdmin =list(ADMINISTRATOR.objects.filter(AD_USE=AD_USER).values())
+        if len(UserAdmin)>0:
+           UserAdmin.objects.filter(AD_USE=AD_USER).delete()
+           datos={'Mensaje': 'Administrador eliminado exitosamente'}
+        else :
+            datos={'Mensaje': 'Administrador no encontrado para eliminar'}
+        return JsonResponse(datos)
+
 
 class EMPLOYEEPAYROLLView(View):
      #metodos para utilisar json
