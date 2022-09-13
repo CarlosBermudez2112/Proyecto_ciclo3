@@ -91,7 +91,6 @@ class BUSINESSView(View):
                 datos={"mensaje":"no hay empresas registradas"}
         return JsonResponse(datos)
     
-<<<<<<< HEAD
     ##Actualizar empresa
     def put(self,request,EM_ID):
         
@@ -125,10 +124,8 @@ class BUSINESSView(View):
         return JsonResponse(mensaje)
     
     
-=======
      
 
->>>>>>> da2beb12c207a7f3c68d0cea63e4c858e2772840
 class EMPLOYEEPAYROLLView(View):
      #metodos para utilisar json
     @method_decorator(csrf_exempt)
@@ -277,7 +274,6 @@ class WORKINGHOURSView(View):
             mensaje={"mensaje":"no existe el dato, no se elimino nada"}
         return JsonResponse(mensaje)
         
-<<<<<<< HEAD
 class LISTBUYView(View):
      #metodos para utilisar json
     @method_decorator(csrf_exempt)
@@ -286,7 +282,7 @@ class LISTBUYView(View):
     ## consultar lista compras
     def get(self,request,LBUY_Code=None):
         if len(LBUY_Code)>0:
-            buy_list=list(LISTBUYV.objects.filter(LBUY_Code=LBUY_Code).values())
+            buy_list=list(LISTBUY.objects.filter(LBUY_Code=LBUY_Code).values())
             if len(buy_list)>0:
                 datos={"mensaje":buy_list}
             else:
@@ -352,7 +348,6 @@ class LISTBUYView(View):
         else:
             mensaje={"mensaje":"no existe el dato, no se elimino nada"}
         return JsonResponse(mensaje)
-=======
 class CUSTOMERSView(View):
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
@@ -427,4 +422,3 @@ class CUSTOMERSView(View):
 
 
    
->>>>>>> refs/remotes/origin/main
