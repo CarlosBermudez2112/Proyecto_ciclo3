@@ -94,6 +94,7 @@ class LISTBUY(models.Model):
     LBUY_CLI_User = models.ForeignKey(CUSTOMERS,on_delete=models.CASCADE)
     LBUY_Fecha= models.DateField(auto_now=True)
 
+#hola
 
 class TYPEEXPENSES(models.Model):
     TEGR_Code = models.CharField(primary_key=True, max_length=10,null=False,unique=True)
