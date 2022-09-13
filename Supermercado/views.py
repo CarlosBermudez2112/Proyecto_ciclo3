@@ -30,15 +30,14 @@ class ADMINISTRATORView(View):
 
         return JsonResponse(datos)
     
-   
     ##crear administrador
     
     def post(self,request):
         data=json.loads(request.body) 
-        Libros=ADMINISTRATOR(AD_USER=data['AD_USER'],AD_PASSWORD=data['AD_PASSWORD'],AD_EMAIL=data['AD_EMAIL']
+        Admin=ADMINISTRATOR(AD_USER=data['AD_USER'],AD_PASSWORD=data['AD_PASSWORD'],AD_EMAIL=data['AD_EMAIL']
                              , AD_NAMES=data[' AD_NAMES'],AD_LASTNAMES=data['AD_LASTNAMES'],
                              AD_CELLPHONE=data['AD_CELLPHONE'],AD_ROL=data['AD_ROL'])
-        Libros.save()
+        Admin.save()
         datos={'Mensaje': 'Administrador registrado exitosamente'}
         return JsonResponse(datos)
     
@@ -72,6 +71,27 @@ class ADMINISTRATORView(View):
             datos={'Mensaje': 'Administrador no encontrado para eliminar'}
         return JsonResponse(datos)
 
+
+class BUSINESSView(View):
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+    def get(self,request,EM_ID=""):
+        if len(EM_ID)>0:
+            Business=list(BUSINESS.objects.filter(EM_ID=EM_ID).values())
+            if len(Business)>0:
+                datos={"mensaje":Business}
+            else:
+                datos={"mensaje":"no hay empresas registradas con ese Id"}
+        else:
+            Business=list(BUSINESS.objects.values())
+            if len(Business)>0:
+                datos={"mensaje":Business}
+            else:
+                datos={"mensaje":"no hay empresas registradas"}
+        return JsonResponse(datos)
+    
+     
 
 class EMPLOYEEPAYROLLView(View):
      #metodos para utilisar json
