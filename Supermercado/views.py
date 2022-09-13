@@ -91,7 +91,7 @@ class BUSINESSView(View):
                 datos={"mensaje":"no hay empresas registradas"}
         return JsonResponse(datos)
     
-<<<<<<< HEAD
+
     ##Actualizar empresa
     def put(self,request,EM_ID):
         
@@ -125,10 +125,6 @@ class BUSINESSView(View):
         return JsonResponse(mensaje)
     
     
-=======
-     
-
->>>>>>> da2beb12c207a7f3c68d0cea63e4c858e2772840
 class EMPLOYEEPAYROLLView(View):
      #metodos para utilisar json
     @method_decorator(csrf_exempt)
