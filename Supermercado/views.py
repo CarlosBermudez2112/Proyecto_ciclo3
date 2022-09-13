@@ -92,10 +92,7 @@ class BUSINESSView(View):
                 datos={"mensaje":"no hay empresas registradas"}
         return JsonResponse(datos)
     
-<<<<<<< HEAD
-=======
 
->>>>>>> a1313f54fa191f1beeee8cdccd946460833e769a
     def post(self,request):
         try:
             dato=json.loads(request.body)
@@ -116,12 +113,7 @@ class BUSINESSView(View):
         except ADMINISTRATOR.DoesNotExist:
             datos={'mensaje':'empresa no agregada administrador no existe'}
         return JsonResponse(datos)
-<<<<<<< HEAD
-    
-    
-=======
 
->>>>>>> a1313f54fa191f1beeee8cdccd946460833e769a
     ##Actualizar empresa
     def put(self,request,EM_ID):
         
@@ -154,11 +146,7 @@ class BUSINESSView(View):
             mensaje={"mensaje":"no existe la empresa requerida no eliminada"}
         return JsonResponse(mensaje)
     
-<<<<<<< HEAD
-    
-     
-=======
->>>>>>> a1313f54fa191f1beeee8cdccd946460833e769a
+
 
 class EMPLOYEEPAYROLLView(View):
      #metodos para utilisar json
