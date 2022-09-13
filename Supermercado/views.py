@@ -30,15 +30,14 @@ class ADMINISTRATORView(View):
 
         return JsonResponse(datos)
     
-   
     ##crear administrador
     
     def post(self,request):
         data=json.loads(request.body) 
-        Libros=ADMINISTRATOR(AD_USER=data['AD_USER'],AD_PASSWORD=data['AD_PASSWORD'],AD_EMAIL=data['AD_EMAIL']
+        Admin=ADMINISTRATOR(AD_USER=data['AD_USER'],AD_PASSWORD=data['AD_PASSWORD'],AD_EMAIL=data['AD_EMAIL']
                              , AD_NAMES=data[' AD_NAMES'],AD_LASTNAMES=data['AD_LASTNAMES'],
                              AD_CELLPHONE=data['AD_CELLPHONE'],AD_ROL=data['AD_ROL'])
-        Libros.save()
+        Admin.save()
         datos={'Mensaje': 'Administrador registrado exitosamente'}
         return JsonResponse(datos)
     
@@ -73,6 +72,63 @@ class ADMINISTRATORView(View):
         return JsonResponse(datos)
 
 
+class BUSINESSView(View):
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+    def get(self,request,EM_ID=""):
+        if len(EM_ID)>0:
+            Business=list(BUSINESS.objects.filter(EM_ID=EM_ID).values())
+            if len(Business)>0:
+                datos={"mensaje":Business}
+            else:
+                datos={"mensaje":"no hay empresas registradas con ese Id"}
+        else:
+            Business=list(BUSINESS.objects.values())
+            if len(Business)>0:
+                datos={"mensaje":Business}
+            else:
+                datos={"mensaje":"no hay empresas registradas"}
+        return JsonResponse(datos)
+    
+<<<<<<< HEAD
+    ##Actualizar empresa
+    def put(self,request,EM_ID):
+        
+        data=json.loads(request.body)
+        Business=list(BUSINESS.objects.filter(EM_ID=EM_ID).values())
+        if len(Business)>0:
+            empre=Business.objects.get(EM_ID=EM_ID)
+            empre.EM_IDName=data["EM_IDName"]
+            empre.EM_NIT=data["EM_NIT"]
+            empre.EM_CITY=data["EM_CITY"]
+            empre.EM_ADDRESS=data["EM_ADDRESS"]
+            empre.EM_CELLPHONE=data['EM_CELLPHONE']
+            empre.EM_DATECREATE=data["EM_DATECREATE"]
+            empre.EM_PRODUCTIVE_SECTOR=data["EM_PRODUCTIVE_SECTOR"]
+            empre.EM_AD_USER=data["EM_AD_USER"]
+            empre.save()
+            mensaje={"mensaje":"se actualizo la empresa requerida"}
+        else:
+            mensaje={"mensaje":"no existe la empresa  requerida"}
+        return JsonResponse(mensaje)
+    
+    ##Eliminar empresas
+    def delete(self,request,EM_ID):
+        
+        EM_ID=list(BUSINESS.objects.filter(EM_ID=EM_ID).values())
+        if len(EM_ID)>0:
+            EMPLOYEEPAYROLL.objects.filter(EM_ID=EM_ID).delete()
+            mensaje={"mensaje":"se a eliminado la empresa seleccionada"}
+        else:
+            mensaje={"mensaje":"no existe la empresa requerida no eliminada"}
+        return JsonResponse(mensaje)
+    
+    
+=======
+     
+
+>>>>>>> da2beb12c207a7f3c68d0cea63e4c858e2772840
 class EMPLOYEEPAYROLLView(View):
      #metodos para utilisar json
     @method_decorator(csrf_exempt)
@@ -221,6 +277,7 @@ class WORKINGHOURSView(View):
             mensaje={"mensaje":"no existe el dato, no se elimino nada"}
         return JsonResponse(mensaje)
         
+<<<<<<< HEAD
 class LISTBUYView(View):
      #metodos para utilisar json
     @method_decorator(csrf_exempt)
@@ -295,3 +352,79 @@ class LISTBUYView(View):
         else:
             mensaje={"mensaje":"no existe el dato, no se elimino nada"}
         return JsonResponse(mensaje)
+=======
+class CUSTOMERSView(View):
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+    #Metodo para leer datos
+    def get(self,request,user=""):
+        #Se verifica si user tiene datos.
+        if len(user)>0:   
+            clientes= list(CUSTOMERS.objects.filter(CLI_User=user).values())
+            if len(clientes)>0:
+                #Se muestra el cliente con el user que se ha especificado
+                datos = {'Cliente':clientes}
+            else:
+                datos = {'mensaje': "No se encontro el cliente."}
+        else:
+            clientes= list(CUSTOMERS.objects.values()) 
+            if len(clientes)>0:#se pregunta si hay datos
+                #Se muestra todos los clientes existentes en la BD
+                datos={"mensaje":clientes}
+            else:
+                datos={"mensaje":"No se encontraron clientes."}
+
+        return JsonResponse(datos)
+
+    #Metodo para insertar un dato
+    def post(self,request):
+        dato = json.loads(request.body) #Trae todo el objeto que viene con la petición, para posterior insertar en la tabla
+        cliente = CUSTOMERS(
+            CLI_User=dato['Usuario'], 
+            CLI_Password=dato['password'],
+            CLI_Names=dato['nombre'],
+            CLI_LastNames=dato['apellido'], 
+            CLI_Email=dato['email'],
+            CLI_Cellphone=dato['telefono']
+            )
+        cliente.save()
+        mensaje={'mensaje':'Cliente registrado exitosamente'}
+        
+        return JsonResponse(mensaje)
+
+    #Metodo para actualizar un dato 
+    def put(self,request,user):
+        data = json.loads(request.body)
+        cliente= list(CUSTOMERS.objects.filter(CLI_User=user).values())
+        if len(cliente)>0:
+            #NOTA:
+            #No es necesario actualizar todos los datos, solo los que especifiquemos en este condicional.
+            updateData=CUSTOMERS.objects.get(CLI_User=user) #Se trae el objeto que se encontró
+            updateData.CLI_Password=data['password']
+            updateData.CLI_Names=data['nombre']
+            updateData.CLI_LastNames=data['apellido'] 
+            updateData.CLI_Email=data['email']
+            updateData.CLI_Cellphone=data['telefono']
+            updateData.save()
+            mensaje={"mensaje":"Cliente actualizado exitosamente"}
+        else:
+            mensaje={"mensaje":"No se encontro el cliente."}
+            
+        return JsonResponse(mensaje)
+
+    #Metodo para borrar un dato
+    def delete(self,request,user):
+        cliente= list(CUSTOMERS.objects.filter(CLI_User=user).values())
+        if len(cliente)>0:
+            CUSTOMERS.objects.filter(CLI_User=user).delete()
+            mensaje={"mensaje":"Cliente eliminado exitosamente"}
+        else:
+            mensaje={"mensaje":"No se encontro el Cliente."}
+        
+        return JsonResponse(mensaje)
+
+
+   
+>>>>>>> refs/remotes/origin/main
