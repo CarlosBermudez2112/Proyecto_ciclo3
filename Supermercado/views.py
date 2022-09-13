@@ -91,10 +91,39 @@ class BUSINESSView(View):
                 datos={"mensaje":"no hay empresas registradas"}
         return JsonResponse(datos)
     
+    ##Actualizar empresa
+    def put(self,request,EM_ID):
+        
+        data=json.loads(request.body)
+        Business=list(BUSINESS.objects.filter(EM_ID=EM_ID).values())
+        if len(Business)>0:
+            empre=Business.objects.get(EM_ID=EM_ID)
+            empre.EM_IDName=data["EM_IDName"]
+            empre.EM_NIT=data["EM_NIT"]
+            empre.EM_CITY=data["EM_CITY"]
+            empre.EM_ADDRESS=data["EM_ADDRESS"]
+            empre.EM_CELLPHONE=data['EM_CELLPHONE']
+            empre.EM_DATECREATE=data["EM_DATECREATE"]
+            empre.EM_PRODUCTIVE_SECTOR=data["EM_PRODUCTIVE_SECTOR"]
+            empre.EM_AD_USER=data["EM_AD_USER"]
+            empre.save()
+            mensaje={"mensaje":"se actualizo la empresa requerida"}
+        else:
+            mensaje={"mensaje":"no existe la empresa  requerida"}
+        return JsonResponse(mensaje)
+    
+    ##Eliminar empresas
+    def delete(self,request,EM_ID):
+        
+        EM_ID=list(BUSINESS.objects.filter(EM_ID=EM_ID).values())
+        if len(EM_ID)>0:
+            EMPLOYEEPAYROLL.objects.filter(EM_ID=EM_ID).delete()
+            mensaje={"mensaje":"se a eliminado la empresa seleccionada"}
+        else:
+            mensaje={"mensaje":"no existe la empresa requerida no eliminada"}
+        return JsonResponse(mensaje)
     
     
-    
-
 class EMPLOYEEPAYROLLView(View):
      #metodos para utilisar json
     @method_decorator(csrf_exempt)
