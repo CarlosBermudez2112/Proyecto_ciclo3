@@ -10,11 +10,8 @@ from django.db import models
 class ADMINISTRATOR(models.Model):
     AD_USER=models.TextField(primary_key=True, max_length=50,null=False,unique=True)
     AD_PASSWORD=models.IntegerField(null=False)
-<<<<<<< HEAD
     AD_EMAIL=models.TextField(max_length=50,null=False)
-=======
     AD_EMAIL=models.EmailField(max_length=50,null=False)
->>>>>>> cc072419c47be40ab0ce0b3c342e54aadeade509
     AD_NAMES=models.TextField(max_length=50,null=False)
     AD_LASTNAMES=models.TextField(max_length=50,null=False)
     AD_CELLPHONE=models.TextField(max_length=50,null=False)
