@@ -30,7 +30,6 @@ class ADMINISTRATORView(View):
 
         return JsonResponse(datos)
     
-   
     ##crear administrador
     
     def post(self,request):
