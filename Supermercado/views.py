@@ -273,22 +273,21 @@ class WORKINGHOURSView(View):
             mensaje={"mensaje":"no existe el dato, no se elimino nada"}
         return JsonResponse(mensaje)
         
-<<<<<<< HEAD
 class LISTBUYView(View):
      #metodos para utilisar json
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
     ## consultar lista compras
-    def get(self,request,LBUY_Code=None):
-        if len(LBUY_Code)>0:
-            buy_list=list(LISTBUYV.objects.filter(LBUY_Code=LBUY_Code).values())
+    def get(self,request,LBUY_code=None):
+        if len(LBUY_code)>0:
+            buy_list=list(LISTBUY.objects.filter(LBUY_Code=LBUY_code).values())
             if len(buy_list)>0:
                 datos={"mensaje":buy_list}
             else:
                 datos={"mensaje":"no hay datos"}
         else:
-            buy_list=list(LBUY_Code.objects.values())
+            buy_list=list(LBUY_code.objects.values())
             if len(buy_list)>0:
                 datos={"mensaje":buy_list}
             else:
@@ -348,7 +347,6 @@ class LISTBUYView(View):
         else:
             mensaje={"mensaje":"no existe el dato, no se elimino nada"}
         return JsonResponse(mensaje)
-=======
 class CUSTOMERSView(View):
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
@@ -423,4 +421,3 @@ class CUSTOMERSView(View):
 
 
    
->>>>>>> refs/remotes/origin/main

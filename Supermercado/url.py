@@ -12,5 +12,7 @@ urlpatterns = [
     path('CUSTOMERS/',ADMINISTRATORView.as_view(),name='ListarAdministrador'),
     path('CUSTOMERS/',CUSTOMERSView.as_view(),name='ListarCliente'),
     path('CUSTOMERS/<str:dato>',CUSTOMERSView.as_view(),name='ListarClientePorUsuario'),
+    path('LISTBUY/',LISTBUYView.as_view(),name='ListarListCompra'),
+    path('LISTBUY/<int:dato>',LISTBUYView.as_view(),name='ListarPorCodigo'),
         
 ]
