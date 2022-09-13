@@ -302,7 +302,7 @@ class LISTBUYView(View):
         return super().dispatch(request, *args, **kwargs)
     ## consultar lista compras
     def get(self,request,LBUY_code=""):
-        if len(str(LBUY_code))>0:
+        if len(LBUY_code)>0:
             buy_list=list(LISTBUY.objects.filter(LBUY_Code=LBUY_code).values())
             if len(buy_list)>0:
                 datos={"mensaje":buy_list}
