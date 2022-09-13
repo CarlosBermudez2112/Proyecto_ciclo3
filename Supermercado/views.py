@@ -71,7 +71,6 @@ class ADMINISTRATORView(View):
             datos={'Mensaje': 'Administrador no encontrado para eliminar'}
         return JsonResponse(datos)
 
-
 class EMPLOYEEPAYROLLView(View):
      #metodos para utilisar json
     @method_decorator(csrf_exempt)
