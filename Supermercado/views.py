@@ -249,8 +249,10 @@ class CUSTOMERSView(View):
     #Metodo para insertar un dato
     def post(self,request):
         dato = json.loads(request.body) #Trae todo el objeto que viene con la petición, para posterior insertar en la tabla
-        cliente = CUSTOMERS(
-            CLI_User=dato['Usuario'], 
+        userAdmin=ADMINISTRATOR.objects.get(AD_USER=dato['user_Admin'])
+        cliente = CUSTOMERS.objects.create(
+            CLI_User=dato['usuario'], 
+            CLI_AD_User=userAdmin,
             CLI_Password=dato['password'],
             CLI_Names=dato['nombre'],
             CLI_LastNames=dato['apellido'], 
