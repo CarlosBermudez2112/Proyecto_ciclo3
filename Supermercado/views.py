@@ -92,7 +92,6 @@ class BUSINESSView(View):
                 datos={"mensaje":"no hay empresas registradas"}
         return JsonResponse(datos)
     
-<<<<<<< HEAD
     def post(self,request):
         try:
             dato=json.loads(request.body)
@@ -115,8 +114,6 @@ class BUSINESSView(View):
         return JsonResponse(datos)
     
     
-=======
->>>>>>> f3aa386d7ce7278aba9c3eb449b34249cb9dd539
     ##Actualizar empresa
     def put(self,request,EM_ID):
         
@@ -150,10 +147,7 @@ class BUSINESSView(View):
         return JsonResponse(mensaje)
     
     
-<<<<<<< HEAD
-=======
      
->>>>>>> f3aa386d7ce7278aba9c3eb449b34249cb9dd539
 
 class EMPLOYEEPAYROLLView(View):
      #metodos para utilisar json
