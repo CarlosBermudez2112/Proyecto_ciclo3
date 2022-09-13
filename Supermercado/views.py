@@ -91,9 +91,7 @@ class BUSINESSView(View):
                 datos={"mensaje":"no hay empresas registradas"}
         return JsonResponse(datos)
     
-    
-    
-    
+     
 
 class EMPLOYEEPAYROLLView(View):
      #metodos para utilisar json
