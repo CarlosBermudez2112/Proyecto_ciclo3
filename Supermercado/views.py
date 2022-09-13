@@ -92,7 +92,6 @@ class BUSINESSView(View):
         return JsonResponse(datos)
     
      
-
 class EMPLOYEEPAYROLLView(View):
      #metodos para utilisar json
     @method_decorator(csrf_exempt)
@@ -253,18 +252,18 @@ class CUSTOMERSView(View):
             clientes= list(CUSTOMERS.objects.filter(CLI_User=user).values())
             if len(clientes)>0:
                 #Se muestra el cliente con el user que se ha especificado
-                datos = {'Cliente':clientes}
+                mensaje = {'mensaje':clientes}
             else:
-                datos = {'mensaje': "No se encontro el cliente."}
+                mensaje = {'mensaje': "No se encontro el cliente."}
         else:
             clientes= list(CUSTOMERS.objects.values()) 
             if len(clientes)>0:#se pregunta si hay datos
                 #Se muestra todos los clientes existentes en la BD
-                datos={"mensaje":clientes}
+                mensaje={"mensaje":clientes}
             else:
-                datos={"mensaje":"No se encontraron clientes."}
+                mensaje={"mensaje":"No se encontraron clientes."}
 
-        return JsonResponse(datos)
+        return JsonResponse(mensaje)
 
     #Metodo para insertar un dato
     def post(self,request):
@@ -314,6 +313,64 @@ class CUSTOMERSView(View):
             mensaje={"mensaje":"No se encontro el Cliente."}
         
         return JsonResponse(mensaje)
+
+
+class TYPEEXPENSESView(View):
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+    def get(self,request,code=""):
+        if len(code)>0:   
+            tipoCobros= list(TYPEEXPENSES.objects.filter(TEGR_Code=code).values())
+            if len(tipoCobros)>0:
+                mensaje = {'mensaje':tipoCobros}
+            else:
+                mensaje = {'mensaje': "No se encontro el tipo de cobro indicado."}
+        else:
+            tipoCobros= list(TYPEEXPENSES.objects.values()) 
+            if len(tipoCobros)>0:
+                mensaje ={"mensaje":tipoCobros}
+            else:
+                mensaje ={"mensaje":"No se encontraron los tipos de cobros."}
+
+        return JsonResponse(mensaje)
+
+    def post(self,request):
+            data = json.loads(request.body) #Trae todo el objeto que viene con la petición, para posterior insertar en la tabla
+            tipoCobro = TYPEEXPENSES(
+                TEGR_Code=data['codigo_tipo_cobro'], 
+                TEGR_NameExpenses=data['nombre_cobro']
+                )
+            tipoCobro.save()
+            mensaje={'mensaje':'Tipo de cobro registrado exitosamente'}
+            return JsonResponse(mensaje)
+
+    def put(self,request,code):
+        data = json.loads(request.body)
+        tipoCobro= list(TYPEEXPENSES.objects.filter(TEGR_Code=code).values())
+        if len(tipoCobro)>0:
+            #NOTA:
+            #No es necesario actualizar todos los datos, solo los que especifiquemos en este condicional.
+            updateData=TYPEEXPENSES.objects.get(TEGR_Code=code) #Se trae el objeto que se encontró
+            updateData.TEGR_NameExpenses=data['nombre_cobro']          
+            updateData.save()
+            mensaje={"mensaje":"Tipo de cobro actualizado exitosamente"}
+        else:
+            mensaje={"mensaje":"No se encontro el tipo de cobro indicado."}
+            
+        return JsonResponse(mensaje)
+
+    def delete(self,request,code):
+        tipoCobro= list(TYPEEXPENSES.objects.filter(TEGR_Code=code).values())
+        if len(tipoCobro)>0:
+            TYPEEXPENSES.objects.filter(TEGR_Code=code).delete()
+            mensaje={"mensaje":"Tipo de cobro eliminado exitosamente"}
+        else:
+            mensaje={"mensaje":"No se encontro el tipo de cobro indicado."}
+        
+        return JsonResponse(mensaje)
+    
 
 
    

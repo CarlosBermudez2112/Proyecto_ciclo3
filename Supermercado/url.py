@@ -9,8 +9,8 @@ urlpatterns = [
     path('Employeepayroll/<int:dato>',EMPLOYEEPAYROLLView.as_view(),name='ListarID'),
     path('WORKINGHOURS/',EMPLOYEEPAYROLLView.as_view(),name='Listarhours'),
     path('WORKINGHOURS/<str:dato>',EMPLOYEEPAYROLLView.as_view(),name='ListarHo'),
-    path('CUSTOMERS/',ADMINISTRATORView.as_view(),name='ListarAdministrador'),
     path('CUSTOMERS/',CUSTOMERSView.as_view(),name='ListarCliente'),
     path('CUSTOMERS/<str:dato>',CUSTOMERSView.as_view(),name='ListarClientePorUsuario'),
-        
+    path('TYPEEXPENSES/',TYPEEXPENSESView.as_view(),name='ListarTiposCobros'),
+    path('TYPEEXPENSES/<str:dato>',TYPEEXPENSESView.as_view(),name='ListarTipoCobros'),    
 ]
