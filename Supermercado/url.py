@@ -9,10 +9,14 @@ urlpatterns = [
     path('Employeepayroll/<str:dato>',EMPLOYEEPAYROLLView.as_view(),name='ListarID'),
     path('WORKINGHOURS/',EMPLOYEEPAYROLLView.as_view(),name='Listarhours'),
     path('WORKINGHOURS/<str:dato>',EMPLOYEEPAYROLLView.as_view(),name='ListarHo'),
-    path('CUSTOMERS/',ADMINISTRATORView.as_view(),name='ListarAdministrador'),
     path('CUSTOMERS/',CUSTOMERSView.as_view(),name='ListarCliente'),
     path('CUSTOMERS/<str:dato>',CUSTOMERSView.as_view(),name='ListarClientePorUsuario'),
+<<<<<<< HEAD
     path('LISTBUY/',LISTBUYView.as_view(),name='ListarListCompra'),
     path('LISTBUY/<str:dato>',LISTBUYView.as_view(),name='ListarPorCodigo'),
         
+=======
+    path('TYPEEXPENSES/',TYPEEXPENSESView.as_view(),name='ListarTiposCobros'),
+    path('TYPEEXPENSES/<str:dato>',TYPEEXPENSESView.as_view(),name='ListarTipoCobros'),    
+>>>>>>> 7fe085e8a256812f6eef67a3f26a1f3dfd9a2963
 ]
