@@ -89,7 +89,7 @@ class CUSTOMERS(models.Model):
     CLI_AD_User= models.ForeignKey(ADMINISTRATOR, on_delete=models.CASCADE)
 
 class LISTBUY(models.Model):
-    LBUY_Code = models.CharField(primary_key=True,max_length=10,null=False,unique=True)
+    LBUY_Code = models.AutoField(primary_key=True)
     LBUY_PRO_Code = models.ForeignKey(PRODUCTS,on_delete=models.CASCADE)
     LBUY_CLI_User = models.ForeignKey(CUSTOMERS,on_delete=models.CASCADE)
     LBUY_Fecha= models.DateField(auto_now=True)
