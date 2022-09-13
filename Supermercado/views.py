@@ -76,6 +76,7 @@ class BUSINESSView(View):
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
+    
     def get(self,request,EM_ID=""):
         if len(EM_ID)>0:
             Business=list(BUSINESS.objects.filter(EM_ID=EM_ID).values())
@@ -91,7 +92,60 @@ class BUSINESSView(View):
                 datos={"mensaje":"no hay empresas registradas"}
         return JsonResponse(datos)
     
-     
+    def post(self,request):
+        try:
+            dato=json.loads(request.body)
+            
+            admin=ADMINISTRATOR.objects.get(EM_AD_USER=dato['EM_AD_USER'])
+            Business=BUSINESS.objects.create( 
+                                                EM_ID=dato['EM_ID'],
+                                                EM_IDName=dato['EM_IDName'],
+                                                EM_NIT=dato['EM_NIT'],
+                                                EM_CITY=dato['EM_CITY'],
+                                                EM_ADDRESS=dato['EM_ADDRESS'],
+                                                EM_CELLPHONE=dato['EM_CELLPHONE'],
+                                                EM_DATECREATE=dato['EM_DATECREATE'],
+                                                EM_PRODUCTIVE_SECTOR=dato[' EM_PRODUCTIVE_SECTOR'],
+                                                EM_AD_USER=admin)
+            Business.save()
+            datos={'mensaje':'Empresa agregada'}  
+        except ADMINISTRATOR.DoesNotExist:
+            datos={'mensaje':'empresa no agregada administrador no existe'}
+        return JsonResponse(datos)
+    
+    ##Actualizar empresa
+    def put(self,request,EM_ID):
+        
+        data=json.loads(request.body)
+        Business=list(BUSINESS.objects.filter(EM_ID=EM_ID).values())
+        if len(Business)>0:
+            empre=Business.objects.get(EM_ID=EM_ID)
+            empre.EM_IDName=data["EM_IDName"]
+            empre.EM_NIT=data["EM_NIT"]
+            empre.EM_CITY=data["EM_CITY"]
+            empre.EM_ADDRESS=data["EM_ADDRESS"]
+            empre.EM_CELLPHONE=data['EM_CELLPHONE']
+            empre.EM_DATECREATE=data["EM_DATECREATE"]
+            empre.EM_PRODUCTIVE_SECTOR=data["EM_PRODUCTIVE_SECTOR"]
+            empre.EM_AD_USER=data["EM_AD_USER"]
+            empre.save()
+            mensaje={"mensaje":"se actualizo la empresa requerida"}
+        else:
+            mensaje={"mensaje":"no existe la empresa  requerida"}
+        return JsonResponse(mensaje)
+    
+    ##Eliminar empresas
+    def delete(self,request,EM_ID):
+        
+        EM_ID=list(BUSINESS.objects.filter(EM_ID=EM_ID).values())
+        if len(EM_ID)>0:
+            EMPLOYEEPAYROLL.objects.filter(EM_ID=EM_ID).delete()
+            mensaje={"mensaje":"se a eliminado la empresa seleccionada"}
+        else:
+            mensaje={"mensaje":"no existe la empresa requerida no eliminada"}
+        return JsonResponse(mensaje)
+    
+
 class EMPLOYEEPAYROLLView(View):
      #metodos para utilisar json
     @method_decorator(csrf_exempt)
@@ -240,6 +294,80 @@ class WORKINGHOURSView(View):
             mensaje={"mensaje":"no existe el dato, no se elimino nada"}
         return JsonResponse(mensaje)
         
+class LISTBUYView(View):
+     #metodos para utilisar json
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+    ## consultar lista compras
+    def get(self,request,LBUY_Code=None):
+        if len(LBUY_Code)>0:
+            buy_list=list(LISTBUY.objects.filter(LBUY_Code=LBUY_Code).values())
+            if len(buy_list)>0:
+                datos={"mensaje":buy_list}
+            else:
+                datos={"mensaje":"no hay datos"}
+        else:
+            buy_list=list(LBUY_Code.objects.values())
+            if len(buy_list)>0:
+                datos={"mensaje":buy_list}
+            else:
+                datos={"mensaje":"no hay datos"}
+        return JsonResponse(datos)
+    ##crear lista compras    
+
+    def post(self,request):
+        try:
+            dat=json.loads(request.body)
+            #llaves foraneas
+            procod=PRODUCTS.objects.get(PRO_Code=dat['pro_cod'])
+            usuario=CUSTOMERS.objects.get(CLI_User=dat['cli_user'])
+            
+            
+            
+            #creación de json para enviar
+            
+            nwebuy=LISTBUY.objects.create( pro_cod=procod,
+                                           cli_user=usuario,
+                                           LBUY_Fech=dat['LBUY_Fech'],
+            )
+                                                             
+            datos={'mensaje':'compra registrada'}
+        
+        except PRODUCTS.DoesNotExist:
+            datos={'mensaje':'producto no existe'}
+        except CUSTOMERS.DoesNotExist:
+            datos={'mensaje':'cliente no existe'}
+       
+        return JsonResponse(datos)
+        ## actualizar
+    def put(self,request,buy_cod):
+        #crear conexion a body
+        data=json.loads(request.body)
+        #genero la busqueda con el dato
+        compras=list(LISTBUY.objects.filter(LBUY_Code=buy_cod).values())
+        #genero la busqueda si hay valores con el dato de busqueda anterior
+        if len(compras)>0:
+            newbuy=compras.objects.get(LBUY_Code=buy_cod)
+            newbuy.LBUY_PRO_Code=data["LBUY_PRO_Code"]
+            newbuy.LBUY_CLI_User=data["LBUY_CLI_User"]
+            newbuy.LBUY_Fecha=data["LBUY_Fecha"]
+            newbuy.save()
+            
+            mensaje={"mensaje":"se a actualizado la compra"}
+        else:
+            mensaje={"mensaje":"no existe la compra"}
+        return JsonResponse(mensaje)
+        
+    def delete(self,request,buy_cod):
+        
+        buy_cod=list(LISTBUY.objects.filter(PLBUY_Code=buy_cod).values())
+        if len(buy_cod)>0:
+            LISTBUY.objects.filter(PLBUY_Code=buy_cod).delete()
+            mensaje={"mensaje":"se a eliminado la compra"}
+        else:
+            mensaje={"mensaje":"no existe el dato, no se elimino nada"}
+        return JsonResponse(mensaje)
 class CUSTOMERSView(View):
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
@@ -314,7 +442,6 @@ class CUSTOMERSView(View):
         
         return JsonResponse(mensaje)
 
-
 class TYPEEXPENSESView(View):
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
@@ -371,6 +498,3 @@ class TYPEEXPENSESView(View):
         
         return JsonResponse(mensaje)
     
-
-
-   
