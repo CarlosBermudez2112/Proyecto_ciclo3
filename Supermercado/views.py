@@ -30,7 +30,6 @@ class ADMINISTRATORView(View):
 
         return JsonResponse(datos)
     
-   
     ##crear administrador
     
     def post(self,request):
@@ -71,6 +70,7 @@ class ADMINISTRATORView(View):
         else :
             datos={'Mensaje': 'Administrador no encontrado para eliminar'}
         return JsonResponse(datos)
+
 
 class BUSINESSView(View):
     @method_decorator(csrf_exempt)
