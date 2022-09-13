@@ -221,4 +221,77 @@ class WORKINGHOURSView(View):
             mensaje={"mensaje":"no existe el dato, no se elimino nada"}
         return JsonResponse(mensaje)
         
-    
+class LISTBUYView(View):
+     #metodos para utilisar json
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+    ## consultar lista compras
+    def get(self,request,LBUY_Code=None):
+        if len(LBUY_Code)>0:
+            buy_list=list(LISTBUYV.objects.filter(LBUY_Code=LBUY_Code).values())
+            if len(buy_list)>0:
+                datos={"mensaje":buy_list}
+            else:
+                datos={"mensaje":"no hay datos"}
+        else:
+            buy_list=list(LBUY_Code.objects.values())
+            if len(buy_list)>0:
+                datos={"mensaje":buy_list}
+            else:
+                datos={"mensaje":"no hay datos"}
+        return JsonResponse(datos)
+    ##crear lista compras    
+
+    def post(self,request):
+        try:
+            dat=json.loads(request.body)
+            #llaves foraneas
+            procod=PRODUCTS.objects.get(PRO_Code=dat['pro_cod'])
+            usuario=CUSTOMERS.objects.get(CLI_User=dat['cli_user'])
+            
+            
+            
+            #creación de json para enviar
+            
+            nwebuy=LISTBUY.objects.create( pro_cod=procod,
+                                           cli_user=usuario,
+                                           LBUY_Fech=dat['LBUY_Fech'],
+            )
+                                                             
+            datos={'mensaje':'compra registrada'}
+        
+        except PRODUCTS.DoesNotExist:
+            datos={'mensaje':'producto no existe'}
+        except CUSTOMERS.DoesNotExist:
+            datos={'mensaje':'cliente no existe'}
+       
+        return JsonResponse(datos)
+        ## actualizar
+    def put(self,request,buy_cod):
+        #crear conexion a body
+        data=json.loads(request.body)
+        #genero la busqueda con el dato
+        compras=list(LISTBUY.objects.filter(LBUY_Code=buy_cod).values())
+        #genero la busqueda si hay valores con el dato de busqueda anterior
+        if len(compras)>0:
+            newbuy=compras.objects.get(LBUY_Code=buy_cod)
+            newbuy.LBUY_PRO_Code=data["LBUY_PRO_Code"]
+            newbuy.LBUY_CLI_User=data["LBUY_CLI_User"]
+            newbuy.LBUY_Fecha=data["LBUY_Fecha"]
+            newbuy.save()
+            
+            mensaje={"mensaje":"se a actualizado la compra"}
+        else:
+            mensaje={"mensaje":"no existe la compra"}
+        return JsonResponse(mensaje)
+        
+    def delete(self,request,buy_cod):
+        
+        buy_cod=list(LISTBUY.objects.filter(PLBUY_Code=buy_cod).values())
+        if len(buy_cod)>0:
+            LISTBUY.objects.filter(PLBUY_Code=buy_cod).delete()
+            mensaje={"mensaje":"se a eliminado la compra"}
+        else:
+            mensaje={"mensaje":"no existe el dato, no se elimino nada"}
+        return JsonResponse(mensaje)
