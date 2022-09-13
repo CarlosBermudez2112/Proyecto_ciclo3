@@ -332,7 +332,7 @@ class TYPEEXPENSESView(View):
             if len(tipoCobros)>0:
                 mensaje ={"mensaje":tipoCobros}
             else:
-                mensaje ={"mensaje":"No se encontraron los tipos de cobros."}
+                mensaje ={"mensaje":"No se encontraron tipos de cobros."}
 
         return JsonResponse(mensaje)
 
