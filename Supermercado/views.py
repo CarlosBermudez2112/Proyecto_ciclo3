@@ -1,6 +1,7 @@
 #from django.shortcuts import render
 from ast import Delete
 import json
+from types import NoneType
 from django.views import View
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
@@ -71,15 +72,14 @@ class ADMINISTRATORView(View):
             datos={'Mensaje': 'Administrador no encontrado para eliminar'}
         return JsonResponse(datos)
 
-
 class BUSINESSView(View):
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
     
-    def get(self,request,EM_ID=""):
-        if len(EM_ID)>0:
-            Business=list(BUSINESS.objects.filter(EM_ID=EM_ID).values())
+    def get(self,request,EM_nit=0):
+        if EM_nit>0:
+            Business=list(BUSINESS.objects.filter(EM_NIT=EM_nit).values())
             if len(Business)>0:
                 datos={"mensaje":Business}
             else:
@@ -97,17 +97,16 @@ class BUSINESSView(View):
         try:
             dato=json.loads(request.body)
             
-            admin=ADMINISTRATOR.objects.get(EM_AD_USER=dato['EM_AD_USER'])
-            Business=BUSINESS.objects.create( 
-                                                EM_ID=dato['EM_ID'],
+            admin=ADMINISTRATOR.objects.get(AD_USER=dato['EM_AD_USER'])
+            Business=BUSINESS.objects.create(   EM_ID=dato['EM_ID'],
                                                 EM_IDName=dato['EM_IDName'],
                                                 EM_NIT=dato['EM_NIT'],
                                                 EM_CITY=dato['EM_CITY'],
                                                 EM_ADDRESS=dato['EM_ADDRESS'],
                                                 EM_CELLPHONE=dato['EM_CELLPHONE'],
                                                 EM_DATECREATE=dato['EM_DATECREATE'],
-                                                EM_PRODUCTIVE_SECTOR=dato[' EM_PRODUCTIVE_SECTOR'],
-                                                EM_AD_USER=admin)
+                                                EM_PRODUCTIVE_SECTOR=dato['EM_PRODUCTIVE_SECTOR'],
+                                                EM_AD_USER=admin,)
             Business.save()
             datos={'mensaje':'Empresa agregada'}  
         except ADMINISTRATOR.DoesNotExist:
@@ -115,21 +114,20 @@ class BUSINESSView(View):
         return JsonResponse(datos)
 
     ##Actualizar empresa
-    def put(self,request,EM_ID):
+    def put(self,request,EM_nit):
         
         data=json.loads(request.body)
-        Business=list(BUSINESS.objects.filter(EM_ID=EM_ID).values())
+        Business=list(BUSINESS.objects.filter(EM_NIT=EM_nit).values())
         if len(Business)>0:
-            empre=Business.objects.get(EM_ID=EM_ID)
-            empre.EM_IDName=data["EM_IDName"]
-            empre.EM_NIT=data["EM_NIT"]
-            empre.EM_CITY=data["EM_CITY"]
-            empre.EM_ADDRESS=data["EM_ADDRESS"]
-            empre.EM_CELLPHONE=data['EM_CELLPHONE']
-            empre.EM_DATECREATE=data["EM_DATECREATE"]
-            empre.EM_PRODUCTIVE_SECTOR=data["EM_PRODUCTIVE_SECTOR"]
-            empre.EM_AD_USER=data["EM_AD_USER"]
-            empre.save()
+            Busines=BUSINESS.objects.get(EM_NIT=EM_nit)
+            Busines.EM_ID=data['EM_ID']
+            Busines.EM_IDName=data["EM_IDName"]
+            Busines.EM_CITY=data["EM_CITY"]
+            Busines.EM_ADDRESS=data["EM_ADDRESS"]
+            Busines.EM_CELLPHONE=data['EM_CELLPHONE']
+            Busines.EM_DATECREATE=data["EM_DATECREATE"]
+            Busines.EM_PRODUCTIVE_SECTOR=data["EM_PRODUCTIVE_SECTOR"]
+            Busines.save()
             mensaje={"mensaje":"se actualizo la empresa requerida"}
         else:
             mensaje={"mensaje":"no existe la empresa  requerida"}
@@ -145,7 +143,6 @@ class BUSINESSView(View):
         else:
             mensaje={"mensaje":"no existe la empresa requerida no eliminada"}
         return JsonResponse(mensaje)
-    
 
 class EMPLOYEEPAYROLLView(View):
      #metodos para utilisar json
@@ -153,9 +150,9 @@ class EMPLOYEEPAYROLLView(View):
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
     
-    def get(self,request,PAY_id=""):
-        if len(PAY_id)>0:
-            payemplo=list(EMPLOYEEPAYROLL.objects.filter(PAY_Id=PAY_id).values())
+    def get(self,request,PAY_id=0):
+        if PAY_id>0:
+            payemplo=list(EMPLOYEEPAYROLL.objects.filter(PAY_Id=PAY_id.values()))
             if len(payemplo)>0:
                 datos={"mensaje":payemplo}
             else:
@@ -301,9 +298,9 @@ class LISTBUYView(View):
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
     ## consultar lista compras
-    def get(self,request,LBUY_code=""):
-        if len(LBUY_code)>0:
-            buy_list=list(LISTBUY.objects.filter(LBUY_Code=LBUY_code).values())
+    def get(self,request,LBUY_code=0):
+        if LBUY_code>0:
+            buy_list=list(LISTBUY.objects.filter(LBUY_Code=int(LBUY_code)).values())
             if len(buy_list)>0:
                 datos={"mensaje":buy_list}
             else:
@@ -313,7 +310,7 @@ class LISTBUYView(View):
             if len(buy_list)>0:
                 datos={"mensaje":buy_list}
             else:
-                datos={"mensaje":"no hay datos"}
+                datos={"mensaje":"no hay datos todo"}
         return JsonResponse(datos)
     ##crear lista compras    
 
@@ -370,7 +367,6 @@ class LISTBUYView(View):
             mensaje={"mensaje":"no existe el dato, no se elimino nada"}
         return JsonResponse(mensaje)
 
-
 class CUSTOMERSView(View):
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
@@ -398,7 +394,7 @@ class CUSTOMERSView(View):
 
     #Metodo para insertar un dato
     def post(self,request):
-        dato = json.loads(request.body) #Trae todo el objeto que viene con la petición, para posterior insertar en la tabla
+        dato = json.loads(request.body) 
         try:
             userAdmin=ADMINISTRATOR.objects.get(AD_USER=dato['user_Admin'])
             cliente = CUSTOMERS.objects.create(
@@ -503,7 +499,6 @@ class TYPEEXPENSESView(View):
         
         return JsonResponse(mensaje)
     
-
 class EXPENSESView(View):
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
