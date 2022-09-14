@@ -365,6 +365,7 @@ class LISTBUYView(View):
         else:
             mensaje={"mensaje":"no existe el dato, no se elimino nada"}
         return JsonResponse(mensaje)
+
 class CUSTOMERSView(View):
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
@@ -392,20 +393,22 @@ class CUSTOMERSView(View):
 
     #Metodo para insertar un dato
     def post(self,request):
-        dato = json.loads(request.body) #Trae todo el objeto que viene con la petición, para posterior insertar en la tabla
-        userAdmin=ADMINISTRATOR.objects.get(AD_USER=dato['CLI_AD_User'])
-        cliente = CUSTOMERS.objects.create(
-            CLI_User=dato['usuario'], 
-            CLI_AD_User=userAdmin,
-            CLI_Password=dato['password'],
-            CLI_Names=dato['nombre'],
-            CLI_LastNames=dato['apellido'], 
-            CLI_Email=dato['email'],
-            CLI_CellPhone=dato['telefono']
-            )
-        cliente.save()
-        mensaje={'mensaje':'Cliente registrado exitosamente'}
-        
+        dato = json.loads(request.body) 
+        try:
+            userAdmin=ADMINISTRATOR.objects.get(AD_USER=dato['user_Admin'])
+            cliente = CUSTOMERS.objects.create(
+                CLI_User=dato['usuario'], 
+                CLI_Password=dato['password'],
+                CLI_Names=dato['nombre'],
+                CLI_LastNames=dato['apellido'], 
+                CLI_Email=dato['email'],
+                CLI_Cellphone=dato['telefono'],
+                CLI_AD_User=userAdmin
+                )
+            cliente.save()
+            mensaje={'mensaje':'Cliente registrado exitosamente'}
+        except ADMINISTRATOR.DoesNotExist:
+            mensaje={'mensaje':'Código de admin erróneo'}
         return JsonResponse(mensaje)
 
     #Metodo para actualizar un dato 
@@ -445,52 +448,113 @@ class TYPEEXPENSESView(View):
 
     def get(self,request,code=""):
         if len(code)>0:   
-            tipoCobros= list(TYPEEXPENSES.objects.filter(TEGR_Code=code).values())
-            if len(tipoCobros)>0:
-                mensaje = {'mensaje':tipoCobros}
+            tipoEgreso= list(TYPEEXPENSES.objects.filter(TEGR_Code=code).values())
+            if len(tipoEgreso)>0:
+                mensaje = {'mensaje':tipoEgreso}
             else:
-                mensaje = {'mensaje': "No se encontro el tipo de cobro indicado."}
+                mensaje = {'mensaje': "No se encontro el tipo de egreso indicado."}
         else:
-            tipoCobros= list(TYPEEXPENSES.objects.values()) 
-            if len(tipoCobros)>0:
-                mensaje ={"mensaje":tipoCobros}
+            tipoEgreso= list(TYPEEXPENSES.objects.values()) 
+            if len(tipoEgreso)>0:
+                mensaje ={"mensaje":tipoEgreso}
             else:
-                mensaje ={"mensaje":"No se encontraron tipos de cobros."}
+                mensaje ={"mensaje":"No se encontraron tipos de egresos registrados."}
 
         return JsonResponse(mensaje)
 
+    
     def post(self,request):
-            data = json.loads(request.body) #Trae todo el objeto que viene con la petición, para posterior insertar en la tabla
-            tipoCobro = TYPEEXPENSES(
-                TEGR_Code=data['codigo_tipo_cobro'], 
-                TEGR_NameExpenses=data['nombre_cobro']
+            data = json.loads(request.body) 
+            tipoEgreso = TYPEEXPENSES(
+                TEGR_NameExpenses=data['nombre_egreso']
                 )
-            tipoCobro.save()
-            mensaje={'mensaje':'Tipo de cobro registrado exitosamente'}
+            tipoEgreso.save()
+            mensaje={'mensaje':'Tipo de egreso registrado exitosamente'}
+            return JsonResponse(mensaje)
+
+    
+    def put(self,request,code):
+        data = json.loads(request.body)
+        tipoEgreso= list(TYPEEXPENSES.objects.filter(TEGR_Code=code).values())
+        if len(tipoEgreso)>0:
+            updateData=TYPEEXPENSES.objects.get(TEGR_Code=code)
+            updateData.TEGR_NameExpenses=data['nombre_egreso']          
+            updateData.save()
+            mensaje={"mensaje":"El nombre del tipo de egreso ha sido actualizado exitosamente"}
+        else:
+            mensaje={"mensaje":"No se encontro el tipo de egreso indicado."}
+            
+        return JsonResponse(mensaje)
+
+    
+    def delete(self,request,code):
+        tipoEgreso= list(TYPEEXPENSES.objects.filter(TEGR_Code=code).values())
+        if len(tipoEgreso)>0:
+            TYPEEXPENSES.objects.filter(TEGR_Code=code).delete()
+            mensaje={"mensaje":"Tipo de egreso eliminado exitosamente"}
+        else:
+            mensaje={"mensaje":"No se encontro el tipo de egreso indicado."}
+        
+        return JsonResponse(mensaje)
+    
+class EXPENSESView(View):
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+    def get(self,request,code=""):
+        if len(code)>0:   
+            egreso= list(EXPENSES.objects.filter(EGR_Code=code).values())
+            if len(egreso)>0:
+                mensaje = {'mensaje':egreso}
+            else:
+                mensaje = {'mensaje': "No se encontró el egreso indicado."}
+        else:
+            egreso= list(EXPENSES.objects.values()) 
+            if len(egreso)>0:
+                mensaje ={"mensaje":egreso}
+            else:
+                mensaje ={"mensaje":"No hay egresos registrados."}
+
+        return JsonResponse(mensaje)
+
+
+    def post(self,request):
+            data = json.loads(request.body) 
+            NITempresa=BUSINESS.objects.get(EM_NIT=data['NIT_empresa'])
+            tipoEgreso=TYPEEXPENSES.objects.get(TEGR_Code=data['codigo_tipo_egreso'])
+            egreso = EXPENSES.objects.create(
+                EGR_EM_NIT=NITempresa, 
+                EGR_TEGR_Code=tipoEgreso,
+                EGR_Total = data['Total_egreso']
+                )
+            egreso.save()
+            mensaje={'mensaje':'Egreso registrado exitosamente'}
             return JsonResponse(mensaje)
 
     def put(self,request,code):
         data = json.loads(request.body)
-        tipoCobro= list(TYPEEXPENSES.objects.filter(TEGR_Code=code).values())
-        if len(tipoCobro)>0:
-            #NOTA:
-            #No es necesario actualizar todos los datos, solo los que especifiquemos en este condicional.
-            updateData=TYPEEXPENSES.objects.get(TEGR_Code=code) #Se trae el objeto que se encontró
-            updateData.TEGR_NameExpenses=data['nombre_cobro']          
+        egreso= list(EXPENSES.objects.filter(EGR_Code=code).values())
+        if len(egreso)>0:
+            updateData=EXPENSES.objects.get(EGR_Code=code) 
+            updateData.EGR_Total = data['Total_egreso']        
             updateData.save()
-            mensaje={"mensaje":"Tipo de cobro actualizado exitosamente"}
+            mensaje={"mensaje":"El total de egreso ha sido actualizado exitosamente"}
         else:
-            mensaje={"mensaje":"No se encontro el tipo de cobro indicado."}
+            mensaje={"mensaje":"No se encontro el egreso indicado."}
+            
+        return JsonResponse(mensaje)
+        
+    def delete(self,request,code):
+
+        egreso= list(EXPENSES.objects.filter(EGR_Code=code).values())
+        if len(egreso)>0:
+            EXPENSES.objects.filter(EGR_Code=code).delete()
+            mensaje={"mensaje":"Egreso eliminado exitosamente"}
+        else:
+            mensaje={"mensaje":"No se encontro el egreso indicado."}
             
         return JsonResponse(mensaje)
 
-    def delete(self,request,code):
-        tipoCobro= list(TYPEEXPENSES.objects.filter(TEGR_Code=code).values())
-        if len(tipoCobro)>0:
-            TYPEEXPENSES.objects.filter(TEGR_Code=code).delete()
-            mensaje={"mensaje":"Tipo de cobro eliminado exitosamente"}
-        else:
-            mensaje={"mensaje":"No se encontro el tipo de cobro indicado."}
-        
-        return JsonResponse(mensaje)
+
     

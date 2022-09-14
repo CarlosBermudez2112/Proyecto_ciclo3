@@ -14,7 +14,7 @@ class ADMINISTRATOR(models.Model):
     AD_ROL=models.TextField(max_length=50,null=False)
 
 class BUSINESS(models.Model):
-    EM_ID=models.BigIntegerField(null=False)
+    EM_ID=models.AutoField(null=False)
     EM_IDName=models.TextField(max_length=50,null=False)
     EM_NIT=models.IntegerField(primary_key=True,unique=True)
     EM_CITY=models.TextField(max_length=50)
@@ -36,14 +36,14 @@ class EMPLOYEES(models.Model):
     EMP_AD_USER=models.ForeignKey(ADMINISTRATOR,on_delete=models.CASCADE)
 
 class PRODUCTS(models.Model):
-    PRO_Code=models.CharField(primary_key=True, max_length=50,null=False)
+    PRO_Code=models.AutoField(primary_key=True, max_length=50,null=False)
     PRO_Name=models.CharField(max_length=50,null=False)
     PRO_Cost=models.IntegerField(null=False)
     PRO_Description=models.TextField(max_length=50,null=False)
     PRO_Stock=models.IntegerField(null=False)
 
 class INCOME(models.Model):
-    ING_Code = models.IntegerField(primary_key=True,null=False,unique=True)
+    ING_Code = models.AutoField(primary_key=True,null=False,unique=True)
     ING_EM_NIT=models.ForeignKey(BUSINESS, on_delete=models.CASCADE)
     ING_EMP_User=models.ForeignKey(EMPLOYEES,on_delete=models.CASCADE)
     ING_PRO_Code=models.ForeignKey(PRODUCTS, on_delete=models.CASCADE)
@@ -70,10 +70,10 @@ class EMPLOYEEPAYROLL(models.Model):
 
 class CUSTOMERS(models.Model):
     CLI_User = models.TextField(primary_key=True, max_length=25,null=False,unique=True)
-    CLI_Password=models.IntegerField(null=False)
-    CLI_Email = models.EmailField(unique=True)
+    CLI_Password=models.IntegerField(null=False)  
     CLI_Names = models.TextField(max_length=50,null=False)
     CLI_LastNames= models.TextField(max_length=50,null=False)
+    CLI_Email = models.EmailField(unique=True)
     CLI_CellPhone= models.TextField(max_length=50,unique=True)
     CLI_AD_User= models.ForeignKey(ADMINISTRATOR, on_delete=models.CASCADE)
 
@@ -84,11 +84,11 @@ class LISTBUY(models.Model):
     LBUY_Fecha= models.DateField(auto_now=True)
 
 class TYPEEXPENSES(models.Model):
-    TEGR_Code = models.CharField(primary_key=True, max_length=10,null=False,unique=True)
+    TEGR_Code = models.AutoField(primary_key=True, max_length=10,null=False,unique=True)
     TEGR_NameExpenses = models.IntegerField(null=False,unique=True)
     
 class EXPENSES(models.Model):
-    EGR_Code = models.CharField(primary_key=True, max_length=10,null=False,unique=True)
+    EGR_Code = models.AutoField(primary_key=True, max_length=10,null=False,unique=True)
     EGR_EM_NIT = models.ForeignKey(BUSINESS, on_delete=models.CASCADE)
     EGR_TEGR_Code = models.ForeignKey(TYPEEXPENSES, on_delete=models.CASCADE)
     EGR_Fecha = models.DateField(auto_now=True)

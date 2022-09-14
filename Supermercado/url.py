@@ -13,7 +13,9 @@ urlpatterns = [
     path('CUSTOMERS/<str:user>',CUSTOMERSView.as_view(),name='ListarClientePorUsuario'),
     path('LISTBUY/',LISTBUYView.as_view(),name='ListarListCompra'),
     path('LISTBUY/<int:LBUY_code>',LISTBUYView.as_view(),name='ListarPorCodigo'),
-    path('TYPEEXPENSES/',TYPEEXPENSESView.as_view(),name='ListarTiposCobros'),
-    path('TYPEEXPENSES/<str:code>',TYPEEXPENSESView.as_view(),name='ListarTipoCobros'),    
+    path('TYPEEXPENSES/',TYPEEXPENSESView.as_view(),name='ListarTiposEgresos'),
+    path('TYPEEXPENSES/<str:code>',TYPEEXPENSESView.as_view(),name='BuscarTipoEgresos'),
+    path('EXPENSES/',EXPENSESView.as_view(),name='ListarEgresos'),
+    path('EXPENSES/<str:code>',EXPENSESView.as_view(),name='BuscarEgresos'),       
 
 ]
