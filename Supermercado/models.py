@@ -4,34 +4,33 @@ from django.db import models
 
 
 class ADMINISTRATOR(models.Model):
-    AD_USER=models.TextField(primary_key=True, max_length=50,null=False,unique=True)
-    AD_PASSWORD=models.IntegerField(null=False)
-    AD_EMAIL=models.TextField(max_length=50,null=False)
-    AD_EMAIL=models.EmailField(max_length=50,null=False)
-    AD_NAMES=models.TextField(max_length=50,null=False)
-    AD_LASTNAMES=models.TextField(max_length=50,null=False)
-    AD_CELLPHONE=models.TextField(max_length=50,null=False)
-    AD_ROL=models.TextField(max_length=50,null=False)
+    AD_USER=models.TextField(primary_key=True, max_length=50,null=False)
+    AD_PASSWORD=models.IntegerField(null=True)
+    AD_EMAIL=models.TextField(max_length=50,null=True)
+    AD_NAMES=models.TextField(max_length=50,null=True)
+    AD_LASTNAMES=models.TextField(max_length=50,null=True)
+    AD_CELLPHONE=models.TextField(max_length=50,null=True)
+    AD_ROL=models.TextField(max_length=50,null=True)
 
 class BUSINESS(models.Model):
-    EM_ID=models.IntegerField(null=True)
-    EM_IDName=models.TextField(max_length=50,null=False)
-    EM_NIT=models.IntegerField(primary_key=True,unique=True)
+    #EM_ID=models.IntegerField(null=True)
+    EM_IDName=models.TextField(max_length=50,null=True)
+    EM_NIT=models.IntegerField(primary_key=True)
     EM_CITY=models.TextField(max_length=50)
     EM_ADDRESS=models.TextField(max_length=50)
     EM_CELLPHONE=models.TextField(max_length=10)
-    EM_DATECREATE=models.DateField()
+    EM_DATECREATE=models.DateField(auto_now=True)
     EM_PRODUCTIVE_SECTOR=models.TextField(max_length=50)
     EM_AD_USER=models.ForeignKey(ADMINISTRATOR,on_delete=models.CASCADE)
 
 class EMPLOYEES(models.Model):
     EMP_USER=models.TextField(primary_key=True,max_length=50,null=False,unique=True)
     EMP_PASSWORD=models.IntegerField(null=False)
-    EMP_EMAIL=models.EmailField(max_length=50,null=False)
-    EMP_NAMES=models.TextField(max_length=50,null=False)
-    EMP_LASTNAMES=models.TextField(max_length=50,null=False)
-    EMP_CELLPHONE=models.TextField(max_length=50,null=False)
-    EMP_ROLE=models.TextField(max_length=50,null=False)
+    EMP_EMAIL=models.TextField(max_length=50,null=True)
+    EMP_NAMES=models.TextField(max_length=50,null=True)
+    EMP_LASTNAMES=models.TextField(max_length=50,null=True)
+    EMP_CELLPHONE=models.TextField(max_length=50,null=True)
+    EMP_ROLE=models.TextField(max_length=50,null=True)
     EMP_EM_NIT=models.ForeignKey(BUSINESS,on_delete=models.CASCADE)
     EMP_AD_USER=models.ForeignKey(ADMINISTRATOR,on_delete=models.CASCADE)
 
@@ -43,7 +42,7 @@ class PRODUCTS(models.Model):
     PRO_Stock=models.IntegerField(null=False)
 
 class INCOME(models.Model):
-    ING_Code = models.AutoField(primary_key=True,null=False,unique=True)
+    ING_Code = models.AutoField(primary_key=True)
     ING_EM_NIT=models.ForeignKey(BUSINESS, on_delete=models.CASCADE)
     ING_EMP_User=models.ForeignKey(EMPLOYEES,on_delete=models.CASCADE)
     ING_PRO_Code=models.ForeignKey(PRODUCTS, on_delete=models.CASCADE)
@@ -73,7 +72,7 @@ class CUSTOMERS(models.Model):
     CLI_Password=models.IntegerField(null=False)  
     CLI_Names = models.TextField(max_length=50,null=False)
     CLI_LastNames= models.TextField(max_length=50,null=False)
-    CLI_Email = models.EmailField(unique=True)
+    CLI_Email = models.TextField(max_length=50)
     CLI_CellPhone= models.TextField(max_length=50,unique=True)
     CLI_AD_User= models.ForeignKey(ADMINISTRATOR, on_delete=models.CASCADE)
 
@@ -92,7 +91,7 @@ class EXPENSES(models.Model):
     EGR_EM_NIT = models.ForeignKey(BUSINESS, on_delete=models.CASCADE)
     EGR_TEGR_Code = models.ForeignKey(TYPEEXPENSES, on_delete=models.CASCADE)
     EGR_Fecha = models.DateField(auto_now=True)
-    EGR_Total = models.IntegerField(null=False)
+    EGR_Total = models.IntegerField(null=True)
 
 
     
