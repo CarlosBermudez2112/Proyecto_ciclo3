@@ -290,8 +290,7 @@ class WORKINGHOURSView(View):
             mensaje={"mensaje":"se a eliminado la hora"}
         else:
             mensaje={"mensaje":"no existe el dato, no se elimino nada"}
-        return JsonResponse(mensaje)
-        
+        return JsonResponse(mensaje)    
 class LISTBUYView(View):
      #metodos para utilisar json
     @method_decorator(csrf_exempt)
@@ -439,7 +438,6 @@ class CUSTOMERSView(View):
             mensaje={"mensaje":"No se encontro el Cliente."}
         
         return JsonResponse(mensaje)
-
 class TYPEEXPENSESView(View):
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):

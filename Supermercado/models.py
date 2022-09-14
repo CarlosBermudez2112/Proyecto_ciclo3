@@ -2,10 +2,6 @@ from ast import mod
 from pyexpat import model
 from django.db import models
 
-# Create your models here.
-
-
-## Creación de la tabla administradores junto con sus campos
 
 class ADMINISTRATOR(models.Model):
     AD_USER=models.TextField(primary_key=True, max_length=50,null=False,unique=True)
@@ -17,9 +13,6 @@ class ADMINISTRATOR(models.Model):
     AD_CELLPHONE=models.TextField(max_length=50,null=False)
     AD_ROL=models.TextField(max_length=50,null=False)
 
-## Creación de la tabla empresas junto con sus campos
-
-
 class BUSINESS(models.Model):
     EM_ID=models.BigIntegerField(null=False)
     EM_IDName=models.TextField(max_length=50,null=False)
@@ -30,9 +23,6 @@ class BUSINESS(models.Model):
     EM_DATECREATE=models.DateField()
     EM_PRODUCTIVE_SECTOR=models.TextField(max_length=50)
     EM_AD_USER=models.ForeignKey(ADMINISTRATOR,on_delete=models.CASCADE)
-
-    
-## Creación de la tabla empleados junto con sus campos
 
 class EMPLOYEES(models.Model):
     EMP_USER=models.TextField(primary_key=True,max_length=50,null=False,unique=True)
@@ -65,8 +55,7 @@ class WORKINGHOURS(models.Model):
     WORH_Code=models.TextField(primary_key=True, max_length=50,unique=True)
     WORH_TipeHours=models.TextField(max_length=50,null=True,unique=True)
     WORH_Costs=models.IntegerField(null=True)
-    
-    
+        
 class EMPLOYEEPAYROLL(models.Model):
     PAY_Id=models.AutoField(primary_key=True)
     PAY_EM_User=models.ForeignKey(EMPLOYEES, on_delete=models.CASCADE)
@@ -93,8 +82,6 @@ class LISTBUY(models.Model):
     LBUY_PRO_Code = models.ForeignKey(PRODUCTS,on_delete=models.CASCADE)
     LBUY_CLI_User = models.ForeignKey(CUSTOMERS,on_delete=models.CASCADE)
     LBUY_Fecha= models.DateField(auto_now=True)
-
-#hola
 
 class TYPEEXPENSES(models.Model):
     TEGR_Code = models.CharField(primary_key=True, max_length=10,null=False,unique=True)
