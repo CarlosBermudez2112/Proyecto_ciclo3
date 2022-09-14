@@ -518,7 +518,6 @@ class EXPENSESView(View):
 
         return JsonResponse(mensaje)
 
-
     def post(self,request):
             data = json.loads(request.body) 
             NITempresa=BUSINESS.objects.get(EM_NIT=data['NIT_empresa'])

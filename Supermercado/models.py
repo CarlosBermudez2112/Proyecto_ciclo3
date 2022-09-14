@@ -14,7 +14,7 @@ class ADMINISTRATOR(models.Model):
     AD_ROL=models.TextField(max_length=50,null=False)
 
 class BUSINESS(models.Model):
-    EM_ID=models.AutoField(null=False)
+    EM_ID=models.IntegerField(null=True)
     EM_IDName=models.TextField(max_length=50,null=False)
     EM_NIT=models.IntegerField(primary_key=True,unique=True)
     EM_CITY=models.TextField(max_length=50)
@@ -36,7 +36,7 @@ class EMPLOYEES(models.Model):
     EMP_AD_USER=models.ForeignKey(ADMINISTRATOR,on_delete=models.CASCADE)
 
 class PRODUCTS(models.Model):
-    PRO_Code=models.AutoField(primary_key=True, max_length=50,null=False)
+    PRO_Code=models.AutoField(primary_key=True)
     PRO_Name=models.CharField(max_length=50,null=False)
     PRO_Cost=models.IntegerField(null=False)
     PRO_Description=models.TextField(max_length=50,null=False)
@@ -84,11 +84,11 @@ class LISTBUY(models.Model):
     LBUY_Fecha= models.DateField(auto_now=True)
 
 class TYPEEXPENSES(models.Model):
-    TEGR_Code = models.AutoField(primary_key=True, max_length=10,null=False,unique=True)
+    TEGR_Code = models.AutoField(primary_key=True)
     TEGR_NameExpenses = models.IntegerField(null=False,unique=True)
     
 class EXPENSES(models.Model):
-    EGR_Code = models.AutoField(primary_key=True, max_length=10,null=False,unique=True)
+    EGR_Code = models.AutoField(primary_key=True)
     EGR_EM_NIT = models.ForeignKey(BUSINESS, on_delete=models.CASCADE)
     EGR_TEGR_Code = models.ForeignKey(TYPEEXPENSES, on_delete=models.CASCADE)
     EGR_Fecha = models.DateField(auto_now=True)
