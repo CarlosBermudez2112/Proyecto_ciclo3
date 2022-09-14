@@ -8,7 +8,7 @@ from django.utils.decorators import method_decorator
 from Supermercado.models import *
 from django.http import JsonResponse
 
-
+##CRUD ADMIN
 class ADMINISTRATORView(View):
     ##consultar administradores
     @method_decorator(csrf_exempt)
