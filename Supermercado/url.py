@@ -16,6 +16,10 @@ urlpatterns = [
     path('TYPEEXPENSES/',TYPEEXPENSESView.as_view(),name='ListarTiposEgresos'),
     path('TYPEEXPENSES/<str:code>',TYPEEXPENSESView.as_view(),name='BuscarTipoEgresos'),
     path('EXPENSES/',EXPENSESView.as_view(),name='ListarEgresos'),
-    path('EXPENSES/<str:code>',EXPENSESView.as_view(),name='BuscarEgresos'),       
+    path('EXPENSES/<str:code>',EXPENSESView.as_view(),name='BuscarEgresos'),
+     path('INCOME/',INCOMEView.as_view(),name='ListarIngresos'),
+    path('INCOME/<str:code>',INCOMEView.as_view(),name='BuscarIngresos'),
+     path('PRODUCTS/',PRODUCTSView.as_view(),name='ListarProductos'),
+    path('PRODUCTS/<str:code>',PRODUCTSView.as_view(),name='BuscarProductos'),    
 
 ]
