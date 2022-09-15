@@ -1,4 +1,4 @@
-#from django.shortcuts import render
+from django.shortcuts import render
 from ast import Delete
 import json
 from types import NoneType
@@ -24,11 +24,11 @@ class ADMINISTRATORView(View):
                 datos={'mensaje: No se encontro administrador'}
         else:
             UserAdmin =list(ADMINISTRATOR.objects.values())
-        if len(UserAdmin)>0:
-            datos={"mensaje":UserAdmin}
-        else:
-            datos={'mensaje: no se encontro Ningun administrador registrado'}
-
+            if len(UserAdmin)>0:
+                datos={"mensaje":UserAdmin}
+            else:
+                datos={'mensaje: no se encontro Ningun administrador registrado'}
+        
         return JsonResponse(datos)
     
     ##crear administrador
@@ -402,7 +402,7 @@ class CUSTOMERSView(View):
                 CLI_Names=dato['nombre'],
                 CLI_LastNames=dato['apellido'], 
                 CLI_Email=dato['email'],
-                CLI_Cellphone=dato['telefono'],
+                CLI_CellPhone=dato['telefono'],
                 CLI_AD_User=userAdmin
                 )
             cliente.save()

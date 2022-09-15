@@ -13,7 +13,7 @@ class ADMINISTRATOR(models.Model):
     AD_ROL=models.TextField(max_length=50,null=True)
 
 class BUSINESS(models.Model):
-    #EM_ID=models.IntegerField(null=True)
+    EM_ID=models.IntegerField(null=True)
     EM_IDName=models.TextField(max_length=50,null=True)
     EM_NIT=models.IntegerField(primary_key=True)
     EM_CITY=models.TextField(max_length=50)
