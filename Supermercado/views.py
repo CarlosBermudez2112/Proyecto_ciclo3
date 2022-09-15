@@ -143,8 +143,7 @@ class BUSINESSView(View):
         else:
             mensaje={"mensaje":"no existe la empresa requerida no eliminada"}
         return JsonResponse(mensaje)
-    
-    
+  
     
 class EMPLOYEESView(View):
     @method_decorator(csrf_exempt)
@@ -175,9 +174,9 @@ class EMPLOYEESView(View):
         try:
             dato=json.loads(request.body)
             
-            empresa=BUSINESS.objects.get(EM_NIT=dato['EM_NIT'])
-            admin=ADMINISTRATOR.objects.get(EM_AD_USER=dato['EM_AD_USER'])
-            employees=EMPLOYEES.objects.create( 
+            empresa=BUSINESS.objects.get(EM_NIT=dato['EM_nit'])
+            admin=ADMINISTRATOR.objects.get(AD_USER=dato['EM_AD_user'])
+            employees=EMPLOYEES.objects.create(
                                                 EMP_USER=dato['EMP_USER'],
                                                 EMP_PASSWORD=dato['EMP_PASSWORD'],
                                                 EMP_EMAIL=dato['EMP_EMAIL'],
@@ -186,7 +185,7 @@ class EMPLOYEESView(View):
                                                 EMP_CELLPHONE=dato['EMP_CELLPHONE'],
                                                 EMP_ROLE=dato['EMP_ROLE'],
                                                 EMP_EM_NIT=empresa,
-                                                EM_AD_USER=admin)
+                                                EMP_AD_USER=admin)
             employees.save()
             datos={'mensaje':'empleada agregada'}  
         except ADMINISTRATOR.DoesNotExist:
@@ -194,20 +193,18 @@ class EMPLOYEESView(View):
         return JsonResponse(datos)
     
     ##actualizar empleado
-    def put(self,request,EMP_USER):
+    def put(self,request,EMP_User):
         
         data=json.loads(request.body)
-        Employees=list(EMPLOYEES.objects.filter(EMP_USER=EMP_USER).values())
+        Employees=list(EMPLOYEES.objects.filter(EMP_USER=EMP_User).values())
         if len(Employees)>0:
-            empleado=Employees.objects.get(EMP_USER=EMP_USER)
+            empleado=EMPLOYEES.objects.get(EMP_USER=EMP_User)
             empleado.EMP_PASSWORD=data["EMP_PASSWORD"]
             empleado.EMP_EMAIL=data["EMP_EMAIL"]
             empleado.EMP_NAMES=data["EMP_NAMES"]
             empleado.EMP_LASTNAMES=data["EMP_LASTNAMES"]
             empleado.EMP_CELLPHONE=data['EMP_CELLPHONE']
             empleado.EMP_ROLE=data["EMP_ROLE"]
-            empleado.EMP_EM_NIT=data["EMP_EM_NIT"]
-            empleado.EMP_AD_USER=data["EMP_AD_USER"]
             
             empleado.save()
             mensaje={"mensaje":"se actualizo el empleado requeridp"}

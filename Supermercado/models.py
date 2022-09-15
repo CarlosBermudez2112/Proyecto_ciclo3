@@ -38,7 +38,7 @@ class BUSINESS(models.Model):
 class EMPLOYEES(models.Model):
     EMP_USER=models.TextField(primary_key=True,max_length=50,null=False,unique=True)
     EMP_PASSWORD=models.IntegerField(null=False)
-    EMP_EMAIL=models.EmailField(max_length=50,null=False)
+    EMP_EMAIL=models.TextField(max_length=50,null=True)
     EMP_NAMES=models.TextField(max_length=50,null=False)
     EMP_LASTNAMES=models.TextField(max_length=50,null=False)
     EMP_CELLPHONE=models.TextField(max_length=50,null=False)
