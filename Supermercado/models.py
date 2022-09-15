@@ -21,15 +21,10 @@ class ADMINISTRATOR(models.Model):
 
 
 class BUSINESS(models.Model):
-<<<<<<< HEAD
-    EM_ID=models.IntegerField(null=True)
-    EM_IDName=models.TextField(max_length=50,null=True)
-    EM_NIT=models.IntegerField(primary_key=True)
-=======
-    EM_ID=models.AutoField(null=False)
+
+    EM_ID=models.IntegerField(null=False)
     EM_IDName=models.TextField(max_length=50,null=False)
     EM_NIT=models.IntegerField(primary_key=True,unique=True)
->>>>>>> refs/remotes/origin/main
     EM_CITY=models.TextField(max_length=50)
     EM_ADDRESS=models.TextField(max_length=50)
     EM_CELLPHONE=models.TextField(max_length=10)
@@ -70,8 +65,7 @@ class INCOME(models.Model):
 class WORKINGHOURS(models.Model):
     WORH_Code=models.TextField(primary_key=True, max_length=50,unique=True)
     WORH_TipeHours=models.TextField(max_length=50,null=True,unique=True)
-    WORH_Costs=models.IntegerField(null=True)
-    
+    WORH_Costs=models.IntegerField(null=True)    
     
 class EMPLOYEEPAYROLL(models.Model):
     PAY_Id=models.AutoField(primary_key=True)
@@ -103,11 +97,11 @@ class LISTBUY(models.Model):
 #hola
 
 class TYPEEXPENSES(models.Model):
-    TEGR_Code = models.AutoField(primary_key=True, max_length=10,null=False,unique=True)
+    TEGR_Code = models.AutoField(primary_key=True)
     TEGR_NameExpenses = models.IntegerField(null=False,unique=True)
     
 class EXPENSES(models.Model):
-    EGR_Code = models.AutoField(primary_key=True, max_length=10,null=False,unique=True)
+    EGR_Code = models.AutoField(primary_key=True)
     EGR_EM_NIT = models.ForeignKey(BUSINESS, on_delete=models.CASCADE)
     EGR_TEGR_Code = models.ForeignKey(TYPEEXPENSES, on_delete=models.CASCADE)
     EGR_Fecha = models.DateField(auto_now=True)
