@@ -1,4 +1,5 @@
 from ast import mod
+from pickle import TRUE
 from pyexpat import model
 from django.db import models
 
@@ -22,7 +23,7 @@ class ADMINISTRATOR(models.Model):
 
 class BUSINESS(models.Model):
 
-    EM_ID=models.IntegerField(null=False)
+    
     EM_IDName=models.TextField(max_length=50,null=False)
     EM_NIT=models.IntegerField(primary_key=True,unique=True)
     EM_CITY=models.TextField(max_length=50)
@@ -60,7 +61,7 @@ class INCOME(models.Model):
     ING_PRO_Code=models.ForeignKey(PRODUCTS, on_delete=models.CASCADE)
     ING_Fecha= models.DateField(auto_now=True)
     ING_Quantity= models.IntegerField(null=False)
-    ING_Total = models.IntegerField(null=False)
+    ING_Total = models.IntegerField(null=False) #RELACIONARLO CON TOTAL DE PRODUCTO
 
 class WORKINGHOURS(models.Model):
     WORH_Code=models.TextField(primary_key=True, max_length=50,unique=True)
@@ -94,16 +95,12 @@ class LISTBUY(models.Model):
     LBUY_CLI_User = models.ForeignKey(CUSTOMERS,on_delete=models.CASCADE)
     LBUY_Fecha= models.DateField(auto_now=True)
 
-#hola
 
-class TYPEEXPENSES(models.Model):
-    TEGR_Code = models.AutoField(primary_key=True)
-    TEGR_NameExpenses = models.IntegerField(null=False,unique=True)
     
 class EXPENSES(models.Model):
     EGR_Code = models.AutoField(primary_key=True)
     EGR_EM_NIT = models.ForeignKey(BUSINESS, on_delete=models.CASCADE)
-    EGR_TEGR_Code = models.ForeignKey(TYPEEXPENSES, on_delete=models.CASCADE)
+    EGR_Name = models.TextField(max_length=50,null=False)
     EGR_Fecha = models.DateField(auto_now=True)
     EGR_Total = models.IntegerField(null=False)
 

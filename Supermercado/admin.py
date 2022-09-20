@@ -10,7 +10,6 @@ from Supermercado.models import WORKINGHOURS
 from Supermercado.models import EMPLOYEEPAYROLL
 from Supermercado.models import CUSTOMERS
 from Supermercado.models import LISTBUY
-from Supermercado.models import TYPEEXPENSES
 from Supermercado.models import EXPENSES
 
 
@@ -23,5 +22,4 @@ admin.site.register(WORKINGHOURS)
 admin.site.register(EMPLOYEEPAYROLL)
 admin.site.register(CUSTOMERS)
 admin.site.register(LISTBUY)
-admin.site.register(TYPEEXPENSES)
 admin.site.register(EXPENSES)
