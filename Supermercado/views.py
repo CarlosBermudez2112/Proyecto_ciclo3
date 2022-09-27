@@ -382,9 +382,9 @@ class LISTBUYView(View):
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
     ## consultar lista compras
-    def get(self,request,LBUY_code=0):
-        if LBUY_code>0:
-            buy_list=list(LISTBUY.objects.filter(LBUY_Code=int(LBUY_code)).values())
+    def get(self,request,LBUY_CLI_User_id=""):
+        if len(LBUY_CLI_User_id)>0:
+            buy_list=list(LISTBUY.objects.filter(LBUY_CLI_User_id=LBUY_CLI_User_id).values())
             if len(buy_list)>0:
                 datos={"mensaje":buy_list}
             else:
@@ -402,15 +402,15 @@ class LISTBUYView(View):
         try:
             dat=json.loads(request.body)
             #llaves foraneas
-            procod=PRODUCTS.objects.get(PRO_Code=dat['pro_cod'])
-            usuario=CUSTOMERS.objects.get(CLI_User=dat['cli_user'])
+            procod=PRODUCTS.objects.get(PRO_Code=dat['LBUY_PRO_Code'])
+            usuario=CUSTOMERS.objects.get(CLI_User=dat['LBUY_CLI_User'])
             
             
             
             #creación de json para enviar
             
-            nwebuy=LISTBUY.objects.create( pro_cod=procod,
-                                           cli_user=usuario,
+            nwebuy=LISTBUY.objects.create( LBUY_PRO_Code=procod,
+                                           LBUY_CLI_User=usuario,
                                            LBUY_Fecha=dat['LBUY_Fecha'],
             )
                                                              
@@ -441,11 +441,12 @@ class LISTBUYView(View):
             mensaje={"mensaje":"no existe la compra"}
         return JsonResponse(mensaje)
         
-    def delete(self,request,buy_cod):
+    def delete(self,request,LBUY_Code=0):
         
-        buy_cod=list(LISTBUY.objects.filter(PLBUY_Code=buy_cod).values())
+        buy_cod=list(LISTBUY.objects.filter(LBUY_Code=LBUY_Code).values())
         if len(buy_cod)>0:
-            LISTBUY.objects.filter(PLBUY_Code=buy_cod).delete()
+            print("holaaaaa")
+            LISTBUY.objects.filter(LBUY_Code=LBUY_Code).delete()
             mensaje={"mensaje":"se a eliminado la compra"}
         else:
             mensaje={"mensaje":"no existe el dato, no se elimino nada"}
@@ -457,19 +458,20 @@ class PRODUCTSView(View):
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
     ## consultar lista compras
-    def get(self,request,PRO_code=0):
-        if PRO_code>0:
-            pro_list=list(PRODUCTS.objects.filter(PRO_Code=int(PRO_code)).values())
+    def get(self,request,PRO_Code=0):
+        #Pro_code=int(Pro_code)
+        if PRO_Code>0:
+            pro_list=list(PRODUCTS.objects.filter(PRO_Code=PRO_Code).values())
             if len(pro_list)>0:
                 datos={"mensaje":pro_list}
             else:
-                datos={"mensaje":"no hay datos"}
+                datos={"Error":"no hay datos encontrados"}
         else:
             pro_list=list(PRODUCTS.objects.values())
             if len(pro_list)>0:
                 datos={"mensaje":pro_list}
             else:
-                datos={"mensaje":"no hay datos todo"}
+                datos={"Error":"no hay datos encontrados"}
         return JsonResponse(datos)
     ##crear lista compras    
 
@@ -678,62 +680,7 @@ class CUSTOMERSView(View):
         
         return JsonResponse(mensaje)
 
-class TYPEEXPENSESView(View):
-    @method_decorator(csrf_exempt)
-    def dispatch(self, request, *args, **kwargs):
-        return super().dispatch(request, *args, **kwargs)
 
-    def get(self,request,code=""):
-        if len(code)>0:   
-            tipoEgreso= list(TYPEEXPENSES.objects.filter(TEGR_Code=code).values())
-            if len(tipoEgreso)>0:
-                mensaje = {'mensaje':tipoEgreso}
-            else:
-                mensaje = {'mensaje': "No se encontro el tipo de egreso indicado."}
-        else:
-            tipoEgreso= list(TYPEEXPENSES.objects.values()) 
-            if len(tipoEgreso)>0:
-                mensaje ={"mensaje":tipoEgreso}
-            else:
-                mensaje ={"mensaje":"No se encontraron tipos de egresos registrados."}
-
-        return JsonResponse(mensaje)
-
-    
-    def post(self,request):
-            data = json.loads(request.body) 
-            tipoEgreso = TYPEEXPENSES(
-                TEGR_NameExpenses=data['nombre_egreso']
-                )
-            tipoEgreso.save()
-            mensaje={'mensaje':'Tipo de egreso registrado exitosamente'}
-            return JsonResponse(mensaje)
-
-    
-    def put(self,request,code):
-        data = json.loads(request.body)
-        tipoEgreso= list(TYPEEXPENSES.objects.filter(TEGR_Code=code).values())
-        if len(tipoEgreso)>0:
-            updateData=TYPEEXPENSES.objects.get(TEGR_Code=code)
-            updateData.TEGR_NameExpenses=data['nombre_egreso']          
-            updateData.save()
-            mensaje={"mensaje":"El nombre del tipo de egreso ha sido actualizado exitosamente"}
-        else:
-            mensaje={"mensaje":"No se encontro el tipo de egreso indicado."}
-            
-        return JsonResponse(mensaje)
-
-    
-    def delete(self,request,code):
-        tipoEgreso= list(TYPEEXPENSES.objects.filter(TEGR_Code=code).values())
-        if len(tipoEgreso)>0:
-            TYPEEXPENSES.objects.filter(TEGR_Code=code).delete()
-            mensaje={"mensaje":"Tipo de egreso eliminado exitosamente"}
-        else:
-            mensaje={"mensaje":"No se encontro el tipo de egreso indicado."}
-        
-        return JsonResponse(mensaje)
-    
 class EXPENSESView(View):
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
@@ -759,10 +706,10 @@ class EXPENSESView(View):
     def post(self,request):
             data = json.loads(request.body) 
             NITempresa=BUSINESS.objects.get(EM_NIT=data['NIT_empresa'])
-            tipoEgreso=TYPEEXPENSES.objects.get(TEGR_Code=data['codigo_tipo_egreso'])
+            
             egreso = EXPENSES.objects.create(
                 EGR_EM_NIT=NITempresa, 
-                EGR_TEGR_Code=tipoEgreso,
+                
                 EGR_Total = data['Total_egreso']
                 )
             egreso.save()

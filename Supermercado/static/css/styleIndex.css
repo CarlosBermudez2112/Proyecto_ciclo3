@@ -1,0 +1,171 @@
+body{
+    background-image: url("catalogofondo.jpg");
+    background-repeat: no-repeat;
+    background-size: 100%;
+    padding: 0%;
+    margin: 0%;
+    
+}
+.grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 150px 50px auto;
+    margin:0%;
+    padding: 0%;
+    
+}
+
+
+.gridCard2{
+    display: grid;
+    grid-column: 1/2;
+    grid-template-columns: repeat(1,1fr);
+    grid-template-rows: 10em 5em 2em;
+    gap: 1em;
+    margin: 1em;
+    padding: 1em;
+    background-color:rgba(255, 0, 221, 0.684);
+    border-radius: 1em;
+}
+
+
+.heade{
+    display: flex;
+    grid-column: 1/4;
+    background-color:rgb(6, 70, 53);
+    padding: 1.5em;
+    grid-template-columns: repeat(2,1fr);
+}
+
+.titlep{
+    text-shadow: rgb(121, 121, 121);
+    margin-left: 20px;
+    color:rgb(255, 255, 255);
+    font-size: 600%;
+    font-style: italic;
+    margin-top: 0%;
+}
+
+.logo{
+    background-color: aqua;
+    width: 100px;;
+    height: 100px;
+    margin-top: 0px;
+    margin-left: 0px;
+    color:white;
+}
+
+.menu{
+    grid-column: 1/4;
+    background-color:rgb(81, 146, 89);
+    padding:0px;
+    margin-top: 0px;
+}
+
+.menuIND{
+    list-style:none;
+    box-decoration-break: none;
+    display: flex;
+    padding: 0em;
+    margin-top: 1mm;
+    margin-bottom: 1mm;
+}
+.b1{
+    padding-top: 0.7em;
+    padding-bottom: 0.8em;
+    margin-right: 2em;
+    margin-top: 0px;
+    background-color:rgb(236, 224, 83);
+    border-radius: 0.5em;
+    padding-left: 2em;
+    padding-right: 2em;
+}
+.b1 a{
+    text-decoration: none;
+    color: black;
+}
+.login{
+    float: right;
+    text-align: right;
+    margin-left: auto;
+}
+
+.menu li:hover{
+    border: 1px solid #1100ff;
+}
+.opcion4{
+    float: right;
+}
+
+
+
+.catalogoPRO{
+    grid-column: 1/6;
+    display: grid;
+    grid-template-columns: repeat(4,1fr);
+    background-color:rgba(243, 234, 234, 0.684);
+    border-radius: 1em;
+    margin: 2em;
+    padding: 2rem;
+}
+
+.b2{
+    padding-top: 0.7em;
+    padding-bottom: 0.8em;
+    margin-right: 0em;
+    margin-top: 1em;
+    background-color: aqua;
+    border-radius: 0.5em;
+    padding-left: 2em;
+    padding-right: 2em;
+}
+.b2:hover{
+    border: 1px solid #f1c40f;
+}
+
+.card {
+    
+    background-color:rgba(189, 7, 7, 0.684);
+    border-radius: 1em;
+    grid-template-rows: 10em 5em 2em;
+}
+
+.band{
+    height: 30em;
+}
+
+.slider{
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    overflow:hidden;
+    grid-column: 1/4;
+}
+.slider img{
+    height: 300px;
+}
+
+.slider ul{
+    display: flex;
+    padding:0;
+    width: 300%;
+    animation: cambio 10s infinite;
+}
+.slider li{
+    list-style: none;
+    width: 100%;
+}
+.slider img{
+    width: 100%;
+}
+@keyframes cambio{
+    0%{margin-left: 0%;}
+    25%{margin-left: 0%;}
+
+    30%{margin-left: -100%;}
+    65%{margin-left: -100%;}
+
+    70%{margin-left: -200%;}
+    100%{margin-left: -200%;}
+
+}

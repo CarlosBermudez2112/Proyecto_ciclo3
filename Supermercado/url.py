@@ -1,5 +1,7 @@
 from django.urls import path
 from Supermercado.views import *
+from Supermercado.viewsFronted import *
+from Supermercado.viewsLogin import *
 urlpatterns = [
     path('ADMINISTRATOR/',ADMINISTRATORView.as_view(),name='ListarAdministrador'),
     path('ADMINISTRATOR/<str:AD_USER>',ADMINISTRATORView.as_view(),name='ListarAdministradorPorUsuario'),
@@ -14,14 +16,27 @@ urlpatterns = [
     path('CUSTOMERS/',CUSTOMERSView.as_view(),name='ListarCliente'),
     path('CUSTOMERS/<str:user>',CUSTOMERSView.as_view(),name='ListarClientePorUsuario'),
     path('LISTBUY/',LISTBUYView.as_view(),name='ListarListCompra'),
-    path('LISTBUY/<int:LBUY_code>',LISTBUYView.as_view(),name='ListarPorCodigo'),
-    path('TYPEEXPENSES/',TYPEEXPENSESView.as_view(),name='ListarTiposEgresos'),
-    path('TYPEEXPENSES/<str:code>',TYPEEXPENSESView.as_view(),name='BuscarTipoEgresos'),
+    path('LISTBUY/<int:LBUY_Code>',LISTBUYView.as_view(),name='ListarPorCodigo'),
+ 
     path('EXPENSES/',EXPENSESView.as_view(),name='ListarEgresos'),
     path('EXPENSES/<str:code>',EXPENSESView.as_view(),name='BuscarEgresos'),
     path('INCOME/',INCOMEView.as_view(),name='ListarIngresos'),
     path('INCOME/<str:code>',INCOMEView.as_view(),name='BuscarIngresos'),
     path('PRODUCTS/',PRODUCTSView.as_view(),name='ListarProductos'),
-    path('PRODUCTS/<str:code>',PRODUCTSView.as_view(),name='BuscarProductos'),    
+    path('PRODUCTS/<int:PRO_Code>',PRODUCTSView.as_view(),name='BuscarProductos'),    
 
+
+
+
+    path('catalogo/',Catalogo,name="catalogo"),
+    path('',index,name="index"),
+    path('login/',login2,name="login"),
+    
+    path('ins_listCompra/',ins_listCompra,name="ins_listCompra"),
+    path('listaCompra/',listCompra,name="listCompra"),
+    path('listaCompra_eli/',listCompra_eli,name="listaCompra_eli"),
+    path('ingresar/', iniciarsesion, name="ingresar"),
+    path('cerrar/', cerrarsesion, name="cerrar")
+    
+    
 ]
