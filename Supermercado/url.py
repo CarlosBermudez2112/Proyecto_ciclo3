@@ -1,8 +1,10 @@
 from django.urls import path
 from Supermercado.views import *
-from Supermercado.viewsFronted import *
+from Supermercado.viewsFrontend import *
 from Supermercado.viewsLogin import *
 urlpatterns = [
+
+    #URLS PARA EL BACKEND
     path('ADMINISTRATOR/',ADMINISTRATORView.as_view(),name='ListarAdministrador'),
     path('ADMINISTRATOR/<str:AD_USER>',ADMINISTRATORView.as_view(),name='ListarAdministradorPorUsuario'),
     path('BUSINESS/',BUSINESSView.as_view(),name='ListarBusiness'),
@@ -26,7 +28,7 @@ urlpatterns = [
     path('PRODUCTS/<int:PRO_Code>',PRODUCTSView.as_view(),name='BuscarProductos'),    
 
 
-
+    #URLS PARA EL FRONTEND
 
     path('catalogo/',Catalogo,name="catalogo"),
     path('',index,name="index"),
@@ -36,7 +38,22 @@ urlpatterns = [
     path('listaCompra/',listCompra,name="listCompra"),
     path('listaCompra_eli/',listCompra_eli,name="listaCompra_eli"),
     path('ingresar/', iniciarsesion, name="ingresar"),
-    path('cerrar/', cerrarsesion, name="cerrar")
+    path('cerrar/', cerrarsesion, name="cerrar"),
+
+    # path('', principal, name="index"),
+    path('MenuAdmin/', menuAdmin, name="MenuAdmin"),
+    path('MenuEmpleado/', menuEmpleado, name="MenuEmpleado"),
+
+    path('ListaClientes/', listaClientes, name='Lista'),
+    path('BuscarCliente/', buscarCliente, name='Buscar'),
+    path('FormCliente/', formRegistroCliente, name='Formulario'),
+    path('RegistrarCliente/',registrarCliente, name='Registrar'),
+    path('FormEditarCliente/<str:usuario>', formEditarCliente, name='Formulario2'),
+    path('ActualizarCliente/',editarCliente, name='Actualizar'),
+    path('EliminarCliente/<str:usuario>',eliminarCliente, name='Eliminar'),
+
+    path('ListaClientesEMP/', listaClientesEMP, name='ListaClientesEMP'),
+    path('BuscarClienteEMP/', buscarClienteEMP, name='BuscarClienteEMP')
     
     
 ]

@@ -616,16 +616,16 @@ class CUSTOMERSView(View):
             clientes= list(CUSTOMERS.objects.filter(CLI_User=user).values())
             if len(clientes)>0:
                 #Se muestra el cliente con el user que se ha especificado
-                mensaje = {'mensaje':clientes}
+                mensaje = {'mensaje':clientes, "Mensaje":"Resultado de la busqueda."}
             else:
-                mensaje = {'mensaje': "No se encontro el cliente."}
+                mensaje = {'Error': "No se encontró el cliente."}
         else:
             clientes= list(CUSTOMERS.objects.values()) 
             if len(clientes)>0:#se pregunta si hay datos
                 #Se muestra todos los clientes existentes en la BD
                 mensaje={"mensaje":clientes}
             else:
-                mensaje={"mensaje":"No se encontraron clientes."}
+                mensaje={"Error":"No se encontraron clientes."}
 
         return JsonResponse(mensaje)
 
@@ -661,7 +661,7 @@ class CUSTOMERSView(View):
             updateData.CLI_Names=data['nombre']
             updateData.CLI_LastNames=data['apellido'] 
             updateData.CLI_Email=data['email']
-            updateData.CLI_Cellphone=data['telefono']
+            updateData.CLI_CellPhone=data['telefono']
             updateData.save()
             mensaje={"mensaje":"Cliente actualizado exitosamente"}
         else:
@@ -676,7 +676,7 @@ class CUSTOMERSView(View):
             CUSTOMERS.objects.filter(CLI_User=user).delete()
             mensaje={"mensaje":"Cliente eliminado exitosamente"}
         else:
-            mensaje={"mensaje":"No se encontro el Cliente."}
+            mensaje={"mensaje":"No se encontró el Cliente."}
         
         return JsonResponse(mensaje)
 
