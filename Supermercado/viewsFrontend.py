@@ -1,0 +1,135 @@
+from urllib import response
+from django.shortcuts import render,redirect
+from django.http import HttpResponse
+import requests
+import json
+from datetime import datetime
+
+fecha=""
+def Catalogo(request):
+    response=requests.get("http://127.0.0.1:8000/Supermercado/PRODUCTS/")
+    productos=response.json()    
+    return render(request,"catalogo.html",productos)
+
+def index(request):
+    return render(request,"index.html")
+
+def login2(request):
+    print("1")
+    return render(request,"login.html")
+
+def ins_listCompra(request):
+    fecha=datetime.today()
+    fecha=fecha.date()
+    fecha=fecha.strftime('%yy-%m-%d')
+    usu="carlos"
+    dato={
+        'LBUY_PRO_Code':int(request.POST['PRO_Code']),
+        'LBUY_CLI_User':usu,
+        'LBUY_Fecha':fecha
+    }
+    print(dato)
+    requests.post("http://127.0.0.1:8000/Supermercado/LISTBUY/",data=json.dumps(dato))
+    return redirect("../catalogo")
+
+def listCompra(request):
+    response=requests.get("http://127.0.0.1:8000/Supermercado/LISTBUY/")
+    lista=response.json()
+     
+    lista2=[]
+    lista3={'mensaje':'a'}
+    for lib in lista['mensaje']:
+        response=requests.get("http://127.0.0.1:8000/Supermercado/PRODUCTS/"+str(lib["LBUY_PRO_Code_id"]))
+        producto=response.json()
+        producto=producto['mensaje']
+        producto=producto[0]
+        producto['LBUY_Code']=lib["LBUY_Code"]
+        lista2.append(producto)
+    lista3['mensaje']=lista2 
+  
+    return render(request,"ListCompra.html",lista3)
+
+def listCompra_eli(request):
+    LBUY_Code=request.POST['LBUY_Code']
+    
+    response=requests.delete('http://localhost:8000/Supermercado/LISTBUY/'+LBUY_Code)
+   
+    libro=response.json()
+   
+    return redirect('../listaCompra/')
+
+
+
+def principal(request):
+    return render(request, "index.html")
+
+def menuAdmin(request):
+    return render(request, "menuAdmin.html")
+
+def menuEmpleado(request):
+    return render(request, "menuEmpleado.html")
+
+#METODOS PARA EL CRUD DE LA TABLA CLIENTES
+def listaClientes(request):
+    response = requests.get('http://localhost:8000/Supermercado/CUSTOMERS/')
+    clientes = response.json()
+    # print(clientes)
+    return render(request, "clientes.html", clientes)
+
+def buscarCliente(request):
+    dato = request.POST['usuario']
+    response = requests.get('http://localhost:8000/Supermercado/CUSTOMERS/'+dato)
+    cliente = response.json()
+    return render(request, 'clientes.html', cliente)
+
+def formRegistroCliente(request):
+    return render(request, "clienteRegistrar.html")
+
+def registrarCliente(request):
+    datos={      
+        "usuario": request.POST["usuario"],
+        "password": request.POST["password"],
+        "nombre": request.POST["nombre"],
+        "apellido": request.POST["apellido"],
+        "email": request.POST["email"],
+        "telefono": request.POST["telefono"],
+        "userAdmin": request.POST["userAdmin"]
+    }
+    requests.post('http://localhost:8000/Supermercado/CUSTOMERS/', data=json.dumps(datos))
+    return redirect('../formCliente/')
+
+def formEditarCliente(request, usuario):
+    response=requests.get('http://localhost:8000/Supermercado/CUSTOMERS/'+usuario)
+    cliente = response.json()
+    return render(request, "clienteEditar.html", cliente)
+
+def editarCliente(request):
+    usuario= request.POST['usuario']
+    datos={      
+        "usuario": request.POST["usuario"],
+        "password": request.POST["password"],
+        "nombre": request.POST["nombre"],
+        "apellido": request.POST["apellido"],
+        "email": request.POST["email"],
+        "telefono": request.POST["telefono"],
+        "userAdmin": request.POST["userAdmin"]
+    }
+    # print(datos)
+    requests.put('http://localhost:8000/Supermercado/CUSTOMERS/'+usuario, data=json.dumps(datos))
+    return redirect('../ListaClientes/')
+
+def eliminarCliente(request, usuario):
+    requests.delete('http://localhost:8000/Supermercado/CUSTOMERS/'+usuario)
+    return redirect('../ListaClientes/') 
+
+def listaClientesEMP(request):
+    response = requests.get('http://localhost:8000/Supermercado/CUSTOMERS/')
+    clientes = response.json()
+    return render(request, "clientesEMP.html", clientes)
+
+def buscarClienteEMP(request):
+    dato = request.POST['usuario']
+    response = requests.get('http://localhost:8000/Supermercado/CUSTOMERS/'+dato)
+    cliente = response.json()
+    return render(request, 'clientesEMP.html', cliente)
+
