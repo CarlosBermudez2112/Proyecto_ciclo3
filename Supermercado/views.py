@@ -384,7 +384,7 @@ class LISTBUYView(View):
     ## consultar lista compras
     def get(self,request,LBUY_CLI_User_id=""):
         if len(LBUY_CLI_User_id)>0:
-            buy_list=list(LISTBUY.objects.filter(LBUY_CLI_User_id=LBUY_CLI_User_id).values())
+            buy_list=list(LISTBUY.objects.filter(LBUY_CLI_User=LBUY_CLI_User_id).values())
             if len(buy_list)>0:
                 datos={"mensaje":buy_list}
             else:

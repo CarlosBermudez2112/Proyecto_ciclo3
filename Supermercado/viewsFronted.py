@@ -22,7 +22,7 @@ def ins_listCompra(request):
     fecha=datetime.today()
     fecha=fecha.date()
     fecha=fecha.strftime('%yy-%m-%d')
-    usu="carlos"
+    usu=request.POST['PRO_user']
     dato={
         'LBUY_PRO_Code':int(request.POST['PRO_Code']),
         'LBUY_CLI_User':usu,
@@ -33,7 +33,9 @@ def ins_listCompra(request):
     return redirect("../catalogo")
 
 def listCompra(request):
-    response=requests.get("http://127.0.0.1:8000/Supermercado/LISTBUY/")
+    usu=request.POST['PRO_user']
+    print(usu)
+    response=requests.get("http://127.0.0.1:8000/Supermercado/LISTBUY/"+usu)
     lista=response.json()
      
     lista2=[]

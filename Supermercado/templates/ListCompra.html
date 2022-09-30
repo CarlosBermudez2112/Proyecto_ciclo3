@@ -18,17 +18,58 @@
             <div class="menu">
                 <ul class="menuIND">
                     <li class="Inicio b1" ><a href="{% url 'index' %}">Inicio</a></li>
-                    <li class="opcion2 b1" ><a href="#">opcion2</a></li>
-                    <li class="opcion3 b1" ><a href="#">opcion3</a></li>
+                    <li class="opcion2 b1" ><a href="{% url 'catalogo' %}">Catalogo</a></li>
                     
-                    <li class="opcion4 b1 login"  ><a class="login" href="{% url 'ingresar' %}">LOGIN</a></li>
-                </ul>
+
+                    {%if request.session.user and not request.session.superusu and not request.session.emple%}
+                    <li class="nombre" id="usu" name="usu" width="2em" >Bienvenid@ {{request.session.user}} </li>
+                      
+                    <li class="opcion4 b1 login me45"><a>menu</a>
+                        <ul class="nav">
+                            <li><a class="" href="#">PERFIL</a></li>
+                            <li><a class="" href="#">CONFIGURACIÓN</a></li>
+                            <li><a class="" href="{% url 'cerrar' %}">CERRAR-C</a></li>
+                        </ul>
+
+                        
+                        
+                    </li>
+                    {%elif request.session.superusu%}
+                    <li class="nombre" id="usu" name="usu" width="2em" >Bienvenid@ {{request.session.user}} </li>
+                 
+                    <li class="opcion4 b1 login me45"><a>menu</a>
+                        <ul class="nav">
+                            <li><a class="" href="#">PERFIL</a></li>
+                            <li><a class="" href="#">CONFIGURACIÓN</a></li>
+                            <li><a class="" href="{% url 'cerrar' %}">CERRAR-C</a></li>
+                        </ul>
+
+                        
+                        
+                    </li>
+                    {%elif request.session.emple%}
+                    <li class="nombre" id="usu" name="usu" width="2em" >Bienvenid@ {{request.session.user}} </li>
+          
+                    <li class="opcion4 b1 login me45"><a>menu</a>
+                        <ul class="nav">
+                            <li><a class="" href="#">PERFIL</a></li>
+                            <li><a class="" href="#">CONFIGURACIÓN</a></li>
+                            <li><a class="" href="{% url 'cerrar' %}">CERRAR-C</a></li>
+                        </ul>
+
+                        
+                        
+                    </li>
+                    {%else%}
+                    <li class="opcion4 b1 login" ><a class="login" href="{% url 'ingresar' %}">LOGIN</a></li>
+                    {%endif%}
+                    </ul>
             </div>
             
 
             <div class="catalogoPRO">
                 <div class="compra">
-                <form>
+                <form method="post">
                     {% csrf_token %}
                     
                     <a href="..."><input type="submit" value="comprar"></a></form>
@@ -62,6 +103,8 @@
                             
                             <td class="eliminar"><form action="{% url 'listaCompra_eli'%}" method="post">
                                 {% csrf_token %}
+
+                                
                                 <input type="hidden" value="{{pro.LBUY_Code}}" name="LBUY_Code">
                                 <input type="submit" value="Eliminar"></td>
                             </form>
