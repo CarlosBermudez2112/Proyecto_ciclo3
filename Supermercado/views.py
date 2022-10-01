@@ -382,9 +382,9 @@ class LISTBUYView(View):
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
     ## consultar lista compras
-    def get(self,request,LBUY_CLI_User_id=""):
-        if len(LBUY_CLI_User_id)>0:
-            buy_list=list(LISTBUY.objects.filter(LBUY_CLI_User_id=LBUY_CLI_User_id).values())
+    def get(self,request,LBUY_Code=""):
+        if len(LBUY_Code)>0:
+            buy_list=list(LISTBUY.objects.filter(LBUY_CLI_User=LBUY_Code).values())
             if len(buy_list)>0:
                 datos={"mensaje":buy_list}
             else:
@@ -441,11 +441,11 @@ class LISTBUYView(View):
             mensaje={"mensaje":"no existe la compra"}
         return JsonResponse(mensaje)
         
-    def delete(self,request,LBUY_Code=0):
+    def delete(self,request,LBUY_Code=""):
         
         buy_cod=list(LISTBUY.objects.filter(LBUY_Code=LBUY_Code).values())
         if len(buy_cod)>0:
-            print("holaaaaa")
+           
             LISTBUY.objects.filter(LBUY_Code=LBUY_Code).delete()
             mensaje={"mensaje":"se a eliminado la compra"}
         else:
@@ -546,19 +546,19 @@ class INCOMEView(View):
         try:
             dat=json.loads(request.body)
             #llaves foraneas
-            empresa=BUSINESS.objects.get(EM_NIT=dat['em_nit'])
-            usuario=EMPLOYEES.objects.get(EM_USER=dat['em_user'])
-            procod=PRODUCTS.objects.get(PRO_Code=dat['pro_cod'])
             
-            
+            empresa=BUSINESS.objects.get(EM_NIT=dat['Empresa_Nit'])
+            empleado=EMPLOYEES.objects.get(EMP_USER=dat['Empleado'])
+            procod=PRODUCTS.objects.get(PRO_Code=dat['Producto'])
+          
             #creación de json para enviar
-            
-            newing=INCOME.objects.create( pro_cod=procod,
-                                           em_user=usuario,
-                                           em_nit=empresa,
-                                           ING_Fecha=dat['LBUY_Fech'],
-                                           ING_Quantity=dat['ING_Quantity'],
-                                           ING_Total=dat['ING_Total']
+
+            newing=INCOME.objects.create(
+                ING_EM_NIT=empresa,
+                ING_EMP_User=empleado, 
+                ING_PRO_Code=procod,
+                ING_Quantity=dat['ING_Quantity'],
+                ING_Total=dat['ING_Total']
             )
             newing.save()                                 
             datos={'mensaje':'Ingreso registrado'}
@@ -568,9 +568,10 @@ class INCOMEView(View):
         except EMPLOYEES.DoesNotExist:
             datos={'mensaje':'Empleado no existe'}
         except BUSINESS.DoesNotExist:
-            datos={'mensaje':'Empresa no existe'}
-       
+            datos={'mensaje':'Empresa no existe'}    
         return JsonResponse(datos)
+
+        
         ## actualizar
     def put(self,request,ing_cod):
         #crear conexion a body

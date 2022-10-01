@@ -5,6 +5,7 @@ import requests
 import json
 from datetime import datetime
 
+
 fecha=""
 def Catalogo(request):
     response=requests.get("http://127.0.0.1:8000/Supermercado/PRODUCTS/")
@@ -22,7 +23,8 @@ def ins_listCompra(request):
     fecha=datetime.today()
     fecha=fecha.date()
     fecha=fecha.strftime('%yy-%m-%d')
-    usu="carlos"
+    usu=request.POST['userPri']
+    print(usu)
     dato={
         'LBUY_PRO_Code':int(request.POST['PRO_Code']),
         'LBUY_CLI_User':usu,
@@ -32,33 +34,57 @@ def ins_listCompra(request):
     requests.post("http://127.0.0.1:8000/Supermercado/LISTBUY/",data=json.dumps(dato))
     return redirect("../catalogo")
 
-def listCompra(request):
-    response=requests.get("http://127.0.0.1:8000/Supermercado/LISTBUY/")
-    lista=response.json()
-     
-    lista2=[]
-    lista3={'mensaje':'a'}
-    for lib in lista['mensaje']:
-        response=requests.get("http://127.0.0.1:8000/Supermercado/PRODUCTS/"+str(lib["LBUY_PRO_Code_id"]))
-        producto=response.json()
-        producto=producto['mensaje']
-        producto=producto[0]
-        producto['LBUY_Code']=lib["LBUY_Code"]
-        lista2.append(producto)
-    lista3['mensaje']=lista2 
-  
-    return render(request,"ListCompra.html",lista3)
+def listCompra(request,usuario):
+       
+    try:
+        response=requests.get("http://127.0.0.1:8000/Supermercado/LISTBUY/"+usuario)
+        lista=response.json()
+        lista2=[]
+        lista3={'mensaje':'a'}
+        for lib in lista['mensaje']:
+            response=requests.get("http://127.0.0.1:8000/Supermercado/PRODUCTS/"+str(lib["LBUY_PRO_Code_id"]))
+            producto=response.json()
+            producto=producto['mensaje']
+            producto=producto[0]
+            producto['LBUY_Code']=lib["LBUY_Code"]
+            lista2.append(producto)
+        lista3['mensaje']=lista2 
+    
+        return render(request,"ListCompra.html",lista3)
+    except:
+        return render(request,"ListCompra.html")
+    
 
-def listCompra_eli(request):
+def listCompra_eli(request,usuario):
     LBUY_Code=request.POST['LBUY_Code']
     
+    print(usuario)
     response=requests.delete('http://localhost:8000/Supermercado/LISTBUY/'+LBUY_Code)
    
-    libro=response.json()
-   
-    return redirect('../listaCompra/')
+       
+    return redirect("../listaCompra/"+usuario)
 
-
+def comprar(request,usuario):
+    fecha=datetime.today()
+    fecha=fecha.date()
+    fecha=fecha.strftime('%yy-%m-%d')
+    response=requests.get("http://127.0.0.1:8000/Supermercado/LISTBUY/"+usuario)
+    jsond = json.loads(response.text)
+    jsond=jsond['mensaje']
+    
+    
+    for pro in jsond:
+        dato={
+            'LBUY_Fecha': fecha,
+            'ING_Quantity':8000,
+            'ING_Total': 1,
+            'ING_EMP_User_id':"Dani456",
+            'EM_nit':7984651,
+            'ING_PRO_Code_id':int(pro.get('LBUY_PRO_Code_id'))      
+        }
+        response=requests.post('http://127.0.0.1:8000/Supermercado/INCOME/',data=json.dumps(dato))
+        response=requests.delete('http://localhost:8000/Supermercado/LISTBUY/'+str(pro.get('LBUY_Code')))
+    return redirect("../catalogo")
 
 def principal(request):
     return render(request, "index.html")

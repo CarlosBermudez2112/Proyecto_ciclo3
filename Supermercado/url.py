@@ -18,7 +18,7 @@ urlpatterns = [
     path('CUSTOMERS/',CUSTOMERSView.as_view(),name='ListarCliente'),
     path('CUSTOMERS/<str:user>',CUSTOMERSView.as_view(),name='ListarClientePorUsuario'),
     path('LISTBUY/',LISTBUYView.as_view(),name='ListarListCompra'),
-    path('LISTBUY/<int:LBUY_Code>',LISTBUYView.as_view(),name='ListarPorCodigo'),
+    path('LISTBUY/<str:LBUY_Code>',LISTBUYView.as_view(),name='ListarPorCodigo'),
  
     path('EXPENSES/',EXPENSESView.as_view(),name='ListarEgresos'),
     path('EXPENSES/<str:code>',EXPENSESView.as_view(),name='BuscarEgresos'),
@@ -35,10 +35,11 @@ urlpatterns = [
     path('login/',login2,name="login"),
     
     path('ins_listCompra/',ins_listCompra,name="ins_listCompra"),
-    path('listaCompra/',listCompra,name="listCompra"),
-    path('listaCompra_eli/',listCompra_eli,name="listaCompra_eli"),
+    path('listaCompra/<str:usuario>',listCompra,name="listCompra"),
+    path('listaCompra_eli/<str:usuario>',listCompra_eli,name="eliLis"),
     path('ingresar/', iniciarsesion, name="ingresar"),
     path('cerrar/', cerrarsesion, name="cerrar"),
+    path('comprar/<str:usuario>',comprar,name="comprar"),
 
     # path('', principal, name="index"),
     path('MenuAdmin/', menuAdmin, name="MenuAdmin"),

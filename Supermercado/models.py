@@ -25,7 +25,7 @@ class BUSINESS(models.Model):
 
     
     EM_IDName=models.TextField(max_length=50,null=False)
-    EM_NIT=models.IntegerField(primary_key=True,unique=True)
+    EM_NIT=models.IntegerField(primary_key=True)
     EM_CITY=models.TextField(max_length=50)
     EM_ADDRESS=models.TextField(max_length=50)
     EM_CELLPHONE=models.TextField(max_length=10)
