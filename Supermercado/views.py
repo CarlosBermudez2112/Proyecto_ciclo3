@@ -382,9 +382,9 @@ class LISTBUYView(View):
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
     ## consultar lista compras
-    def get(self,request,LBUY_CLI_User_id=""):
-        if len(LBUY_CLI_User_id)>0:
-            buy_list=list(LISTBUY.objects.filter(LBUY_CLI_User=LBUY_CLI_User_id).values())
+    def get(self,request,LBUY_Code=""):
+        if len(LBUY_Code)>0:
+            buy_list=list(LISTBUY.objects.filter(LBUY_CLI_User=LBUY_Code).values())
             if len(buy_list)>0:
                 datos={"mensaje":buy_list}
             else:
@@ -441,11 +441,11 @@ class LISTBUYView(View):
             mensaje={"mensaje":"no existe la compra"}
         return JsonResponse(mensaje)
         
-    def delete(self,request,LBUY_Code=0):
+    def delete(self,request,LBUY_Code=""):
         
         buy_cod=list(LISTBUY.objects.filter(LBUY_Code=LBUY_Code).values())
         if len(buy_cod)>0:
-            print("holaaaaa")
+           
             LISTBUY.objects.filter(LBUY_Code=LBUY_Code).delete()
             mensaje={"mensaje":"se a eliminado la compra"}
         else:
@@ -546,17 +546,21 @@ class INCOMEView(View):
         try:
             dat=json.loads(request.body)
             #llaves foraneas
-            empresa=BUSINESS.objects.get(EM_NIT=dat['em_nit'])
-            usuario=EMPLOYEES.objects.get(EM_USER=dat['em_user'])
-            procod=PRODUCTS.objects.get(PRO_Code=dat['pro_cod'])
             
-            
+           
+            #empresa=BUSINESS.objects.filter(EM_NIT=int(num)).values()
+            #empresa=BUSINESS.objects.filter(EM_NIT=dat['EM_nit']).values()
+            usuario=EMPLOYEES.objects.get(EMP_USER=dat['ING_EMP_User_id'])
+            #procod=PRODUCTS.objects.get(PRO_Code=dat['ING_PRO_Code_id'])
+            #procod=PRODUCTS.filter(PRO_Code=dat['ING_PRO_Code_id']).values()
+          
             #creación de json para enviar
             
-            newing=PRODUCTS.objects.create( pro_cod=procod,
-                                           em_user=usuario,
-                                           em_nit=empresa,
-                                           ING_Fecha=dat['LBUY_Fech'],
+            newing=INCOME.objects.create(
+                                           ING_PRO_Code_id=dat['ING_PRO_Code_id'],
+                                           ING_EMP_User_id=dat['ING_EMP_User_id'],
+                                           ING_EM_NIT_id=dat['EM_nit'],
+                                           ING_Fecha=dat['LBUY_Fecha'],
                                            ING_Quantity=dat['ING_Quantity'],
                                            ING_Total=dat['ING_Total']
             )

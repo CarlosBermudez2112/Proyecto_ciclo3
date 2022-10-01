@@ -105,10 +105,12 @@ body{
     justify-self: right;
 }
 .nombre{
-    width: 15em;
+    width: 5em;
     margin-top: 1em;
     justify-self: auto;
-    text-align: center;
+}
+.nombr{
+    width: 30em;
 }
 .b1:after {
     display: block;

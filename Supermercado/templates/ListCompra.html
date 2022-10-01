@@ -69,12 +69,17 @@
 
             <div class="catalogoPRO">
                 <div class="compra">
-                <form method="post">
+                <form action="{% url 'comprar' request.session.user%}" method="post">
                     {% csrf_token %}
                     
-                    <a href="..."><input type="submit" value="comprar"></a></form>
+                    <input type="submit" value="comprar">
+                    <input type="label" hidden value="{{mensaje}}" name="listaDic">
+                </form>
                 </div>
+            
+                
                 <div class="gridCard2">
+                    
                     <table class="lista">
 
                         <tr class="enca">
@@ -101,12 +106,15 @@
                             <td>Celda 2</td>
                             
                             
-                            <td class="eliminar"><form action="{% url 'listaCompra_eli'%}" method="post">
+                            <td class="eliminar">
+                            <form action="{% url 'eliLis' request.session.user%}" method="post">
                                 {% csrf_token %}
 
                                 
-                                <input type="hidden" value="{{pro.LBUY_Code}}" name="LBUY_Code">
+                                <input type="label" hidden value="{{pro.LBUY_Code}}" name="LBUY_Code">
+                                
                                 <input type="submit" value="Eliminar"></td>
+
                             </form>
 
                         </tr>
@@ -124,6 +132,6 @@
 
         </div>
         </div>
-    
+       
         </body>
 </html>
