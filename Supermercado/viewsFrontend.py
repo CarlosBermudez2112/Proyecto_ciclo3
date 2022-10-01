@@ -73,7 +73,7 @@ def menuEmpleado(request):
 def listaClientes(request):
     response = requests.get('http://localhost:8000/Supermercado/CUSTOMERS/')
     clientes = response.json()
-    # print(clientes)
+    print(clientes)
     return render(request, "clientes.html", clientes)
 
 def buscarCliente(request):
@@ -83,7 +83,9 @@ def buscarCliente(request):
     return render(request, 'clientes.html', cliente)
 
 def formRegistroCliente(request):
-    return render(request, "clienteRegistrar.html")
+    response=requests.get('http://localhost:8000/Supermercado/ADMINISTRATOR/')
+    userAdmin = response.json()
+    return render(request, "clienteRegistrar.html", userAdmin)
 
 def registrarCliente(request):
     datos={      
@@ -96,7 +98,7 @@ def registrarCliente(request):
         "userAdmin": request.POST["userAdmin"]
     }
     requests.post('http://localhost:8000/Supermercado/CUSTOMERS/', data=json.dumps(datos))
-    return redirect('../formCliente/')
+    return redirect('../ListaClientes/')
 
 def formEditarCliente(request, usuario):
     response=requests.get('http://localhost:8000/Supermercado/CUSTOMERS/'+usuario)

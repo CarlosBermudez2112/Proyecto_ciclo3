@@ -44,14 +44,14 @@
                         <input class="form-control" type="text" name="usuario" required placeholder="Usuario">                  
                     </div>
                     <div class="col-auto">
-                        <button type="submit" class="btn rounded-pill btn-primary">Buscar</button>
+                        <button type="submit" class="btn rounded-pill btn-outline-primary">Buscar</button>
                     </div>
                 </form>
                 <a href="../ListaClientes/">   
-                    <button class="btn rounded-pill btn-primary" type="button">Todos</button>
+                    <button class="btn rounded-pill btn-outline-primary" type="button">Todos</button>
                 </a>
                 <a href="../FormCliente/">   
-                    <button class="btn rounded-pill btn-success" type="button">Agregar Cliente</button>
+                    <button class="btn rounded-pill btn-outline-success" type="button">Agregar Cliente</button>
                 </a> 
             </div>
 
@@ -90,8 +90,8 @@
                         <td>{{cli.CLI_Email}}</td>
                         <td>{{cli.CLI_CellPhone}}</td>
                         <td>{{cli.CLI_AD_User_id}}</td>
-                        <td><a href="{% url 'Formulario2' cli.CLI_User %}"><button type="button" class="btn rounded-pill btn-warning">Editar</button></a></td>
-                        <td><button type="button" class="btn rounded-pill btn-danger" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Eliminar</button></a></td>
+                        <td><a href="{% url 'Formulario2' cli.CLI_User %}"><button type="button" class="btn rounded-pill btn-outline-warning">Editar</button></a></td>
+                        <td><button type="button" class="btn rounded-pill btn-outline-danger" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Eliminar</button></a></td>
                     </tr>
 
                             <!-- Modal  hace referencia a una ventana emergente para dar la opción de confirmar-->

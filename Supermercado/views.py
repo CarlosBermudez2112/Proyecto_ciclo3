@@ -482,13 +482,13 @@ class PRODUCTSView(View):
         #creación de json para enviar
             
         newpro=PRODUCTS.objects.create(PRO_Code=dat['PRO_Code'],
-                                           PRO_Name=dat['PRO_Name'],
+                                            PRO_Name=dat['PRO_Name'],
                                             PRO_Cost=dat[' PRO_Cost'],
                                             PRO_Description=dat['PRO_Description'],
                                             PRO_Stock=dat['PRO_Stock']
             )
         newpro.save()                                                 
-        datos={'mensaje':'Producto registrada'}     
+        datos={'mensaje':'Producto registrado'}     
         return JsonResponse(datos)
         ## actualizar
     def put(self,request,pro_cod):
@@ -498,7 +498,7 @@ class PRODUCTSView(View):
         productos=list(PRODUCTS.objects.filter(PRO_Code=pro_cod).values())
         #genero la busqueda si hay valores con el dato de busqueda anterior
         if len(productos)>0:
-            newpro=productos.objects.get(PRO_Code=pro_cod)
+            newpro=PRODUCTS.objects.get(PRO_Code=pro_cod)
             newpro.PRO_Name=data["PRO_Name"]
             newpro.PRO_Cost=data[' PRO_Cost']
             newpro.PRO_Description=data['PRO_Description']
@@ -553,7 +553,7 @@ class INCOMEView(View):
             
             #creación de json para enviar
             
-            newing=PRODUCTS.objects.create( pro_cod=procod,
+            newing=INCOME.objects.create( pro_cod=procod,
                                            em_user=usuario,
                                            em_nit=empresa,
                                            ING_Fecha=dat['LBUY_Fech'],
@@ -561,14 +561,14 @@ class INCOMEView(View):
                                            ING_Total=dat['ING_Total']
             )
             newing.save()                                 
-            datos={'mensaje':'ingreso registrado'}
+            datos={'mensaje':'Ingreso registrado'}
         
         except PRODUCTS.DoesNotExist:
-            datos={'mensaje':'producto no existe'}
+            datos={'mensaje':'Producto no existe'}
         except EMPLOYEES.DoesNotExist:
-            datos={'mensaje':'usuario empresa no existe'}
+            datos={'mensaje':'Empleado no existe'}
         except BUSINESS.DoesNotExist:
-            datos={'mensaje':'empresa no existe'}
+            datos={'mensaje':'Empresa no existe'}
        
         return JsonResponse(datos)
         ## actualizar
@@ -579,7 +579,7 @@ class INCOMEView(View):
         ingresos=list(INCOME.objects.filter(ING_Code=ing_cod).values())
         #genero la busqueda si hay valores con el dato de busqueda anterior
         if len(ingresos)>0:
-            newing=ingresos.objects.get(ING_Code=ing_cod)
+            newing=INCOME.objects.get(ING_Code=ing_cod)
             newing.ING_EM_NIT=data['ING_EM_NIT']
             newing.ING_EMP_User=data['ING_EMP_User']
             newing.ING_PRO_Code=data['ING_PRO_Code']
@@ -633,7 +633,7 @@ class CUSTOMERSView(View):
     def post(self,request):
         dato = json.loads(request.body) 
         try:
-            userAdmin=ADMINISTRATOR.objects.get(AD_USER=dato['user_Admin'])
+            userAdmin=ADMINISTRATOR.objects.get(AD_USER=dato['userAdmin'])
             cliente = CUSTOMERS.objects.create(
                 CLI_User=dato['usuario'], 
                 CLI_Password=dato['password'],

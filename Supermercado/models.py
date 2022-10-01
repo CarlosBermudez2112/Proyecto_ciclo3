@@ -86,7 +86,7 @@ class CUSTOMERS(models.Model):
     CLI_Names = models.TextField(max_length=50,null=False)
     CLI_LastNames= models.TextField(max_length=50,null=False)
     CLI_Email = models.EmailField(unique=True)
-    CLI_CellPhone= models.TextField(max_length=50,unique=True)
+    CLI_CellPhone= models.TextField(max_length=15,unique=True)
     CLI_AD_User= models.ForeignKey(ADMINISTRATOR, on_delete=models.CASCADE)
 
 class LISTBUY(models.Model):

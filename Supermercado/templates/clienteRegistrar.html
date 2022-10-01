@@ -34,7 +34,7 @@
     <!--formulario de registro-->
         <div class="container mt-5 col-7 align-center">
             <div class="container text-center text-success"><h2>REGISTRAR CLIENTE</h2></div>
-            <form action="../ListaClientes/" method="post">
+            <form action="../RegistrarCliente/" method="post">
                 {% csrf_token %}
                 <div class="form-floating mb-3">
                     <input type="text" class="form-control" id="usuario" name="usuario" required placeholder="Usuario">
@@ -61,12 +61,16 @@
                     <label for="telefono" class="form-label">Teléfono</label>
                 </div>
                 <div class="form-floating mb-3">
-                    <input type="text" class="form-control" id="userAdmin" name="userAdmin" required placeholder="Usuario administrador">
-                    <label for="userAdmin" class="form-label">Usuario administrador</label>
-                </div>
+                    <select class="form-select" name="userAdmin" aria-label="Default select example" required>
+                        {% for AD in mensaje %}    
+                        <option value="{{AD.AD_USER}}">{{AD.AD_USER}}</option>
+                        {% endfor %}
+                    </select>
+                    <label for="editorial" class="form-label">Usuario Admin</label>
+                </div>   
                 <div class="d-grid gap-2 d-md-flex justify-content-md-center mb-4">
-                    <a href="../ListaClientes/"><button class="btn btn-primary rounded-pill" type="button">Volver</button></a>
-                    <button class="btn btn-primary rounded-pill" type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Registrar</button>      
+                    <a href="../ListaClientes/"><button class="btn btn-outline-primary rounded-pill" type="button">Volver</button></a>
+                    <button class="btn btn-outline-success rounded-pill" type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Registrar</button>      
                 </div>
             
                         <!-- Modal  hace referencia a una ventana emergente para dar la opción de confirmar-->
