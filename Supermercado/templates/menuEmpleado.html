@@ -12,7 +12,7 @@
         <link rel="stylesheet" href="{% static 'css/styleCabecera.css' %}" type="text/css">
         <!-- <link rel="stylesheet" href="{% static 'css/styleAdmin.css' %}" type="text/css"> -->
         
-        <title>Menu Admin | Supermercado</title>
+        <title>Menu Empleado | Supermercado</title>
     </head>
     <body>
         <header class="contheader">
@@ -27,9 +27,9 @@
         </header>
 
         <div class="barraNav pe-3">
-            <div class="text1 me-3">Bienvenido usuario: User1</div>
+            <div class="text1 me-3">Bienvenido usuario: {{request.session.user}} </div>
             <a href="../"><button  class="btn rounded-pill btn-outline-warning" type="button">Inicio</button></a>
-            <a href=""><button  class="btn rounded-pill btn-outline-warning" type="button">Cerrar sesión</button></a>
+            <a href="{% url 'cerrar' %}"><button  class="btn rounded-pill btn-outline-warning" type="button">Cerrar sesión</button></a>
         </div>
 
         <div class="container"> 
@@ -54,7 +54,7 @@
                 <div class="col-6 d-grid gap-2 d-md-flex align-items-center justify-content-md-end m-0 pe-5">
                     <div class="card border border-success" style="width: 20rem;">
                         <img src="{% static 'img/ingresos.png' %}" class="rounded" alt="...">
-                        <a href="#" class="btn btn-outline-success">INGRESOS</a>
+                        <a href="../ListaIngresos/" class="btn btn-outline-success">INGRESOS</a>
                     </div>
                 </div>
                 

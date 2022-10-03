@@ -86,8 +86,6 @@ def comprar(request,usuario):
         response=requests.delete('http://localhost:8000/Supermercado/LISTBUY/'+str(pro.get('LBUY_Code')))
     return redirect("../catalogo")
 
-def principal(request):
-    return render(request, "index.html")
 
 def menuAdmin(request):
     return render(request, "menuAdmin.html")
@@ -161,3 +159,59 @@ def buscarClienteEMP(request):
     cliente = response.json()
     return render(request, 'clientesEMP.html', cliente)
 
+
+#METODOS PARA EL CRUD DE LA TABLA INGRESOS
+def listaIngresos(request):
+    response = requests.get('http://localhost:8000/Supermercado/INCOME/')
+    ingresos = response.json()
+    return render(request, "ingresos.html", ingresos)
+
+def buscarIngreso(request):
+    dato = request.POST['codigo']
+    response = requests.get('http://localhost:8000/Supermercado/INCOME/'+dato)
+    ingreso = response.json()
+    return render(request, 'ingresos.html', ingreso)
+
+def formRegistroIngreso(request):
+    response=requests.get('http://localhost:8000/Supermercado/EMPLOYEES/')
+    empleado = response.json()
+    response=requests.get('http://localhost:8000/Supermercado/BUSINESS/')
+    empresa = response.json()
+    response=requests.get('http://localhost:8000/Supermercado/PRODUCTS/')
+    producto = response.json()
+    datos = empresa|empleado|producto 
+    return render(request, "ingresoRegistrar.html",datos)
+
+def registrarIngreso(request):
+    datos={  
+        "Empresa":request.POST["empresa"],
+        "Empleado": request.POST["empleado"],
+        "Producto": request.POST["producto"],
+        "ING_Quantity": request.POST["ING_Quantity"],
+        "ING_Total": request.POST["ING_Total"]
+    }
+    requests.post('http://localhost:8000/Supermercado/INCOME/', data=json.dumps(datos))
+    return redirect('../ListaIngresos/')
+
+def formEditarIngreso(request, codigo):
+    response=requests.get('http://localhost:8000/Supermercado/INCOME/'+codigo)
+    ingreso = response.json()
+    return render(request, "ingresoEditar.html", ingreso)
+
+def editarIngreso(request):
+    codigo= request.POST["codigo"]
+    datos={
+        "ING_Code": request.POST["codigo"],  
+        "Empresa":request.POST['empresa'],
+        "Empleado": request.POST["empleado"],
+        "Producto": request.POST["producto"],
+        "ING_Fecha": request.POST["fecha"],
+        "ING_Quantity": request.POST["ING_Quantity"],
+        "ING_Total": request.POST["ING_Total"]
+    }
+    requests.put('http://localhost:8000/Supermercado/INCOME/'+codigo, data=json.dumps(datos))
+    return redirect('../ListaIngresos/')
+
+def eliminarIngreso(request, codigo):
+    requests.delete('http://localhost:8000/Supermercado/INCOME/'+codigo)
+    return redirect('../ListaIngresos/') 

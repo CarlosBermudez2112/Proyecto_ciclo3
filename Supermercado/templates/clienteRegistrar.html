@@ -25,10 +25,10 @@
         </header>
 
         <div class="barraNav pe-3">
-            <div class="text1 me-3">Bienvenido usuario: User1</div>
+            <div class="text1 me-3">Bienvenido usuario: {{request.session.user}} </div>
             <a href="../"><button  class="btn rounded-pill btn-outline-warning" type="button">Inicio</button></a>
             <a href="../MenuAdmin/"><button  class="btn rounded-pill btn-outline-warning" type="button">Menú</button></a>
-            <button  class="btn rounded-pill btn-outline-warning" type="button">Cerrar sesión</button>
+            <a href="{% url 'cerrar' %}"><button  class="btn rounded-pill btn-outline-warning" type="button">Cerrar sesión</button></a>
         </div>
 
     <!--formulario de registro-->

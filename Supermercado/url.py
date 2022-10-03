@@ -41,7 +41,6 @@ urlpatterns = [
     path('cerrar/', cerrarsesion, name="cerrar"),
     path('comprar/<str:usuario>',comprar,name="comprar"),
 
-    # path('', principal, name="index"),
     path('MenuAdmin/', menuAdmin, name="MenuAdmin"),
     path('MenuEmpleado/', menuEmpleado, name="MenuEmpleado"),
 
@@ -54,7 +53,14 @@ urlpatterns = [
     path('EliminarCliente/<str:usuario>',eliminarCliente, name='Eliminar'),
 
     path('ListaClientesEMP/', listaClientesEMP, name='ListaClientesEMP'),
-    path('BuscarClienteEMP/', buscarClienteEMP, name='BuscarClienteEMP')
+    path('BuscarClienteEMP/', buscarClienteEMP, name='BuscarClienteEMP'),
     
-    
+    #URLs PARA LA TABLA INGRESOS
+    path('ListaIngresos/', listaIngresos, name='ListaIngresos'),
+    path('BuscarIngreso/', buscarIngreso, name='BuscarIngreso'),
+    path('FormIngreso/', formRegistroIngreso, name='Formulario'),
+    path('RegistrarIngreso/',registrarIngreso, name='RegistrarIngreso'),
+    path('FormEditarIngreso/<str:codigo>', formEditarIngreso, name='Formulario2'),
+    path('ActualizarIngreso/',editarIngreso, name='ActualizarIngreso'),
+    path('EliminarIngreso/<str:codigo>',eliminarIngreso, name='EliminarIngreso')
 ]

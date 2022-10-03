@@ -28,7 +28,7 @@
         </header>
 
         <div class="barraNav pe-3">
-            <div class="text1 me-3">Bienvenido usuario: User1</div>
+            <div class="text1 me-3">Bienvenido usuario: {{request.session.user}}</div>
             <a href="../"><button  class="btn rounded-pill btn-outline-warning" type="button">Inicio</button></a>
             <a href="../MenuEmpleado/"><button  class="btn rounded-pill btn-outline-warning" type="button">Menú</button></a>
             <a href="{% url 'cerrar' %}"><button  class="btn rounded-pill btn-outline-warning" type="button">Cerrar sesión</button></a>
@@ -65,27 +65,29 @@
                 </div>
             {% endif%}  
 
-            <table class="table table-striped table-hover mt-2">
+            <table class="table table-bordered table-striped table-hover mt-2">
                 <thead>
-                    <th class="col-sm-1.5 ">USUARIO</th>
-                    <th class="col-sm-1.5">CONTRASEÑA</th>
-                    <th class="col-sm-2">NOMBRE</th>
-                    <th class="col-sm-2">APELLIDO</th>
-                    <th class="col-sm-2">EMAIL</th>
-                    <th class="col-sm-1.5">TELEFONO</th>
-                    <th class="col-sm-1.5">USER ADMIN</th>
+                    <tr align="center">
+                        <th scope="col-auto">USUARIO</th>
+                        <th scope="col-auto">CONTRASEÑA</th>
+                        <th scope="col-auto">NOMBRE</th>
+                        <th scope="col-auto">APELLIDO</th>
+                        <th scope="col-auto">EMAIL</th>
+                        <th scope="col-auto">TELEFONO</th>
+                        <th scope="col-auto">USER ADMIN</th>
+                    </tr>
                 </thead>
                 <tbody>
                     
                     {% for cli in mensaje%}
-                    <tr class="fila">
-                        <td>{{cli.CLI_User}}</td>
+                    <tr>
+                        <td scope="row">{{cli.CLI_User}}</td>
                         <td>{{cli.CLI_Password}}</td>
                         <td>{{cli.CLI_Names}}</td>
                         <td>{{cli.CLI_LastNames}}</td>
                         <td>{{cli.CLI_Email}}</td>
                         <td>{{cli.CLI_CellPhone}}</td>
-                        <td>{{cli.CLI_AD_User_id}}</td>
+                        <td>{{cli.CLI_AD_User_id}}</td>td>{{cli.CLI_AD_User_id}}</td>
                     </tr>
                     {% endfor%}
                 </tbody>          
