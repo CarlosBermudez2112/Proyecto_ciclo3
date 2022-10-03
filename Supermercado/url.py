@@ -63,4 +63,5 @@ urlpatterns = [
     path('FormEditarIngreso/<str:codigo>', formEditarIngreso, name='Formulario2'),
     path('ActualizarIngreso/',editarIngreso, name='ActualizarIngreso'),
     path('EliminarIngreso/<str:codigo>',eliminarIngreso, name='EliminarIngreso')
+    
 ]

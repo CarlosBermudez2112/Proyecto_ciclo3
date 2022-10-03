@@ -53,3 +53,6 @@ def cerrarsesion(request):
     del request.session['user']
     logout(request)
     return redirect( "../catalogo")
+
+
+carlos=0
