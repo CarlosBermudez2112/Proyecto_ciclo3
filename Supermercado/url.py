@@ -25,7 +25,7 @@ urlpatterns = [
     path('INCOME/',INCOMEView.as_view(),name='ListarIngresos'),
     path('INCOME/<str:code>',INCOMEView.as_view(),name='BuscarIngresos'),
     path('PRODUCTS/',PRODUCTSView.as_view(),name='ListarProductos'),
-    path('PRODUCTS/<int:PRO_Code>',PRODUCTSView.as_view(),name='BuscarProductos'),    
+    path('PRODUCTS/<str:code>',PRODUCTSView.as_view(),name='BuscarProductos'),    
 
 
     #URLS PARA EL FRONTEND
@@ -44,13 +44,14 @@ urlpatterns = [
     path('MenuAdmin/', menuAdmin, name="MenuAdmin"),
     path('MenuEmpleado/', menuEmpleado, name="MenuEmpleado"),
 
-    path('ListaClientes/', listaClientes, name='Lista'),
-    path('BuscarCliente/', buscarCliente, name='Buscar'),
-    path('FormCliente/', formRegistroCliente, name='Formulario'),
-    path('RegistrarCliente/',registrarCliente, name='Registrar'),
-    path('FormEditarCliente/<str:usuario>', formEditarCliente, name='Formulario2'),
-    path('ActualizarCliente/',editarCliente, name='Actualizar'),
-    path('EliminarCliente/<str:usuario>',eliminarCliente, name='Eliminar'),
+     #URLs PARA LA TABLA CLIENTES
+    path('ListaClientes/', listaClientes, name='ListaClientes'),
+    path('BuscarCliente/', buscarCliente, name='BuscarCliente'),
+    path('FormCliente/', formRegistroCliente, name='FormCliente'),
+    path('RegistrarCliente/',registrarCliente, name='RegistrarCliente'),
+    path('FormEditarCliente/<str:usuario>', formEditarCliente, name='FormEditarCliente'),
+    path('ActualizarCliente/',editarCliente, name='ActualizarCliente'),
+    path('EliminarCliente/<str:usuario>',eliminarCliente, name='EliminarCliente'),
 
     path('ListaClientesEMP/', listaClientesEMP, name='ListaClientesEMP'),
     path('BuscarClienteEMP/', buscarClienteEMP, name='BuscarClienteEMP'),
@@ -58,10 +59,29 @@ urlpatterns = [
     #URLs PARA LA TABLA INGRESOS
     path('ListaIngresos/', listaIngresos, name='ListaIngresos'),
     path('BuscarIngreso/', buscarIngreso, name='BuscarIngreso'),
-    path('FormIngreso/', formRegistroIngreso, name='Formulario'),
+    path('FormIngreso/', formRegistroIngreso, name='FormIngreso'),
     path('RegistrarIngreso/',registrarIngreso, name='RegistrarIngreso'),
-    path('FormEditarIngreso/<str:codigo>', formEditarIngreso, name='Formulario2'),
+    path('FormEditarIngreso/<str:codigo>', formEditarIngreso, name='FormEditarIngreso'),
     path('ActualizarIngreso/',editarIngreso, name='ActualizarIngreso'),
-    path('EliminarIngreso/<str:codigo>',eliminarIngreso, name='EliminarIngreso')
-    
+
+    path('EliminarIngreso/<str:codigo>',eliminarIngreso, name='EliminarIngreso'),
+
+    # #URLs PARA LA TABLA EGRESOS
+    path('ListaEgresos/', listaEgresos, name='ListaEgresos'),
+    path('BuscarEgreso/', buscarEgreso, name='BuscarEgreso'),
+    path('FormEgreso/', formRegistroEgreso, name='FormEgreso'),
+    path('RegistrarEgreso/',registrarEgreso, name='RegistrarEgreso'),
+    path('FormEditarEgreso/<str:codigo>', formEditarEgreso, name='FormEditarEgreso'),
+    path('ActualizarEgreso/',editarEgreso, name='ActualizarEgreso'),
+    path('EliminarEgreso/<str:codigo>', eliminarEgreso, name='EliminarEgreso'),
+
+    # #URLs PARA LA TABLA PRODUCTOS
+    path('ListaProductos/', listaProductos, name='ListaProductos'),
+    path('BuscarProducto/', buscarProducto, name='BuscarProducto'),
+    path('FormProducto/', formRegistroProducto, name='FormProducto'),
+    path('RegistrarProducto/',registrarProducto, name='RegistrarProducto'),
+    path('FormEditarProducto/<str:codigo>', formEditarProducto, name='FormEditarProducto'),
+    path('ActualizarProducto/',editarProducto, name='ActualizarProducto'),
+    path('EliminarProducto/<str:codigo>', eliminarProducto, name='EliminarProducto'),
+>>>>>>> refs/remotes/origin/main
 ]

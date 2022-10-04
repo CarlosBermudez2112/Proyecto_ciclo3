@@ -29,8 +29,8 @@
 
         <div class="barraNav pe-3">
             <div class="text1 me-3">Bienvenido usuario: {{request.session.user}}</div>
-            <a href="../"><button  class="btn rounded-pill btn-outline-warning" type="button">Inicio</button></a>
-            <a href="../MenuEmpleado/"><button  class="btn rounded-pill btn-outline-warning" type="button">Menú</button></a>
+            <a href="{% url 'index' %}"><button  class="btn rounded-pill btn-outline-warning" type="button">Inicio</button></a>
+            <a href="{% url 'MenuEmpleado' %}"><button  class="btn rounded-pill btn-outline-warning" type="button">Menú</button></a>
             <a href="{% url 'cerrar' %}"><button  class="btn rounded-pill btn-outline-warning" type="button">Cerrar sesión</button></a>
         </div>
                 
@@ -39,7 +39,7 @@
         <div class="tabla">        
             <div class="text-center fs-1 fw-bold mb-5">Clientes</div>
             <div class="d-grid gap-2 d-md-flex justify-content-md-center">
-                <form class="row g-3" action="../BuscarClienteEMP/" method="post">
+                <form class="row g-3" action="{% url 'BuscarClienteEMP' %}" method="post">
                     {% csrf_token %}
                     <div class="col-auto">
                         <input class="form-control" type="text" name="usuario" required placeholder="Usuario">                  
@@ -48,7 +48,7 @@
                         <button type="submit" class="btn rounded-pill btn-outline-primary">Buscar</button>
                     </div>
                 </form>
-                <a href="../ListaClientesEMP/">   
+                <a href="{% url 'ListaClientesEMP' %}">   
                     <button class="btn rounded-pill btn-outline-primary" type="button">Todos</button>
                 </a>
             </div>
@@ -79,7 +79,7 @@
                 </thead>
                 <tbody>
                     
-                    {% for cli in mensaje%}
+                    {% for cli in clientes%}
                     <tr>
                         <td scope="row">{{cli.CLI_User}}</td>
                         <td>{{cli.CLI_Password}}</td>

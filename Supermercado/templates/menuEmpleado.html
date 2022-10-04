@@ -28,7 +28,7 @@
 
         <div class="barraNav pe-3">
             <div class="text1 me-3">Bienvenido usuario: {{request.session.user}} </div>
-            <a href="../"><button  class="btn rounded-pill btn-outline-warning" type="button">Inicio</button></a>
+            <a href="{% url 'index' %}"><button  class="btn rounded-pill btn-outline-warning" type="button">Inicio</button></a>
             <a href="{% url 'cerrar' %}"><button  class="btn rounded-pill btn-outline-warning" type="button">Cerrar sesión</button></a>
         </div>
 
@@ -43,7 +43,7 @@
                 <div class="col-6 d-grid gap-2 d-md-flex align-items-center justify-content-md-start m-0 ps-5">
                     <div class="card  border border-success" style="width: 20rem;">
                         <img src="{% static 'img/productos.png' %}" class="rounded" alt="...">
-                        <a href="#" class="btn btn-outline-success">PRODUCTOS</a>
+                        <a href="{% url 'ListaProductos' %}" class="btn btn-outline-success">PRODUCTOS</a>
                     </div>
                 </div>
             </div>
@@ -54,14 +54,14 @@
                 <div class="col-6 d-grid gap-2 d-md-flex align-items-center justify-content-md-end m-0 pe-5">
                     <div class="card border border-success" style="width: 20rem;">
                         <img src="{% static 'img/ingresos.png' %}" class="rounded" alt="...">
-                        <a href="../ListaIngresos/" class="btn btn-outline-success">INGRESOS</a>
+                        <a href="{% url 'ListaIngresos' %}" class="btn btn-outline-success">INGRESOS</a>
                     </div>
                 </div>
                 
                 <div class="col-6 d-grid gap-2 d-md-flex align-items-center justify-content-md-start m-0 ps-5">
                     <div class="card border border-success" style="width: 20rem;">
                         <img src="{% static 'img/egresos.png' %}" class="rounded" alt="...">
-                        <a href="#" class="btn btn-outline-success">EGRESOS</a>
+                        <a href="{% url 'ListaEgresos' %}" class="btn btn-outline-success">EGRESOS</a>
                     </div>
                 </div>     
             </div>

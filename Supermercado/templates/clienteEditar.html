@@ -27,17 +27,17 @@
 
         <div class="barraNav pe-3">
             <div class="text1 me-3">Bienvenido usuario: {{request.session.user}} </div>
-            <a href="../"><button  class="btn rounded-pill btn-outline-warning" type="button">Inicio</button></a>
-            <a href="../MenuAdmin/"><button  class="btn rounded-pill btn-outline-warning" type="button">Menú</button></a>
+            <a href="{% url 'index' %}"><button  class="btn rounded-pill btn-outline-warning" type="button">Inicio</button></a>
+            <a href="{% url 'MenuAdmin' %}"><button  class="btn rounded-pill btn-outline-warning" type="button">Menú</button></a>
             <a href="{% url 'cerrar' %}"><button  class="btn rounded-pill btn-outline-warning" type="button">Cerrar sesión</button></a>
         </div>
 
     <!--formulario de Actualización-->
         <div class="container mt-5 col-7 align-center">
             <div class="container text-center text-success"><h2>ACTUALIZAR CLIENTE</h2></div>
-            <form action="{% url 'Actualizar' %}" method="post">
+            <form action="{% url 'ActualizarCliente' %}" method="post">
                 {% csrf_token %}
-                {% for cli in mensaje%}
+                {% for cli in clientes%}
                 <div class="form-floating mb-3">
                     <input type="text" class="form-control" id="usuario" name="usuario" value="{{cli.CLI_User}}" required placeholder="Usuario" readonly>
                     <label for="usuario" class="form-label">Usuario</label>
@@ -67,7 +67,7 @@
                     <label for="userAdmin" class="form-label">Usuario administrador</label>
                 </div>
                 <div class="d-grid gap-2 d-md-flex justify-content-md-center mb-4">
-                    <a href="../ListaClientes/"><button class="btn btn-outline-primary rounded-pill" type="button">Volver</button></a>
+                    <a href="{% url 'ListaClientes' %}"><button class="btn btn-outline-primary rounded-pill" type="button">Volver</button></a>
                     <button class="btn btn-outline-success rounded-pill" type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Actualizar</button>
                 </div>
             
