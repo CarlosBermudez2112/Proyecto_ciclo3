@@ -25,7 +25,7 @@ urlpatterns = [
     path('INCOME/',INCOMEView.as_view(),name='ListarIngresos'),
     path('INCOME/<str:code>',INCOMEView.as_view(),name='BuscarIngresos'),
     path('PRODUCTS/',PRODUCTSView.as_view(),name='ListarProductos'),
-    path('PRODUCTS/<int:PRO_Code>',PRODUCTSView.as_view(),name='BuscarProductos'),    
+    path('PRODUCTS/<str:code>',PRODUCTSView.as_view(),name='BuscarProductos'),    
 
 
     #URLS PARA EL FRONTEND
@@ -72,5 +72,14 @@ urlpatterns = [
     path('RegistrarEgreso/',registrarEgreso, name='RegistrarEgreso'),
     path('FormEditarEgreso/<str:codigo>', formEditarEgreso, name='FormEditarEgreso'),
     path('ActualizarEgreso/',editarEgreso, name='ActualizarEgreso'),
-    path('EliminarEgreso/<str:codigo>', eliminarEgreso, name='EliminarEgreso')
+    path('EliminarEgreso/<str:codigo>', eliminarEgreso, name='EliminarEgreso'),
+
+    # #URLs PARA LA TABLA PRODUCTOS
+    path('ListaProductos/', listaProductos, name='ListaProductos'),
+    path('BuscarProducto/', buscarProducto, name='BuscarProducto'),
+    path('FormProducto/', formRegistroProducto, name='FormProducto'),
+    path('RegistrarProducto/',registrarProducto, name='RegistrarProducto'),
+    path('FormEditarProducto/<str:codigo>', formEditarProducto, name='FormEditarProducto'),
+    path('ActualizarProducto/',editarProducto, name='ActualizarProducto'),
+    path('EliminarProducto/<str:codigo>', eliminarProducto, name='EliminarProducto'),
 ]

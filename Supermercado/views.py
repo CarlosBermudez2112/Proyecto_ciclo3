@@ -453,32 +453,29 @@ class PRODUCTSView(View):
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
     ## consultar
-    def get(self,request,PRO_Code=""):
-        if len(PRO_Code)>0:
-            pro_list=list(PRODUCTS.objects.filter(PRO_Code=PRO_Code).values())
+    def get(self,request,code=""):
+        if len(code)>0:
+            pro_list=list(PRODUCTS.objects.filter(PRO_Code=code).values())
             if len(pro_list)>0:
-                datos={"productos":pro_list}
+                datos={"productos":pro_list, "Mensaje":"Resultado de la busqueda"}
             else:
-                datos={"Error":"no hay datos encontrados"}
+                datos={"Error":"No se encontró el producto"}
         else:
             pro_list=list(PRODUCTS.objects.values())
             if len(pro_list)>0:
                 datos={"productos":pro_list}
             else:
-                datos={"Error":"no hay datos encontrados"}
+                datos={"Error":"No hay productos registrados"}
         return JsonResponse(datos)
     ##crear  
 
-    def post(self,request):
-        
-        dat=json.loads(request.body)
-                        
-        #creación de json para enviar
-            
+    def post(self,request):      
+        dat=json.loads(request.body)                        
+        #creación de json para enviar            
         newpro=PRODUCTS.objects.create(
             PRO_Name=dat['PRO_Name'],
-            PRO_Cost=dat[' PRO_Cost'],
             PRO_Description=dat['PRO_Description'],
+            PRO_Cost=dat['PRO_Cost'],           
             PRO_Stock=dat['PRO_Stock']
             )
         newpro.save()                                                 
@@ -486,33 +483,32 @@ class PRODUCTSView(View):
         return JsonResponse(datos)
 
         ## actualizar
-    def put(self,request,pro_cod):
+    def put(self,request,code):
         #crear conexion a body
         data=json.loads(request.body)
         #genero la busqueda con el dato
-        productos=list(PRODUCTS.objects.filter(PRO_Code=pro_cod).values())
+        productos=list(PRODUCTS.objects.filter(PRO_Code=code).values())
         #genero la busqueda si hay valores con el dato de busqueda anterior
         if len(productos)>0:
-            newpro=PRODUCTS.objects.get(PRO_Code=pro_cod)
+            newpro=PRODUCTS.objects.get(PRO_Code=code)
             newpro.PRO_Name=data["PRO_Name"]
-            newpro.PRO_Cost=data['PRO_Cost']
             newpro.PRO_Description=data['PRO_Description']
+            newpro.PRO_Cost=data['PRO_Cost']         
             newpro.PRO_Stock=data['PRO_Stock']
             newpro.save()
             
-            mensaje={"mensaje":"se a actualizado el producto"}
+            mensaje={"mensaje":"Se a actualizado el producto"}
         else:
-            mensaje={"mensaje":"no existe el producto"}
+            mensaje={"mensaje":"No existe el producto"}
         return JsonResponse(mensaje)
         
-    def delete(self,request,PRO_Code):
-        
-        buy_cod=list(PRODUCTS.objects.filter(PRO_Code=PRO_Code).values())
-        if len(PRO_Code)>0:
-            PRODUCTS.objects.filter(PRO_Code=PRO_Code).delete()
+    def delete(self,request,code):    
+        buy_cod=list(PRODUCTS.objects.filter(PRO_Code=code).values())
+        if len(buy_cod)>0:
+            PRODUCTS.objects.filter(PRO_Code=code).delete()
             mensaje={"mensaje":"Se a eliminado el producto"}
         else:
-            mensaje={"mensaje":"no existe el dato, no se elimino nada"}
+            mensaje={"mensaje":"El producto no existe"}
         return JsonResponse(mensaje)
 
 class INCOMEView(View):

@@ -26,7 +26,7 @@
 
     <div class="barraNav pe-3">
         <div class="text1 me-3">Bienvenido usuario: {{request.session.user}} </div>
-        <a href="../"><button  class="btn rounded-pill btn-outline-warning" type="button">Inicio</button></a>
+        <a href="{% url 'index' %}"><button  class="btn rounded-pill btn-outline-warning" type="button">Inicio</button></a>
         
         {%if request.session.superusu%}
         <a href="{% url 'MenuAdmin' %}"><button  class="btn rounded-pill btn-outline-warning" type="button">Menú</button></a>

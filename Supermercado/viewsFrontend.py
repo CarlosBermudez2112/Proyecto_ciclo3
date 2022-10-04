@@ -262,3 +262,50 @@ def editarEgreso(request):
 def eliminarEgreso(request, codigo):
     requests.delete('http://localhost:8000/Supermercado/EXPENSES/'+codigo)
     return redirect('../ListaEgresos/') 
+
+
+#METODOS PARA EL CRUD DE LA TABLA PRODUCTOS
+def listaProductos(request):
+    response = requests.get('http://localhost:8000/Supermercado/PRODUCTS/')
+    productos = response.json()
+    return render(request, "productos.html", productos)
+
+def buscarProducto(request):
+    dato = request.POST['codigo']
+    response = requests.get('http://localhost:8000/Supermercado/PRODUCTS/'+dato)
+    producto = response.json()
+    return render(request, 'productos.html', producto)
+
+def formRegistroProducto(request):
+    return render(request, "productoRegistrar.html")
+
+def registrarProducto(request):
+    datos={  
+        "PRO_Name":request.POST["PRO_Name"],
+        "PRO_Description": request.POST["PRO_Description"],
+        "PRO_Cost": request.POST["PRO_Cost"],
+        "PRO_Stock": request.POST["PRO_Stock"]
+    }
+    requests.post('http://localhost:8000/Supermercado/PRODUCTS/', data=json.dumps(datos))
+    return redirect('../ListaProductos/')
+
+def formEditarProducto(request, codigo):
+    response=requests.get('http://localhost:8000/Supermercado/PRODUCTS/'+codigo)
+    producto = response.json()
+    return render(request, "productoEditar.html", producto)
+
+def editarProducto(request):
+    codigo= request.POST["codigo"]
+    datos={
+        "PRO_Code": request.POST["codigo"],  
+        "PRO_Name":request.POST["PRO_Name"],
+        "PRO_Description": request.POST["PRO_Description"],
+        "PRO_Cost": request.POST["PRO_Cost"],
+        "PRO_Stock": request.POST["PRO_Stock"]
+    }
+    requests.put('http://localhost:8000/Supermercado/PRODUCTS/'+codigo, data=json.dumps(datos))
+    return redirect('../ListaProductos/')
+
+def eliminarProducto(request, codigo):
+    requests.delete('http://localhost:8000/Supermercado/PRODUCTS/'+codigo)
+    return redirect('../ListaProductos/') 

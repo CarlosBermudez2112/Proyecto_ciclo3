@@ -10,7 +10,7 @@
     
     <link rel="stylesheet" href="{% static 'css/styleCabecera.css' %}" type="text/css"> 
     
-    <title>Registro egreso</title>
+    <title>Registrar producto</title>
 </head>
 <body>
     <header class="contheader">
@@ -41,28 +41,28 @@
 
 <!--formulario de registro-->
     <div class="container mt-5 col-7 align-center">
-        <div class="container text-center text-success"><h2>REGISTRAR EGRESO</h2></div>
-        <form action="{% url 'RegistrarEgreso' %}" method="post">
+        <div class="container text-center text-success"><h2>REGISTRAR PRODUCTO</h2></div>
+        <form action="{% url 'RegistrarProducto' %}" method="post">
             {% csrf_token %}
             <div class="form-floating mb-3">
-                <select class="form-select" name="NIT_empresa" aria-label="Default select example" required>
-                    {% for empre in empresas %}    
-                    <option value="{{empre.EM_NIT}}">{{empre.EM_NIT}} - {{empre.EM_IDName}}</option>
-                    {% endfor %}
-                </select>
-                <label for="NIT_empresa" class="form-label">NIT Empresa</label>
-            </div>  
-            <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="EGR_Name" name="EGR_Name" required placeholder="Concepto del egreso">
-                <label for="EGR_Name" class="form-label">Concepto del egreso</label>
+                <input type="text" class="form-control" id="PRO_Name" name="PRO_Name" required placeholder="Nombre producto">
+                <label for="PRO_Name" class="form-label">Nombre producto</label>
             </div>
             <div class="form-floating mb-3">
-                <input type="number" class="form-control" id="EGR_Total" name="EGR_Total" required placeholder="Total">
-                <label for="EGR_Total" class="form-label">Total</label>
+                <input type="text" class="form-control" id="PRO_Description" name="PRO_Description" required placeholder="Descripción producto">
+                <label for="PRO_Description" class="form-label">Descripción producto</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="number" class="form-control" id="PRO_Cost" name="PRO_Cost" required placeholder="Costo del producto">
+                <label for="PRO_Cost" class="form-label">Costo del producto</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="number" class="form-control" id="PRO_Stock" name="PRO_Stock" required placeholder="Stock">
+                <label for="PRO_Stock" class="form-label">Stock</label>
             </div>
 
             <div class="d-grid gap-2 d-md-flex justify-content-md-center mb-4">
-                <a href="{% url 'ListaEgresos' %}"><button class="btn btn-outline-primary rounded-pill" type="button">Volver</button></a>
+                <a href="{% url 'ListaProductos' %}"><button class="btn btn-outline-primary rounded-pill" type="button">Volver</button></a>
                <button class="btn btn-outline-success rounded-pill" type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Registrar</button>      
             </div>
         
@@ -71,10 +71,10 @@
                 <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
                      <div class="modal-header">
-                          <h5 class="modal-title" id="staticBackdropLabel">Registrar egreso</h5>
+                          <h5 class="modal-title" id="staticBackdropLabel">Registrar producto</h5>
                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <div class="modal-body">Presione "Confirmar" para registrar este nuevo egreso.</div>
+                        <div class="modal-body">Presione "Confirmar" para registrar este nuevo producto.</div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary rounded-pill" data-bs-dismiss="modal">Cerrar</button>
                             <button type="submit" class="btn btn-primary rounded-pill">Confirmar</button>
