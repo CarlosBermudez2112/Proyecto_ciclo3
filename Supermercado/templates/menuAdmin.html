@@ -50,7 +50,7 @@
                 <div class="col-4 d-grid gap-2 d-md-flex align-items-center justify-content-md-start m-0 p-0">
                     <div class="card border border-success" style="width: 20rem;">
                         <img src="{% static 'img/clientes.png' %}" class="rounded" alt="...">
-                        <a href="../ListaClientes/" class="btn btn-outline-success">CLIENTES</a>
+                        <a href="{% url 'ListaClientes' %}" class="btn btn-outline-success">CLIENTES</a>
                     </div>
                 </div>
             </div>
@@ -61,14 +61,14 @@
                 <div class="col-4 d-grid gap-2 d-md-flex align-items-center justify-content-md-end m-0 p-0">
                     <div class="card border border-success" style="width: 20rem;">
                         <img src="{% static 'img/ingresos.png' %}" class="rounded" alt="...">
-                        <a href="../ListaIngresos/" class="btn btn-outline-success">INGRESOS</a>
+                        <a href="{% url 'ListaIngresos' %}" class="btn btn-outline-success">INGRESOS</a>
                     </div>
                 </div>
                 
                 <div class="col-4 d-grid gap-2 d-md-flex align-items-center justify-content-md-center m-0 p-0">
                     <div class="card border border-success" style="width: 20rem;">
                         <img src="{% static 'img/egresos.png' %}" class="rounded" alt="...">
-                        <a href="#" class="btn btn-outline-success">EGRESOS</a>
+                        <a href="{% url 'ListaEgresos' %}" class="btn btn-outline-success">EGRESOS</a>
                     </div>
                 </div>
 

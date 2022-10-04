@@ -28,8 +28,8 @@
 
         <div class="barraNav pe-3">
             <div class="text1 me-3">Bienvenido usuario: {{request.session.user}} </div>
-            <a href="../"><button  class="btn rounded-pill btn-outline-warning" type="button">Inicio</button></a>
-            <a href="../MenuAdmin/"><button  class="btn rounded-pill btn-outline-warning" type="button">Menú</button></a>
+            <a href="{% url 'index' %}"><button  class="btn rounded-pill btn-outline-warning" type="button">Inicio</button></a>
+            <a href="{% url 'MenuAdmin' %}"><button  class="btn rounded-pill btn-outline-warning" type="button">Menú</button></a>
             <a href="{% url 'cerrar' %}"><button  class="btn rounded-pill btn-outline-warning" type="button">Cerrar sesión</button></a>
         </div>
                 
@@ -38,7 +38,7 @@
         <div class="tabla">        
             <div class="text-center fs-1 fw-bold mb-5">Clientes</div>
             <div class="d-grid gap-2 d-md-flex justify-content-md-center">
-                <form class="row g-3" action="../BuscarCliente/" method="post">
+                <form class="row g-3" action="{% url 'BuscarCliente' %}" method="post">
                     {% csrf_token %}
                     <div class="col-auto">
                         <input class="form-control" type="text" name="usuario" required placeholder="Usuario">                  
@@ -47,10 +47,10 @@
                         <button type="submit" class="btn rounded-pill btn-outline-primary">Buscar</button>
                     </div>
                 </form>
-                <a href="../ListaClientes/">   
+                <a href="{% url 'ListaClientes' %}">   
                     <button class="btn rounded-pill btn-outline-primary" type="button">Todos</button>
                 </a>
-                <a href="../FormCliente/">   
+                <a href="{% url 'FormCliente' %}">   
                     <button class="btn rounded-pill btn-outline-success" type="button">Agregar Cliente</button>
                 </a> 
             </div>
@@ -83,36 +83,18 @@
                 </thead>
                 <tbody>
                     
-                    {% for cli in mensaje%}
-                    <tr>
-                        <td scope="row">{{cli.CLI_User}}</td>
+                    {% for cli in clientes%}
+                    <tr scope="row">
+                        <td>{{cli.CLI_User}}</td>
                         <td>{{cli.CLI_Password}}</td>
                         <td>{{cli.CLI_Names}}</td>
                         <td>{{cli.CLI_LastNames}}</td>
                         <td>{{cli.CLI_Email}}</td>
                         <td>{{cli.CLI_CellPhone}}</td>
                         <td>{{cli.CLI_AD_User_id}}</td>
-                        <td align="center"><a href="{% url 'Formulario2' cli.CLI_User %}"><button type="button" class="btn rounded-pill btn-outline-warning">Editar</button></a></td>
-                        <td align="center"><button type="button" class="btn rounded-pill btn-outline-danger" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Eliminar</button></a></td>
-                    </tr>
-    
-                            <!-- Modal  hace referencia a una ventana emergente para dar la opción de confirmar-->
-                        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-centered">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="staticBackdropLabel">Eliminar usuario</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">Quiere eliminar este usuario?</div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
-                                        <a href="{% url 'Eliminar' cli.CLI_User %}"><button type="button" class="btn btn-primary">Si</button></a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
+                        <td align="center"><a href="{% url 'FormEditarCliente' cli.CLI_User %}"><button type="button" class="btn rounded-pill btn-outline-warning">Editar</button></a></td>
+                        <td align="center"><a href="{% url 'EliminarCliente' cli.CLI_User %}"><button type="button" class="btn rounded-pill btn-outline-danger">Eliminar</button></a></td>                       
+                    </tr>   
                     {% endfor%}
                 </tbody>          
             </table>

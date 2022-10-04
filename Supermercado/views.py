@@ -679,54 +679,56 @@ class EXPENSESView(View):
         if len(code)>0:   
             egreso= list(EXPENSES.objects.filter(EGR_Code=code).values())
             if len(egreso)>0:
-                mensaje = {'mensaje':egreso}
+                mensaje = {'egresos':egreso, "Mensaje":"Resultado de la busqueda."}
             else:
-                mensaje = {'mensaje': "No se encontró el egreso indicado."}
+                mensaje = {'Error': "No se encontró el egreso indicado."}
         else:
             egreso= list(EXPENSES.objects.values()) 
             if len(egreso)>0:
-                mensaje ={"mensaje":egreso}
+                mensaje ={"egresos":egreso}
             else:
-                mensaje ={"mensaje":"No hay egresos registrados."}
+                mensaje ={"Error":"No hay egresos registrados."}
 
         return JsonResponse(mensaje)
 
 
     def post(self,request):
-            data = json.loads(request.body) 
-            NITempresa=BUSINESS.objects.get(EM_NIT=data['NIT_empresa'])
-            
+        data = json.loads(request.body) 
+        try:
+            NITempresa=BUSINESS.objects.get(EM_NIT=data['NIT_empresa'])          
             egreso = EXPENSES.objects.create(
                 EGR_EM_NIT=NITempresa, 
-                
-                EGR_Total = data['Total_egreso']
+                EGR_Name = data['EGR_Name'],
+                EGR_Total = data['EGR_Total']
                 )
             egreso.save()
             mensaje={'mensaje':'Egreso registrado exitosamente'}
-            return JsonResponse(mensaje)
+        except BUSINESS.DoesNotExist:
+            mensaje={'mensaje':'NIT empresa erróneo'}
+        return JsonResponse(mensaje)
 
     def put(self,request,code):
         data = json.loads(request.body)
         egreso= list(EXPENSES.objects.filter(EGR_Code=code).values())
         if len(egreso)>0:
             updateData=EXPENSES.objects.get(EGR_Code=code) 
-            updateData.EGR_Total = data['Total_egreso']        
+            updateData.EGR_Name = data['EGR_Name']
+            updateData.EGR_Fecha = data['EGR_Fecha']
+            updateData.EGR_Total = data['EGR_Total']        
             updateData.save()
-            mensaje={"mensaje":"El total de egreso ha sido actualizado exitosamente"}
+            mensaje={"mensaje":"Actualizado exitosamente"}
         else:
-            mensaje={"mensaje":"No se encontro el egreso indicado."}
+            mensaje={"mensaje":"No se encontró el egreso indicado."}
             
         return JsonResponse(mensaje)
         
     def delete(self,request,code):
-
         egreso= list(EXPENSES.objects.filter(EGR_Code=code).values())
         if len(egreso)>0:
             EXPENSES.objects.filter(EGR_Code=code).delete()
             mensaje={"mensaje":"Egreso eliminado exitosamente"}
         else:
-            mensaje={"mensaje":"No se encontro el egreso indicado."}
-            
+            mensaje={"mensaje":"No se encontró el egreso indicado."}         
         return JsonResponse(mensaje)
 
 

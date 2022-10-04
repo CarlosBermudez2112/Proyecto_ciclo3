@@ -10,10 +10,9 @@
     
     <link rel="stylesheet" href="{% static 'css/styleCabecera.css' %}" type="text/css"> 
     
-    <title>Actualizar ingreso</title>
+    <title>Registro egreso</title>
 </head>
 <body>
-    <!--Cabecera de la página-->
     <header class="contheader">
         <div class="d-flex align-items-center justify-content-md-start" style="background-color: #003301f4;" height="100">
             <!-- LOGO IZQUIERDA -->
@@ -27,8 +26,8 @@
 
     <div class="barraNav pe-3">
         <div class="text1 me-3">Bienvenido usuario: {{request.session.user}} </div>
-        <a href="{% url 'index' %}"><button  class="btn rounded-pill btn-outline-warning" type="button">Inicio</button></a>
-
+        <a href="../"><button  class="btn rounded-pill btn-outline-warning" type="button">Inicio</button></a>
+        
         {%if request.session.superusu%}
         <a href="{% url 'MenuAdmin' %}"><button  class="btn rounded-pill btn-outline-warning" type="button">Menú</button></a>
         {%elif request.session.emple%}
@@ -40,44 +39,31 @@
         <a href="{% url 'cerrar' %}"><button  class="btn rounded-pill btn-outline-warning" type="button">Cerrar sesión</button></a>
     </div>
 
-<!--formulario de Actualización-->
+<!--formulario de registro-->
     <div class="container mt-5 col-7 align-center">
-        <div class="container text-center text-success"><h2>ACTUALIZAR INGRESO</h2></div>
-        <form action="{% url 'ActualizarIngreso' %}" method="post">
+        <div class="container text-center text-success"><h2>REGISTRAR EGRESO</h2></div>
+        <form action="{% url 'RegistrarEgreso' %}" method="post">
             {% csrf_token %}
-            {% for ing in ingresos%}
             <div class="form-floating mb-3">
-                <input type="number" class="form-control" id="codigo" name="codigo" value="{{ing.ING_Code}}" required placeholder="ID Ingreso" readonly>
-                <label for="codigo" class="form-label">ID Ingreso</label>
+                <select class="form-select" name="NIT_empresa" aria-label="Default select example" required>
+                    {% for empre in empresas %}    
+                    <option value="{{empre.EM_NIT}}">{{empre.EM_NIT}} - {{empre.EM_IDName}}</option>
+                    {% endfor %}
+                </select>
+                <label for="NIT_empresa" class="form-label">NIT Empresa</label>
+            </div>  
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="EGR_Name" name="EGR_Name" required placeholder="Concepto del egreso">
+                <label for="EGR_Name" class="form-label">Concepto del egreso</label>
             </div>
             <div class="form-floating mb-3">
-                <input type="number" class="form-control" id="empresa" name="empresa" value="{{ing.ING_EM_NIT_id}}" required placeholder="NIT Empresa" readonly>
-                <label for="empresa" class="form-label">NIT Empresa</label>
+                <input type="number" class="form-control" id="EGR_Total" name="EGR_Total" required placeholder="Total">
+                <label for="EGR_Total" class="form-label">Total</label>
             </div>
-            <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="empleado" name="empleado" value="{{ing.ING_EMP_User_id}}" required placeholder="Empleado" readonly>
-                <label for="empleado" class="form-label">Empleado</label>
-            </div>
-            <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="producto" name="producto" value="{{ing.ING_PRO_Code_id}}" required placeholder="ID producto" readonly>
-                <label for="producto" class="form-label">ID Producto</label>
-            </div>
-            <div class="form-floating mb-3">
-                <input type="datetime" class="form-control" id="fecha" name="fecha" value="{{ing.ING_Fecha}}" required placeholder="Fecha">
-                <label for="fecha" class="form-label">Fecha</label>
-            </div>
-            <div class="form-floating mb-3">             
-                <input type="number" class="form-control" id="ING_Quantity" name="ING_Quantity" value="{{ing.ING_Quantity}}" required placeholder="Cantidad vendida">  
-                <label for="ING_Quantity" class="form-label">Cantidad vendida</label>
-            </div>
-            <div class="form-floating mb-3">
-                <input type="number" class="form-control" id="ING_Total" name="ING_Total" value="{{ing.ING_Total}}" required placeholder="Total">
-                <label for="ING_Total" class="form-label">Total</label>
-             </div>
 
             <div class="d-grid gap-2 d-md-flex justify-content-md-center mb-4">
-               <a href="../ListaIngresos/"><button class="btn btn-outline-primary rounded-pill" type="button">Volver</button></a>
-               <button class="btn btn-outline-success rounded-pill" type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Actualizar</button>
+                <a href="{% url 'ListaEgresos' %}"><button class="btn btn-outline-primary rounded-pill" type="button">Volver</button></a>
+               <button class="btn btn-outline-success rounded-pill" type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Registrar</button>      
             </div>
         
                      <!-- Modal  hace referencia a una ventana emergente para dar la opción de confirmar-->
@@ -85,10 +71,10 @@
                 <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
                      <div class="modal-header">
-                          <h5 class="modal-title" id="staticBackdropLabel">Actualizar ingreso</h5>
+                          <h5 class="modal-title" id="staticBackdropLabel">Registrar egreso</h5>
                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <div class="modal-body">Presione "Confirmar" para actualizar la información del ingreso.</div>
+                        <div class="modal-body">Presione "Confirmar" para registrar este nuevo egreso.</div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary rounded-pill" data-bs-dismiss="modal">Cerrar</button>
                             <button type="submit" class="btn btn-primary rounded-pill">Confirmar</button>
@@ -96,7 +82,7 @@
                     </div>
                 </div>
             </div>
-            {%endfor%} 
+            
         </form>
     </div>   
 </body>
