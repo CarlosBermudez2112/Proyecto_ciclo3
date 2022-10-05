@@ -83,5 +83,5 @@ urlpatterns = [
     path('FormEditarProducto/<str:codigo>', formEditarProducto, name='FormEditarProducto'),
     path('ActualizarProducto/',editarProducto, name='ActualizarProducto'),
     path('EliminarProducto/<str:codigo>', eliminarProducto, name='EliminarProducto'),
->>>>>>> refs/remotes/origin/main
+
 ]
