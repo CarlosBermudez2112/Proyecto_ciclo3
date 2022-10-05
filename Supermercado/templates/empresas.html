@@ -12,7 +12,7 @@
         <link rel="stylesheet" href="{% static 'css/styleCliente.css' %}" type="text/css">
         
     
-        <title>Clientes</title>
+        <title>Empresas</title>
     </head>
     <body>
         <header class="contheader">
@@ -36,22 +36,22 @@
 
 
         <div class="tabla">        
-            <div class="text-center fs-1 fw-bold mb-5">Clientes</div>
+            <div class="text-center fs-1 fw-bold mb-5">Empresas</div>
             <div class="d-grid gap-2 d-md-flex justify-content-md-center">
-                <form class="row g-3" action="{% url 'BuscarCliente' %}" method="post">
+                <form class="row g-3" action="{% url 'BuscarEmpresa' %}" method="post">
                     {% csrf_token %}
                     <div class="col-auto">
-                        <input class="form-control" type="text" name="usuario" required placeholder="Usuario">                  
+                        <input class="form-control" type="text" name="NIT" required placeholder="NIT">                  
                     </div>
                     <div class="col-auto">
                         <button type="submit" class="btn rounded-pill btn-outline-primary">Buscar</button>
                     </div>
                 </form>
-                <a href="{% url 'ListaClientes' %}">   
+                <a href="{% url 'ListaEmpresas' %}">   
                     <button class="btn rounded-pill btn-outline-primary" type="button">Todos</button>
                 </a>
-                <a href="{% url 'FormCliente' %}">   
-                    <button class="btn rounded-pill btn-outline-success" type="button">Agregar Cliente</button>
+                <a href="{% url 'FormEmpresa' %}">   
+                    <button class="btn rounded-pill btn-outline-success" type="button">Agregar Empresa</button>
                 </a> 
             </div>
 
@@ -78,12 +78,13 @@
             <table class="table table-bordered table-striped table-hover mt-2">
                 <thead>
                     <tr align="center">
-                        <th scope="col-auto">USUARIO</th>
-                        <th scope="col-auto">CONTRASEÑA</th>
+                        <th scope="col-auto">NIT</th>
                         <th scope="col-auto">NOMBRE</th>
-                        <th scope="col-auto">APELLIDO</th>
-                        <th scope="col-auto">EMAIL</th>
+                        <th scope="col-auto">CIUDAD</th>
+                        <th scope="col-auto">DIRECCION</th>
                         <th scope="col-auto">TELEFONO</th>
+                        <th scope="col-auto">FECHA</th>
+                        <th scope="col-auto">SECTOR PRODUCTIVO</th>
                         <th scope="col-auto">USER ADMIN</th>
                         <th>Editar</th>
                         <th>Eliminar</th>
@@ -91,17 +92,18 @@
                 </thead>
                 <tbody>
                     
-                    {% for cli in clientes%}
+                    {% for empre in empresas%}
                     <tr scope="row">
-                        <td>{{cli.CLI_User}}</td>
-                        <td>{{cli.CLI_Password}}</td>
-                        <td>{{cli.CLI_Names}}</td>
-                        <td>{{cli.CLI_LastNames}}</td>
-                        <td>{{cli.CLI_Email}}</td>
-                        <td>{{cli.CLI_CellPhone}}</td>
-                        <td>{{cli.CLI_AD_User_id}}</td>
-                        <td align="center"><a href="{% url 'FormEditarCliente' cli.CLI_User %}"><button type="button" class="btn rounded-pill btn-outline-warning">Editar</button></a></td>
-                        <td align="center"><a href="{% url 'EliminarCliente' cli.CLI_User %}"><button type="button" class="btn rounded-pill btn-outline-danger">Eliminar</button></a></td>                       
+                        <td>{{empre.EM_NIT}}</td>
+                        <td>{{empre.EM_IDName}}</td>
+                        <td>{{empre.EM_CITY}}</td>
+                        <td>{{empre.EM_ADDRESS}}</td>
+                        <td>{{empre.EM_CELLPHONE}}</td>
+                        <td>{{empre.EM_DATECREATE}}</td>
+                        <td>{{empre.EM_PRODUCTIVE_SECTOR}}</td>
+                        <td>{{empre.EM_AD_USER_id}}</td>
+                        <td align="center"><a href="{% url 'FormEditarEmpresa' empre.EM_NIT %}"><button type="button" class="btn rounded-pill btn-outline-warning">Editar</button></a></td>
+                        <td align="center"><a href="{% url 'EliminarEmpresa' empre.EM_NIT %}"><button type="button" class="btn rounded-pill btn-outline-danger">Eliminar</button></a></td>                       
                     </tr>   
                     {% endfor%}
                 </tbody>          

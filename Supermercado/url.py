@@ -82,4 +82,13 @@ urlpatterns = [
     path('FormEditarProducto/<str:codigo>', formEditarProducto, name='FormEditarProducto'),
     path('ActualizarProducto/',editarProducto, name='ActualizarProducto'),
     path('EliminarProducto/<str:codigo>', eliminarProducto, name='EliminarProducto'),
+
+    # #URLs PARA LA TABLA EMPRESAS
+    path('ListaEmpresas/', listaEmpresas, name='ListaEmpresas'),
+    path('BuscarEmpresa/', buscarEmpresa, name='BuscarEmpresa'),
+    path('FormEmpresa/', formRegistroEmpresa, name='FormEmpresa'),
+    path('RegistrarEmpresa/',registrarEmpresa, name='RegistrarEmpresa'),
+    path('FormEditarEmpresa/<str:EM_NIT>', formEditarEmpresa, name='FormEditarEmpresa'),
+    path('ActualizarEmpresa/',editarEmpresa, name='ActualizarEmpresa'),
+    path('EliminarEmpresa/<str:EM_NIT>', eliminarEmpresa, name='EliminarEmpresa'),
 ]

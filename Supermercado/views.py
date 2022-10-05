@@ -48,7 +48,7 @@ class ADMINISTRATORView(View):
         data=json.loads(request.body) 
         UserAdmin =list(ADMINISTRATOR.objects.filter(AD_USE=AD_USER).values())
         if len(UserAdmin)>0:
-            admin=UserAdmin.objects.get(AD_USE=AD_USER)
+            admin=ADMINISTRATOR.objects.get(AD_USE=AD_USER)
             admin.AD_PASSWORD=data['AD_PASSWORD']
             admin.AD_EMAIL=data['AD_EMAIL']
             admin.AD_NAMES=data[' AD_NAMES']
@@ -81,15 +81,15 @@ class BUSINESSView(View):
         if EM_nit>0:
             Business=list(BUSINESS.objects.filter(EM_NIT=EM_nit).values())
             if len(Business)>0:
-                datos={"empresas":Business}
+                datos={"empresas":Business, "Mensaje":"Resultado de la busqueda"}
             else:
-                datos={"mensaje":"no hay empresas registradas con ese NIT"}
+                datos={"Error":"No hay empresas registradas con ese NIT"}
         else:
             Business=list(BUSINESS.objects.values())
             if len(Business)>0:
                 datos={"empresas":Business}
             else:
-                datos={"mensaje":"no hay empresas registradas"}
+                datos={"Error":"No hay empresas registradas"}
         return JsonResponse(datos)
     
 
@@ -98,15 +98,15 @@ class BUSINESSView(View):
             dato=json.loads(request.body)
             
             admin=ADMINISTRATOR.objects.get(AD_USER=dato['EM_AD_USER'])
-            Business=BUSINESS.objects.create(   EM_ID=dato['EM_ID'],
-                                                EM_IDName=dato['EM_IDName'],
-                                                EM_NIT=dato['EM_NIT'],
-                                                EM_CITY=dato['EM_CITY'],
-                                                EM_ADDRESS=dato['EM_ADDRESS'],
-                                                EM_CELLPHONE=dato['EM_CELLPHONE'],
-                                                EM_DATECREATE=dato['EM_DATECREATE'],
-                                                EM_PRODUCTIVE_SECTOR=dato['EM_PRODUCTIVE_SECTOR'],
-                                                EM_AD_USER=admin)
+            Business=BUSINESS.objects.create(   
+                EM_IDName=dato['EM_IDName'],
+                EM_NIT=dato['EM_NIT'],
+                EM_CITY=dato['EM_CITY'],
+                EM_ADDRESS=dato['EM_ADDRESS'],
+                EM_CELLPHONE=dato['EM_CELLPHONE'],
+                EM_DATECREATE=dato['EM_DATECREATE'],
+                EM_PRODUCTIVE_SECTOR=dato['EM_PRODUCTIVE_SECTOR'],
+                EM_AD_USER=admin,)
             Business.save()
             datos={'mensaje':'Empresa agregada'}  
         except ADMINISTRATOR.DoesNotExist:
@@ -123,7 +123,7 @@ class BUSINESSView(View):
             Busines.EM_IDName=data["EM_IDName"]
             Busines.EM_CITY=data["EM_CITY"]
             Busines.EM_ADDRESS=data["EM_ADDRESS"]
-            Busines.EM_CELLPHONE=data['EM_CELLPHONE']
+            Busines.EM_CELLPHONE=data["EM_CELLPHONE"]
             Busines.EM_DATECREATE=data["EM_DATECREATE"]
             Busines.EM_PRODUCTIVE_SECTOR=data["EM_PRODUCTIVE_SECTOR"]
             Busines.save()
@@ -133,11 +133,10 @@ class BUSINESSView(View):
         return JsonResponse(mensaje)
     
     ##Eliminar empresas
-    def delete(self,request,EM_ID):
-        
-        EM_ID=list(BUSINESS.objects.filter(EM_ID=EM_ID).values())
-        if len(EM_ID)>0:
-            BUSINESS.objects.filter(EM_ID=EM_ID).delete()
+    def delete(self,request,EM_nit):     
+        business=list(BUSINESS.objects.filter(EM_NIT=EM_nit).values())
+        if len(business)>0:
+            BUSINESS.objects.filter(EM_NIT=EM_nit).delete()
             mensaje={"mensaje":"se a eliminado la empresa seleccionada"}
         else:
             mensaje={"mensaje":"no existe la empresa requerida no eliminada"}
