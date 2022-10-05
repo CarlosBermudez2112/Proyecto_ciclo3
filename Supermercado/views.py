@@ -179,17 +179,14 @@ class EMPLOYEESView(View):
         try:
             dato=json.loads(request.body)
             
-<<<<<<< HEAD
-            empresa=BUSINESS.objects.get(EM_NIT=dato['EMP_EM_NIT_id'])
-            admin=ADMINISTRATOR.objects.get(AD_USER=dato['EMP_AD_USER_id'])
-=======
 
             empresa=BUSINESS.objects.get(EM_NIT=dato['EMP_EM_NIT_id'])
             admin=ADMINISTRATOR.objects.get(AD_USER=dato['EMP_AD_USER_id'])
+
 
             
 
->>>>>>> refs/remotes/origin/main
+
             employees=EMPLOYEES.objects.create(
                                                 EMP_USER=dato['EMP_USER'],
                                                 EMP_PASSWORD=dato['EMP_PASSWORD'],
