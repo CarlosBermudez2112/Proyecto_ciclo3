@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from ast import Delete
 import json
-from types import NoneType
+##from types import NoneType
 from django.views import View
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
@@ -48,7 +48,7 @@ class ADMINISTRATORView(View):
         data=json.loads(request.body) 
         UserAdmin =list(ADMINISTRATOR.objects.filter(AD_USE=AD_USER).values())
         if len(UserAdmin)>0:
-            admin=UserAdmin.objects.get(AD_USE=AD_USER)
+            admin=ADMINISTRATOR.objects.get(AD_USE=AD_USER)
             admin.AD_PASSWORD=data['AD_PASSWORD']
             admin.AD_EMAIL=data['AD_EMAIL']
             admin.AD_NAMES=data[' AD_NAMES']
@@ -81,15 +81,19 @@ class BUSINESSView(View):
         if EM_nit>0:
             Business=list(BUSINESS.objects.filter(EM_NIT=EM_nit).values())
             if len(Business)>0:
+
                 datos={"empresas":Business}
+
+                datos={"empresas":Business, "Mensaje":"Resultado de la busqueda"}
+
             else:
-                datos={"mensaje":"no hay empresas registradas con ese NIT"}
+                datos={"Error":"No hay empresas registradas con ese NIT"}
         else:
             Business=list(BUSINESS.objects.values())
             if len(Business)>0:
                 datos={"empresas":Business}
             else:
-                datos={"mensaje":"no hay empresas registradas"}
+                datos={"Error":"No hay empresas registradas"}
         return JsonResponse(datos)
     
 
@@ -98,15 +102,15 @@ class BUSINESSView(View):
             dato=json.loads(request.body)
             
             admin=ADMINISTRATOR.objects.get(AD_USER=dato['EM_AD_USER'])
-            Business=BUSINESS.objects.create(   EM_ID=dato['EM_ID'],
-                                                EM_IDName=dato['EM_IDName'],
-                                                EM_NIT=dato['EM_NIT'],
-                                                EM_CITY=dato['EM_CITY'],
-                                                EM_ADDRESS=dato['EM_ADDRESS'],
-                                                EM_CELLPHONE=dato['EM_CELLPHONE'],
-                                                EM_DATECREATE=dato['EM_DATECREATE'],
-                                                EM_PRODUCTIVE_SECTOR=dato['EM_PRODUCTIVE_SECTOR'],
-                                                EM_AD_USER=admin)
+            Business=BUSINESS.objects.create(   
+                EM_IDName=dato['EM_IDName'],
+                EM_NIT=dato['EM_NIT'],
+                EM_CITY=dato['EM_CITY'],
+                EM_ADDRESS=dato['EM_ADDRESS'],
+                EM_CELLPHONE=dato['EM_CELLPHONE'],
+                EM_DATECREATE=dato['EM_DATECREATE'],
+                EM_PRODUCTIVE_SECTOR=dato['EM_PRODUCTIVE_SECTOR'],
+                EM_AD_USER=admin,)
             Business.save()
             datos={'mensaje':'Empresa agregada'}  
         except ADMINISTRATOR.DoesNotExist:
@@ -123,7 +127,7 @@ class BUSINESSView(View):
             Busines.EM_IDName=data["EM_IDName"]
             Busines.EM_CITY=data["EM_CITY"]
             Busines.EM_ADDRESS=data["EM_ADDRESS"]
-            Busines.EM_CELLPHONE=data['EM_CELLPHONE']
+            Busines.EM_CELLPHONE=data["EM_CELLPHONE"]
             Busines.EM_DATECREATE=data["EM_DATECREATE"]
             Busines.EM_PRODUCTIVE_SECTOR=data["EM_PRODUCTIVE_SECTOR"]
             Busines.save()
@@ -133,11 +137,10 @@ class BUSINESSView(View):
         return JsonResponse(mensaje)
     
     ##Eliminar empresas
-    def delete(self,request,EM_ID):
-        
-        EM_ID=list(BUSINESS.objects.filter(EM_ID=EM_ID).values())
-        if len(EM_ID)>0:
-            BUSINESS.objects.filter(EM_ID=EM_ID).delete()
+    def delete(self,request,EM_nit):     
+        business=list(BUSINESS.objects.filter(EM_NIT=EM_nit).values())
+        if len(business)>0:
+            BUSINESS.objects.filter(EM_NIT=EM_nit).delete()
             mensaje={"mensaje":"se a eliminado la empresa seleccionada"}
         else:
             mensaje={"mensaje":"no existe la empresa requerida no eliminada"}
@@ -155,13 +158,20 @@ class EMPLOYEESView(View):
             if len(Employees)>0:
                 datos={"empleados":Employees}
             else:
+
+                datos={"Mensaje":"No hay empleados registrados con ese Emp_user"}
+
                 datos={"mensaje":"No hay empleados registrados con ese usuario"}
+
         else:
             Employees=list(EMPLOYEES.objects.values())
             if len(Employees)>0:
                 datos={"empleados":Employees}
             else:
+                datos={"Mensaje":"No hay empleados registradas"}
+
                 datos={"mensaje":"No hay empleados registrados"}
+
         return JsonResponse(datos)
     
     ##insertar empleado 
@@ -169,8 +179,17 @@ class EMPLOYEESView(View):
         try:
             dato=json.loads(request.body)
             
+<<<<<<< HEAD
             empresa=BUSINESS.objects.get(EM_NIT=dato['EMP_EM_NIT_id'])
             admin=ADMINISTRATOR.objects.get(AD_USER=dato['EMP_AD_USER_id'])
+=======
+
+            empresa=BUSINESS.objects.get(EM_NIT=dato['EMP_EM_NIT_id'])
+            admin=ADMINISTRATOR.objects.get(AD_USER=dato['EMP_AD_USER_id'])
+
+            
+
+>>>>>>> refs/remotes/origin/main
             employees=EMPLOYEES.objects.create(
                                                 EMP_USER=dato['EMP_USER'],
                                                 EMP_PASSWORD=dato['EMP_PASSWORD'],
@@ -210,11 +229,11 @@ class EMPLOYEESView(View):
     
     ##eliminar empleado
     
-    def delete(self,request,EMP_USER):
+    def delete(self,request,EMP_User):
         
-        EMP_USER=list(BUSINESS.objects.filter(EMP_USER=EMP_USER).values())
+        EMP_USER=list(EMPLOYEES.objects.filter(EMP_USER=EMP_User).values())
         if len(EMP_USER)>0:
-            EMPLOYEEPAYROLL.objects.filter(EMP_USER=EMP_USER).delete()
+            EMPLOYEES.objects.filter(EMP_USER=EMP_User).delete()
             mensaje={"mensaje":"se a eliminado el empleado  seleccionada"}
         else:
             mensaje={"mensaje":"no existe el empleado requerida no eliminada"}
@@ -458,7 +477,11 @@ class PRODUCTSView(View):
         if len(code)>0:
             pro_list=list(PRODUCTS.objects.filter(PRO_Code=code).values())
             if len(pro_list)>0:
+
+                datos={"productos":pro_list}
+
                 datos={"productos":pro_list, "Mensaje":"Resultado de la busqueda"}
+
             else:
                 datos={"Error":"No se encontró el producto"}
         else:

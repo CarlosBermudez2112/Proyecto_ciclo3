@@ -21,9 +21,7 @@ class ADMINISTRATOR(models.Model):
 ## Creación de la tabla empresas junto con sus campos
 
 
-class BUSINESS(models.Model):
-
-    
+class BUSINESS(models.Model):  
     EM_IDName=models.TextField(max_length=50,null=False)
     EM_NIT=models.IntegerField(primary_key=True)
     EM_CITY=models.TextField(max_length=50)

@@ -4,7 +4,7 @@ from django.http import HttpResponse
 import requests
 import json
 from datetime import datetime
-
+from django.contrib import messages
 
 fecha=""
 def Catalogo(request):
@@ -121,6 +121,7 @@ def registrarCliente(request):
         "userAdmin": request.POST["userAdmin"]
     }
     requests.post('http://localhost:8000/Supermercado/CUSTOMERS/', data=json.dumps(datos))
+    messages.success(request, 'Usuario registrado exitosamente.')
     return redirect('../ListaClientes/')
 
 def formEditarCliente(request, usuario):
@@ -139,12 +140,14 @@ def editarCliente(request):
         "telefono": request.POST["telefono"],
         "userAdmin": request.POST["userAdmin"]
     }
-    # print(datos)
+
     requests.put('http://localhost:8000/Supermercado/CUSTOMERS/'+usuario, data=json.dumps(datos))
+    messages.success(request, 'El usuario '+usuario+' ha sido actualizado.')
     return redirect('../ListaClientes/')
 
 def eliminarCliente(request, usuario):
     requests.delete('http://localhost:8000/Supermercado/CUSTOMERS/'+usuario)
+    messages.error(request, 'El usuario '+usuario+ ' ha sido eliminado.')
     return redirect('../ListaClientes/') 
 
 def listaClientesEMP(request):
@@ -190,6 +193,7 @@ def registrarIngreso(request):
         "ING_Total": request.POST["ING_Total"]
     }
     requests.post('http://localhost:8000/Supermercado/INCOME/', data=json.dumps(datos))
+    messages.success(request, 'Ingreso registrado exitosamente.')
     return redirect('../ListaIngresos/')
 
 def formEditarIngreso(request, codigo):
@@ -209,10 +213,12 @@ def editarIngreso(request):
         "ING_Total": request.POST["ING_Total"]
     }
     requests.put('http://localhost:8000/Supermercado/INCOME/'+codigo, data=json.dumps(datos))
+    messages.success(request, 'El ingreso '+codigo+' ha sido actualizado.')
     return redirect('../ListaIngresos/')
 
 def eliminarIngreso(request, codigo):
     requests.delete('http://localhost:8000/Supermercado/INCOME/'+codigo)
+    messages.error(request, 'El ingreso '+codigo+ ' ha sido eliminado.')
     return redirect('../ListaIngresos/') 
 
 
@@ -240,6 +246,7 @@ def registrarEgreso(request):
         "EGR_Total": request.POST["EGR_Total"]
     }
     requests.post('http://localhost:8000/Supermercado/EXPENSES/', data=json.dumps(datos))
+    messages.success(request, 'Egreso registrado exitosamente.')
     return redirect('../ListaEgresos/')
 
 def formEditarEgreso(request, codigo):
@@ -257,10 +264,12 @@ def editarEgreso(request):
         "EGR_Total": request.POST["EGR_Total"]
     }
     requests.put('http://localhost:8000/Supermercado/EXPENSES/'+codigo, data=json.dumps(datos))
+    messages.success(request, 'El Egreso '+codigo+' ha sido actualizado.')
     return redirect('../ListaEgresos/')
 
 def eliminarEgreso(request, codigo):
     requests.delete('http://localhost:8000/Supermercado/EXPENSES/'+codigo)
+    messages.error(request, 'El egreso '+codigo+ ' ha sido eliminado.')
     return redirect('../ListaEgresos/') 
 
 
@@ -287,6 +296,7 @@ def registrarProducto(request):
         "PRO_Stock": request.POST["PRO_Stock"]
     }
     requests.post('http://localhost:8000/Supermercado/PRODUCTS/', data=json.dumps(datos))
+    messages.success(request, 'Producto registrado exitosamente.')
     return redirect('../ListaProductos/')
 
 def formEditarProducto(request, codigo):
@@ -304,8 +314,154 @@ def editarProducto(request):
         "PRO_Stock": request.POST["PRO_Stock"]
     }
     requests.put('http://localhost:8000/Supermercado/PRODUCTS/'+codigo, data=json.dumps(datos))
+    messages.success(request, 'El producto '+codigo+' ha sido actualizado.')
     return redirect('../ListaProductos/')
 
 def eliminarProducto(request, codigo):
     requests.delete('http://localhost:8000/Supermercado/PRODUCTS/'+codigo)
+    messages.error(request, 'El producto '+codigo+ ' ha sido eliminado.')
     return redirect('../ListaProductos/') 
+
+
+#METODOS PARA EL CRUD DE LA TABLA EMPRESAS
+def listaEmpresas(request):
+    response = requests.get('http://localhost:8000/Supermercado/BUSINESS/')
+    empresas = response.json()
+    return render(request, "empresas.html", empresas)
+
+def buscarEmpresa(request):
+    dato = request.POST['NIT']
+    response = requests.get('http://localhost:8000/Supermercado/BUSINESS/'+dato)
+    empresa = response.json()
+    return render(request, 'empresas.html', empresa)
+
+def formRegistroEmpresa(request):
+    response=requests.get('http://localhost:8000/Supermercado/ADMINISTRATOR/')
+    userAdmin = response.json()
+    return render(request, "empresaRegistrar.html", userAdmin)
+
+def registrarEmpresa(request):
+    datos={    
+        "EM_IDName": request.POST["EM_IDName"],
+        "EM_NIT": request.POST["EM_NIT"],
+        "EM_CITY": request.POST["EM_CITY"],
+        "EM_ADDRESS": request.POST["EM_ADDRESS"],
+        "EM_CELLPHONE": request.POST["EM_CELLPHONE"],
+        "EM_DATECREATE": request.POST["EM_DATECREATE"],
+        "EM_PRODUCTIVE_SECTOR": request.POST["EM_PRODUCTIVE_SECTOR"],
+        "EM_AD_USER": request.POST["userAdmin"]
+    }
+    requests.post('http://localhost:8000/Supermercado/BUSINESS/', data=json.dumps(datos))
+    messages.success(request, 'Empresa registrada exitosamente.')
+    return redirect('../ListaEmpresas/')
+
+def formEditarEmpresa(request, EM_NIT):
+    response=requests.get('http://localhost:8000/Supermercado/BUSINESS/'+EM_NIT)
+    empresa = response.json()
+    print(empresa)
+    return render(request, "empresaEditar.html", empresa)
+
+def editarEmpresa(request):
+    empresa= request.POST['EM_NIT']
+    datos={    
+        "EM_IDName": request.POST["EM_IDName"],
+        "EM_NIT": request.POST["EM_NIT"],
+        "EM_CITY": request.POST["EM_CITY"],
+        "EM_ADDRESS": request.POST["EM_ADDRESS"],
+        "EM_CELLPHONE": request.POST["EM_CELLPHONE"],
+        "EM_DATECREATE": request.POST["EM_DATECREATE"],
+        "EM_PRODUCTIVE_SECTOR": request.POST["EM_PRODUCTIVE_SECTOR"],
+    }
+    requests.put('http://localhost:8000/Supermercado/BUSINESS/'+empresa, data=json.dumps(datos))
+    messages.success(request, 'La empresa '+empresa+' ha sido actualizada.')
+    return redirect('../ListaEmpresas/')
+
+def eliminarEmpresa(request, EM_NIT):
+    requests.delete('http://localhost:8000/Supermercado/BUSINESS/'+EM_NIT)
+    messages.error(request, 'La empresa '+EM_NIT+ ' ha sido eliminada.')
+    return redirect('../ListaEmpresas/') 
+
+
+
+
+
+
+##Listar empleados
+
+def ListarEmpleados(request):
+    response=requests.get("http://127.0.0.1:8000/Supermercado/EMPLOYEES/")
+    Empleados=response.json()
+    print(Empleados)    
+    return render(request,"Empleados.html",Empleados)
+
+## Buscra por user
+def ListaDeEmpleadosuser(request):
+    
+    usuarioEmple=request.POST['EMP_USER']
+
+    response=requests.get("http://127.0.0.1:8000/Supermercado/EMPLOYEES/"+usuarioEmple)
+    Empleados=response.json()    
+    print(Empleados)
+    return render(request,"Empleados.html",Empleados)
+##Eliminar empleados
+
+
+def EliminarEmpleados(request,EMP_User):
+    
+    requests.delete("http://127.0.0.1:8000/Supermercado/EMPLOYEES/"+EMP_User)
+   
+    return redirect('../ListaDeEmpleados/')
+
+##crear empleado
+def CrearEmpleado(request):
+    response=requests.get('http://localhost:8000/Supermercado/BUSINESS/')
+    empresa = response.json()
+    listaempresa = empresa
+    #return render(request, "ingresoRegistrar.html",datos)
+    print(listaempresa)
+    return render (request,'FormularioEmpleado.html',listaempresa)
+
+def GuardarEmpleado(request):
+    datos={
+      "EMP_USER": request.POST["IdUsuario"],
+      "EMP_PASSWORD": request.POST["exampleInputPassword1"],
+      "EMP_EMAIL":  request.POST["exampleInputEmail1"],
+      "EMP_NAMES": request.POST["Nombre"],
+      "EMP_LASTNAMES": request.POST["Apellidos"],
+      "EMP_CELLPHONE": request.POST["Telefono"],
+      "EMP_ROLE": "Empleado",
+      "EMP_EM_NIT_id":request.POST["Empresa"],
+      "EMP_AD_USER_id": "admin"
+    }
+    requests.post("http://127.0.0.1:8000/Supermercado/EMPLOYEES/",data=json.dumps(datos))
+    
+    return redirect("../ListaDeEmpleados/")
+
+
+####actuzliaxr empleado
+
+def FormularioActualizarEmpleado(request):
+    response=requests.get('http://localhost:8000/Supermercado/BUSINESS/')
+    empresa = response.json()
+    listaempresa = empresa
+    #return render(request, "ingresoRegistrar.html",datos)
+    print(listaempresa)
+    return render (request,'EditarFormularioEmpleado.html',listaempresa)
+
+def EditarEmpleado(request):
+    IdUsuario=request.POST["IdUsuario"]
+    datos={
+       
+      "EMP_USER": request.POST["IdUsuario"] ,
+      "EMP_PASSWORD": request.POST["exampleInputPassword1"],
+      "EMP_EMAIL":  request.POST["exampleInputEmail1"],
+      "EMP_NAMES": request.POST["Nombre"],
+      "EMP_LASTNAMES": request.POST["Apellidos"],
+      "EMP_CELLPHONE": request.POST["Telefono"],
+      "EMP_ROLE": "Empleado",
+      #"EMP_EM_NIT_id":request.POST["Empresa"],
+      #"EMP_AD_USER_id": "admin"
+    }
+    requests.put("http://127.0.0.1:8000/Supermercado/EMPLOYEES/"+ IdUsuario,data=json.dumps(datos))
+    
+    return redirect("../ListaDeEmpleados/")

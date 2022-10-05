@@ -39,6 +39,7 @@ urlpatterns = [
     path('listaCompra_eli/<str:usuario>',listCompra_eli,name="eliLis"),
     path('ingresar/', iniciarsesion, name="ingresar"),
     path('cerrar/', cerrarsesion, name="cerrar"),
+
     path('comprar/<str:usuario>',comprar,name="comprar"),
 
     path('MenuAdmin/', menuAdmin, name="MenuAdmin"),
@@ -83,5 +84,28 @@ urlpatterns = [
     path('FormEditarProducto/<str:codigo>', formEditarProducto, name='FormEditarProducto'),
     path('ActualizarProducto/',editarProducto, name='ActualizarProducto'),
     path('EliminarProducto/<str:codigo>', eliminarProducto, name='EliminarProducto'),
+
+
+    # #URLs PARA LA TABLA EMPRESAS
+    path('ListaEmpresas/', listaEmpresas, name='ListaEmpresas'),
+    path('BuscarEmpresa/', buscarEmpresa, name='BuscarEmpresa'),
+    path('FormEmpresa/', formRegistroEmpresa, name='FormEmpresa'),
+    path('RegistrarEmpresa/',registrarEmpresa, name='RegistrarEmpresa'),
+    path('FormEditarEmpresa/<str:EM_NIT>', formEditarEmpresa, name='FormEditarEmpresa'),
+    path('ActualizarEmpresa/',editarEmpresa, name='ActualizarEmpresa'),
+    path('EliminarEmpresa/<str:EM_NIT>', eliminarEmpresa, name='EliminarEmpresa'),
+    
+    
+    
+    ###empleados
+    path('ListaDeEmpleados/',ListarEmpleados, name="ListarEmpleados"),
+    path('BuscarEmpleados/',ListaDeEmpleadosuser, name="BuscarEmpleados"),
+    path('eliminar/<str:EMP_User>',EliminarEmpleados,name="eliminar"),
+    path('FormularioAgregarEmpleado/',CrearEmpleado,name="CrearEmpleado"),
+    path('GuardarEmpleado/',GuardarEmpleado,name="GuardarEmpleado"),
+    
+    path('EditarFormularioAgregarEmpleado/',FormularioActualizarEmpleado,name="EditarEmpleado"),
+    path('EditarFormularioAgregarEmpleado1',EditarEmpleado,name="EditarGuardarEmpleado"),
+
 
 ]
