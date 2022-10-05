@@ -36,7 +36,85 @@ urlpatterns = [
     path('listaCompra/',listCompra,name="listCompra"),
     path('listaCompra_eli/',listCompra_eli,name="listaCompra_eli"),
     path('ingresar/', iniciarsesion, name="ingresar"),
-    path('cerrar/', cerrarsesion, name="cerrar")
+    path('cerrar/', cerrarsesion, name="cerrar"),
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    ###empleados
+    path('ListaDeEmpleados/',ListarEmpleados, name="ListarEmpleados"),
+    path('BuscarEmpleados/',ListaDeEmpleadosuser, name="BuscarEmpleados"),
+    path('eliminar/<str:EMP_User>',EliminarEmpleados,name="eliminar"),
+    path('FormularioAgregarEmpleado/',CrearEmpleado,name="CrearEmpleado"),
+    path('GuardarEmpleado/',GuardarEmpleado,name="GuardarEmpleado"),
+    
+    path('EditarFormularioAgregarEmpleado/',FormularioActualizarEmpleado,name="EditarEmpleado"),
+    path('EditarFormularioAgregarEmpleado1',EditarEmpleado,name="EditarGuardarEmpleado"),
     
 ]
