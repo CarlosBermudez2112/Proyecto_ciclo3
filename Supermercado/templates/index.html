@@ -22,16 +22,58 @@
                     <ul class="menuIND">
                         <li class="Inicio b1" ><a href="#">Inicio</a></li>
                         <li class="opcion2 b1" ><a href="{% url 'catalogo' %}">catalogo</a></li>
-                        {%if user.is_authenticated%}
-                    <li class="inicio b1" id="usu" name="usu" >{{user.first_name}}</li>
-                    
-                    <li class="opcion4 b1 login"  >
                         
-                        <a class="login" href="{% url 'cerrar' %}">CERRAR</a></li>
-                    {%else%}
-                    <li class="opcion4 b1 login" >
-                        <a class="login" href="{% url 'ingresar' %}">LOGIN</a></li>
-                    {%endif%}
+                        {%if request.session.user and not request.session.superusu and not request.session.emple%}
+                        <li class="nombre" id="usu" name="usu" width="2em" >Bienvenid@ {{request.session.user}} </li>
+                        <li class="canastal" ><a href="{% url 'listCompra' request.session.user%}"><img class="canasta" src="{%static 'css/canasta.png'%}"></a></li>                    
+                        
+                        
+                        
+                        <li class="opcion4 b1 login me45"><a>menu</a>
+                            <ul class="nav">
+                                <li><a class="" href="#">PERFIL</a></li>
+                                <li><a class="" href="#">CONFIGURACIÓN</a></li>
+                                <li><a class="" href="{% url 'cerrar' %}">CERRAR-C</a></li>
+                            </ul>
+
+                            
+                            
+                        </li>
+                       
+
+
+
+                        {%elif request.session.superusu%}
+                        <li class="opcion2 b1" ><a href="{% url 'MenuAdmin' %}">Transacciones</a></li>
+                        <li class="nombre" id="usu" name="usu" ><div class="nombr">Bienvenid@ administrador {{request.session.user}}</div> </li>
+                        <li class="canastal" ><a href="{% url 'listCompra' request.session.user%}"><img class="canasta" src="{%static 'css/canasta.png'%}"></a></li>
+                        <li class="opcion4 b1 login me45"><a>menu</a>
+                            <ul class="nav">
+                                <li><a class="" href="#">PERFIL</a></li>
+                                <li><a class="" href="#">CONFIGURACIÓN</a></li>
+                                <li><a class="" href="{% url 'cerrar' %}">CERRAR-C</a></li>
+                            </ul>
+
+                            
+                            
+                        </li>
+                        {%elif request.session.emple%}
+                        <li class="opcion2 b1" ><a href="{% url 'MenuEmpleado' %}">Transacciones</a></li>
+                        <li class="nombre" id="usu" name="usu" ><div class="nombr">Bienvenid@ empleado {{request.session.user}}</div> </li>
+                        <li class="canastal" ><a href="{% url 'listCompra' request.session.user%}"><img class="canasta" src="{%static 'css/canasta.png'%}"></a></li>
+                        <li class="opcion4 b1 login me45"><a>menu</a>
+                            <ul class="nav">
+                                <li><a class="" href="#">PERFIL</a></li>
+                                <li><a class="" href="#">CONFIGURACIÓN</a></li>
+                                <li><a class="" href="{% url 'cerrar' %}">CERRAR-C</a></li>
+                            </ul>
+
+                            
+                            
+                        </li>
+                        {%else%}
+                        <li class="opcion4 b1 login" ><a class="login" href="{% url 'ingresar' %}">LOGIN</a></li>
+                        {%endif%}
                     </ul>
                 </div>
 

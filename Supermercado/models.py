@@ -21,11 +21,9 @@ class ADMINISTRATOR(models.Model):
 ## Creación de la tabla empresas junto con sus campos
 
 
-class BUSINESS(models.Model):
-
-    
+class BUSINESS(models.Model):  
     EM_IDName=models.TextField(max_length=50,null=False)
-    EM_NIT=models.IntegerField(primary_key=True,unique=True)
+    EM_NIT=models.IntegerField(primary_key=True)
     EM_CITY=models.TextField(max_length=50)
     EM_ADDRESS=models.TextField(max_length=50)
     EM_CELLPHONE=models.TextField(max_length=10)
@@ -86,7 +84,7 @@ class CUSTOMERS(models.Model):
     CLI_Names = models.TextField(max_length=50,null=False)
     CLI_LastNames= models.TextField(max_length=50,null=False)
     CLI_Email = models.EmailField(unique=True)
-    CLI_CellPhone= models.TextField(max_length=50,unique=True)
+    CLI_CellPhone= models.TextField(max_length=15,unique=True)
     CLI_AD_User= models.ForeignKey(ADMINISTRATOR, on_delete=models.CASCADE)
 
 class LISTBUY(models.Model):

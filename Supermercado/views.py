@@ -48,7 +48,7 @@ class ADMINISTRATORView(View):
         data=json.loads(request.body) 
         UserAdmin =list(ADMINISTRATOR.objects.filter(AD_USE=AD_USER).values())
         if len(UserAdmin)>0:
-            admin=UserAdmin.objects.get(AD_USE=AD_USER)
+            admin=ADMINISTRATOR.objects.get(AD_USE=AD_USER)
             admin.AD_PASSWORD=data['AD_PASSWORD']
             admin.AD_EMAIL=data['AD_EMAIL']
             admin.AD_NAMES=data[' AD_NAMES']
@@ -81,15 +81,19 @@ class BUSINESSView(View):
         if EM_nit>0:
             Business=list(BUSINESS.objects.filter(EM_NIT=EM_nit).values())
             if len(Business)>0:
+
                 datos={"empresas":Business}
+
+                datos={"empresas":Business, "Mensaje":"Resultado de la busqueda"}
+
             else:
-                datos={"mensaje":"no hay empresas registradas con ese Id"}
+                datos={"Error":"No hay empresas registradas con ese NIT"}
         else:
             Business=list(BUSINESS.objects.values())
             if len(Business)>0:
                 datos={"empresas":Business}
             else:
-                datos={"mensaje":"no hay empresas registradas"}
+                datos={"Error":"No hay empresas registradas"}
         return JsonResponse(datos)
     
 
@@ -98,19 +102,19 @@ class BUSINESSView(View):
             dato=json.loads(request.body)
             
             admin=ADMINISTRATOR.objects.get(AD_USER=dato['EM_AD_USER'])
-            Business=BUSINESS.objects.create(   EM_ID=dato['EM_ID'],
-                                                EM_IDName=dato['EM_IDName'],
-                                                EM_NIT=dato['EM_NIT'],
-                                                EM_CITY=dato['EM_CITY'],
-                                                EM_ADDRESS=dato['EM_ADDRESS'],
-                                                EM_CELLPHONE=dato['EM_CELLPHONE'],
-                                                EM_DATECREATE=dato['EM_DATECREATE'],
-                                                EM_PRODUCTIVE_SECTOR=dato['EM_PRODUCTIVE_SECTOR'],
-                                                EM_AD_USER=admin,)
+            Business=BUSINESS.objects.create(   
+                EM_IDName=dato['EM_IDName'],
+                EM_NIT=dato['EM_NIT'],
+                EM_CITY=dato['EM_CITY'],
+                EM_ADDRESS=dato['EM_ADDRESS'],
+                EM_CELLPHONE=dato['EM_CELLPHONE'],
+                EM_DATECREATE=dato['EM_DATECREATE'],
+                EM_PRODUCTIVE_SECTOR=dato['EM_PRODUCTIVE_SECTOR'],
+                EM_AD_USER=admin,)
             Business.save()
             datos={'mensaje':'Empresa agregada'}  
         except ADMINISTRATOR.DoesNotExist:
-            datos={'mensaje':'empresa no agregada administrador no existe'}
+            datos={'mensaje':'Empresa no agregada administrador no existe'}
         return JsonResponse(datos)
 
     ##Actualizar empresa
@@ -120,25 +124,23 @@ class BUSINESSView(View):
         Business=list(BUSINESS.objects.filter(EM_NIT=EM_nit).values())
         if len(Business)>0:
             Busines=BUSINESS.objects.get(EM_NIT=EM_nit)
-            Busines.EM_ID=data['EM_ID']
             Busines.EM_IDName=data["EM_IDName"]
             Busines.EM_CITY=data["EM_CITY"]
             Busines.EM_ADDRESS=data["EM_ADDRESS"]
-            Busines.EM_CELLPHONE=data['EM_CELLPHONE']
+            Busines.EM_CELLPHONE=data["EM_CELLPHONE"]
             Busines.EM_DATECREATE=data["EM_DATECREATE"]
             Busines.EM_PRODUCTIVE_SECTOR=data["EM_PRODUCTIVE_SECTOR"]
             Busines.save()
-            mensaje={"mensaje":"se actualizo la empresa requerida"}
+            mensaje={"mensaje":"Se actualizo la empresa requerida"}
         else:
-            mensaje={"mensaje":"no existe la empresa  requerida"}
+            mensaje={"mensaje":"No existe la empresa  requerida"}
         return JsonResponse(mensaje)
     
     ##Eliminar empresas
-    def delete(self,request,EM_ID):
-        
-        EM_ID=list(BUSINESS.objects.filter(EM_ID=EM_ID).values())
-        if len(EM_ID)>0:
-            EMPLOYEEPAYROLL.objects.filter(EM_ID=EM_ID).delete()
+    def delete(self,request,EM_nit):     
+        business=list(BUSINESS.objects.filter(EM_NIT=EM_nit).values())
+        if len(business)>0:
+            BUSINESS.objects.filter(EM_NIT=EM_nit).delete()
             mensaje={"mensaje":"se a eliminado la empresa seleccionada"}
         else:
             mensaje={"mensaje":"no existe la empresa requerida no eliminada"}
@@ -154,28 +156,35 @@ class EMPLOYEESView(View):
         if len(EMP_User)>0:
             Employees=list(EMPLOYEES.objects.filter(EMP_USER=EMP_User).values())
             if len(Employees)>0:
-                datos={"mensaje":Employees}
+                datos={"empleados":Employees}
             else:
+
                 datos={"Mensaje":"No hay empleados registrados con ese Emp_user"}
+
+                datos={"mensaje":"No hay empleados registrados con ese usuario"}
+
         else:
             Employees=list(EMPLOYEES.objects.values())
             if len(Employees)>0:
-                datos={"mensaje":Employees}
+                datos={"empleados":Employees}
             else:
                 datos={"Mensaje":"No hay empleados registradas"}
+
+                datos={"mensaje":"No hay empleados registrados"}
+
         return JsonResponse(datos)
     
-    
-    
-    ##insertar empleado
-    
-    
+    ##insertar empleado 
     def post(self,request):
         try:
             dato=json.loads(request.body)
             
+
             empresa=BUSINESS.objects.get(EM_NIT=dato['EMP_EM_NIT_id'])
             admin=ADMINISTRATOR.objects.get(AD_USER=dato['EMP_AD_USER_id'])
+
+            
+
             employees=EMPLOYEES.objects.create(
                                                 EMP_USER=dato['EMP_USER'],
                                                 EMP_PASSWORD=dato['EMP_PASSWORD'],
@@ -187,9 +196,9 @@ class EMPLOYEESView(View):
                                                 EMP_EM_NIT=empresa,
                                                 EMP_AD_USER=admin)
             employees.save()
-            datos={'mensaje':'empleada agregada'}  
+            datos={'mensaje':'Empleado registrado exitosamente'}  
         except ADMINISTRATOR.DoesNotExist:
-            datos={'mensaje':'empleado no agregadp administrador no existe'}
+            datos={'mensaje':'Empleado no agregado administrador no existe'}
         return JsonResponse(datos)
     
     ##actualizar empleado
@@ -207,9 +216,9 @@ class EMPLOYEESView(View):
             empleado.EMP_ROLE=data["EMP_ROLE"]
             
             empleado.save()
-            mensaje={"mensaje":"se actualizo el empleado requeridp"}
+            mensaje={"mensaje":"Se actualizo el empleado requerido"}
         else:
-            mensaje={"mensaje":"no existe el empleado  requerido"}
+            mensaje={"mensaje":"No existe el empleado  requerido"}
         return JsonResponse(mensaje)
     
     ##eliminar empleado
@@ -382,9 +391,9 @@ class LISTBUYView(View):
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
     ## consultar lista compras
-    def get(self,request,LBUY_CLI_User_id=""):
-        if len(LBUY_CLI_User_id)>0:
-            buy_list=list(LISTBUY.objects.filter(LBUY_CLI_User_id=LBUY_CLI_User_id).values())
+    def get(self,request,LBUY_Code=""):
+        if len(LBUY_Code)>0:
+            buy_list=list(LISTBUY.objects.filter(LBUY_CLI_User=LBUY_Code).values())
             if len(buy_list)>0:
                 datos={"mensaje":buy_list}
             else:
@@ -441,11 +450,11 @@ class LISTBUYView(View):
             mensaje={"mensaje":"no existe la compra"}
         return JsonResponse(mensaje)
         
-    def delete(self,request,LBUY_Code=0):
+    def delete(self,request,LBUY_Code=""):
         
         buy_cod=list(LISTBUY.objects.filter(LBUY_Code=LBUY_Code).values())
         if len(buy_cod)>0:
-            print("holaaaaa")
+           
             LISTBUY.objects.filter(LBUY_Code=LBUY_Code).delete()
             mensaje={"mensaje":"se a eliminado la compra"}
         else:
@@ -457,67 +466,67 @@ class PRODUCTSView(View):
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
-    ## consultar lista compras
-    def get(self,request,PRO_Code=0):
-        #Pro_code=int(Pro_code)
-        if PRO_Code>0:
-            pro_list=list(PRODUCTS.objects.filter(PRO_Code=PRO_Code).values())
+    ## consultar
+    def get(self,request,code=""):
+        if len(code)>0:
+            pro_list=list(PRODUCTS.objects.filter(PRO_Code=code).values())
             if len(pro_list)>0:
+
                 datos={"productos":pro_list}
+
+                datos={"productos":pro_list, "Mensaje":"Resultado de la busqueda"}
+
             else:
-                datos={"Error":"no hay datos encontrados"}
+                datos={"Error":"No se encontró el producto"}
         else:
             pro_list=list(PRODUCTS.objects.values())
             if len(pro_list)>0:
                 datos={"productos":pro_list}
             else:
-                datos={"Error":"no hay datos encontrados"}
+                datos={"Error":"No hay productos registrados"}
         return JsonResponse(datos)
-    ##crear lista compras    
+    ##crear  
 
-    def post(self,request):
-        
-        dat=json.loads(request.body)
-                        
-        #creación de json para enviar
-            
-        newpro=PRODUCTS.objects.create(PRO_Code=dat['PRO_Code'],
-                                           PRO_Name=dat['PRO_Name'],
-                                            PRO_Cost=dat[' PRO_Cost'],
-                                            PRO_Description=dat['PRO_Description'],
-                                            PRO_Stock=dat['PRO_Stock']
+    def post(self,request):      
+        dat=json.loads(request.body)                        
+        #creación de json para enviar            
+        newpro=PRODUCTS.objects.create(
+            PRO_Name=dat['PRO_Name'],
+            PRO_Description=dat['PRO_Description'],
+            PRO_Cost=dat['PRO_Cost'],           
+            PRO_Stock=dat['PRO_Stock']
             )
         newpro.save()                                                 
-        datos={'mensaje':'Producto registrada'}     
+        datos={'mensaje':'Producto registrado'}     
         return JsonResponse(datos)
+
         ## actualizar
-    def put(self,request,pro_cod):
+    def put(self,request,code):
         #crear conexion a body
         data=json.loads(request.body)
         #genero la busqueda con el dato
-        productos=list(PRODUCTS.objects.filter(PRO_Code=pro_cod).values())
+        productos=list(PRODUCTS.objects.filter(PRO_Code=code).values())
         #genero la busqueda si hay valores con el dato de busqueda anterior
         if len(productos)>0:
-            newpro=productos.objects.get(PRO_Code=pro_cod)
+            newpro=PRODUCTS.objects.get(PRO_Code=code)
             newpro.PRO_Name=data["PRO_Name"]
-            newpro.PRO_Cost=data[' PRO_Cost']
             newpro.PRO_Description=data['PRO_Description']
+            newpro.PRO_Cost=data['PRO_Cost']         
             newpro.PRO_Stock=data['PRO_Stock']
             newpro.save()
             
-            mensaje={"mensaje":"se a actualizado el producto"}
+            mensaje={"mensaje":"Se a actualizado el producto"}
         else:
-            mensaje={"mensaje":"no existe el producto"}
+            mensaje={"mensaje":"No existe el producto"}
         return JsonResponse(mensaje)
         
-    def delete(self,request,pro_cod):
-        
-        buy_cod=list(PRODUCTS.objects.filter(PRO_Code=pro_cod).values())
-        if len(pro_cod)>0:
-            PRODUCTS.objects.filter(PRO_Code=pro_cod).delete()
-            mensaje={"mensaje":"se a eliminado el producto"}
+    def delete(self,request,code):    
+        buy_cod=list(PRODUCTS.objects.filter(PRO_Code=code).values())
+        if len(buy_cod)>0:
+            PRODUCTS.objects.filter(PRO_Code=code).delete()
+            mensaje={"mensaje":"Se a eliminado el producto"}
         else:
-            mensaje={"mensaje":"no existe el dato, no se elimino nada"}
+            mensaje={"mensaje":"El producto no existe"}
         return JsonResponse(mensaje)
 
 class INCOMEView(View):
@@ -525,64 +534,59 @@ class INCOMEView(View):
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
-    ## consultar lista compras
-    def get(self,request,ING_code=0):
-        if ING_code>0:
-            ING_list=list(INCOME.objects.filter(ING_Code=int(ING_code)).values())
+
+    ## consultar
+    def get(self,request,code=""):
+        if len(code)>0:
+            ING_list=list(INCOME.objects.filter(ING_Code=int(code)).values())
             if len(ING_list)>0:
-                datos={"mensaje":ING_list}
+                datos={"ingresos":ING_list, "Mensaje":"Resultado de la búsqueda"}
             else:
-                datos={"mensaje":"no hay datos"}
+                datos={"Error":"No se encontraron datos"}
         else:
             ING_list=list(INCOME.objects.values())
             if len(ING_list)>0:
-                datos={"mensaje":ING_list}
+                datos={"ingresos":ING_list}
             else:
-                datos={"mensaje":"no hay datos todo"}
+                datos={"Error":"No se encontraron datos"}
         return JsonResponse(datos)
-    ##crear lista compras    
+
 
     def post(self,request):
         try:
             dat=json.loads(request.body)
             #llaves foraneas
-            empresa=BUSINESS.objects.get(EM_NIT=dat['em_nit'])
-            usuario=EMPLOYEES.objects.get(EM_USER=dat['em_user'])
-            procod=PRODUCTS.objects.get(PRO_Code=dat['pro_cod'])
-            
-            
-            #creación de json para enviar
-            
-            newing=PRODUCTS.objects.create( pro_cod=procod,
-                                           em_user=usuario,
-                                           em_nit=empresa,
-                                           ING_Fecha=dat['LBUY_Fech'],
-                                           ING_Quantity=dat['ING_Quantity'],
-                                           ING_Total=dat['ING_Total']
+            empresa=BUSINESS.objects.get(EM_NIT=dat['Empresa'])
+            empleado=EMPLOYEES.objects.get(EMP_USER=dat['Empleado'])
+            procod=PRODUCTS.objects.get(PRO_Code=dat['Producto'])
+
+            newing=INCOME.objects.create(
+                ING_EM_NIT=empresa,
+                ING_EMP_User=empleado, 
+                ING_PRO_Code=procod,
+                ING_Quantity=dat['ING_Quantity'],
+                ING_Total=dat['ING_Total']
             )
             newing.save()                                 
-            datos={'mensaje':'ingreso registrado'}
+            datos={'mensaje':'Ingreso registrado'}
         
         except PRODUCTS.DoesNotExist:
-            datos={'mensaje':'producto no existe'}
+            datos={'mensaje':'Producto no existe'}
         except EMPLOYEES.DoesNotExist:
-            datos={'mensaje':'usuario empresa no existe'}
+            datos={'mensaje':'Empleado no existe'}
         except BUSINESS.DoesNotExist:
-            datos={'mensaje':'empresa no existe'}
-       
+            datos={'mensaje':'Empresa no existe'}    
         return JsonResponse(datos)
+      
         ## actualizar
-    def put(self,request,ing_cod):
+    def put(self,request,code):
         #crear conexion a body
         data=json.loads(request.body)
         #genero la busqueda con el dato
-        ingresos=list(INCOME.objects.filter(ING_Code=ing_cod).values())
+        ingresos=list(INCOME.objects.filter(ING_Code=code).values())
         #genero la busqueda si hay valores con el dato de busqueda anterior
         if len(ingresos)>0:
-            newing=ingresos.objects.get(ING_Code=ing_cod)
-            newing.ING_EM_NIT=data['ING_EM_NIT']
-            newing.ING_EMP_User=data['ING_EMP_User']
-            newing.ING_PRO_Code=data['ING_PRO_Code']
+            newing=INCOME.objects.get(ING_Code=code)
             newing.ING_Fecha=data['ING_Fecha']
             newing.ING_Quantity=data['ING_Quantity']
             newing.ING_Total=data['ING_Total']
@@ -594,14 +598,13 @@ class INCOMEView(View):
             mensaje={"mensaje":"no existe el ingreso"}
         return JsonResponse(mensaje)
         
-    def delete(self,request,ing_cod):
-        
-        ing_cod=list(INCOME.objects.filter(ING_Code=ing_cod).values())
+    def delete(self,request,code):      
+        ing_cod=list(INCOME.objects.filter(ING_Code=code).values())
         if len(ing_cod)>0:
-            INCOME.objects.filter(ING_Code=ing_cod).delete()
-            mensaje={"mensaje":"se a eliminado el ingreso"}
+            INCOME.objects.filter(ING_Code=code).delete()
+            mensaje={"mensaje":"Eliminado exitosamente"}
         else:
-            mensaje={"mensaje":"no existe el dato, no se elimino nada"}
+            mensaje={"mensaje":"No existe el dato"}
         return JsonResponse(mensaje)
 
 class CUSTOMERSView(View):
@@ -616,16 +619,16 @@ class CUSTOMERSView(View):
             clientes= list(CUSTOMERS.objects.filter(CLI_User=user).values())
             if len(clientes)>0:
                 #Se muestra el cliente con el user que se ha especificado
-                mensaje = {'mensaje':clientes}
+                mensaje = {'clientes':clientes, "Mensaje":"Resultado de la busqueda."}
             else:
-                mensaje = {'mensaje': "No se encontro el cliente."}
+                mensaje = {'Error': "No se encontró el cliente."}
         else:
             clientes= list(CUSTOMERS.objects.values()) 
             if len(clientes)>0:#se pregunta si hay datos
                 #Se muestra todos los clientes existentes en la BD
-                mensaje={"mensaje":clientes}
+                mensaje={"clientes":clientes}
             else:
-                mensaje={"mensaje":"No se encontraron clientes."}
+                mensaje={"Error":"No se encontraron clientes."}
 
         return JsonResponse(mensaje)
 
@@ -633,7 +636,7 @@ class CUSTOMERSView(View):
     def post(self,request):
         dato = json.loads(request.body) 
         try:
-            userAdmin=ADMINISTRATOR.objects.get(AD_USER=dato['user_Admin'])
+            userAdmin=ADMINISTRATOR.objects.get(AD_USER=dato['userAdmin'])
             cliente = CUSTOMERS.objects.create(
                 CLI_User=dato['usuario'], 
                 CLI_Password=dato['password'],
@@ -661,7 +664,7 @@ class CUSTOMERSView(View):
             updateData.CLI_Names=data['nombre']
             updateData.CLI_LastNames=data['apellido'] 
             updateData.CLI_Email=data['email']
-            updateData.CLI_Cellphone=data['telefono']
+            updateData.CLI_CellPhone=data['telefono']
             updateData.save()
             mensaje={"mensaje":"Cliente actualizado exitosamente"}
         else:
@@ -676,7 +679,7 @@ class CUSTOMERSView(View):
             CUSTOMERS.objects.filter(CLI_User=user).delete()
             mensaje={"mensaje":"Cliente eliminado exitosamente"}
         else:
-            mensaje={"mensaje":"No se encontro el Cliente."}
+            mensaje={"mensaje":"No se encontró el Cliente."}
         
         return JsonResponse(mensaje)
 
@@ -690,54 +693,56 @@ class EXPENSESView(View):
         if len(code)>0:   
             egreso= list(EXPENSES.objects.filter(EGR_Code=code).values())
             if len(egreso)>0:
-                mensaje = {'mensaje':egreso}
+                mensaje = {'egresos':egreso, "Mensaje":"Resultado de la busqueda."}
             else:
-                mensaje = {'mensaje': "No se encontró el egreso indicado."}
+                mensaje = {'Error': "No se encontró el egreso indicado."}
         else:
             egreso= list(EXPENSES.objects.values()) 
             if len(egreso)>0:
-                mensaje ={"mensaje":egreso}
+                mensaje ={"egresos":egreso}
             else:
-                mensaje ={"mensaje":"No hay egresos registrados."}
+                mensaje ={"Error":"No hay egresos registrados."}
 
         return JsonResponse(mensaje)
 
 
     def post(self,request):
-            data = json.loads(request.body) 
-            NITempresa=BUSINESS.objects.get(EM_NIT=data['NIT_empresa'])
-            
+        data = json.loads(request.body) 
+        try:
+            NITempresa=BUSINESS.objects.get(EM_NIT=data['NIT_empresa'])          
             egreso = EXPENSES.objects.create(
                 EGR_EM_NIT=NITempresa, 
-                
-                EGR_Total = data['Total_egreso']
+                EGR_Name = data['EGR_Name'],
+                EGR_Total = data['EGR_Total']
                 )
             egreso.save()
             mensaje={'mensaje':'Egreso registrado exitosamente'}
-            return JsonResponse(mensaje)
+        except BUSINESS.DoesNotExist:
+            mensaje={'mensaje':'NIT empresa erróneo'}
+        return JsonResponse(mensaje)
 
     def put(self,request,code):
         data = json.loads(request.body)
         egreso= list(EXPENSES.objects.filter(EGR_Code=code).values())
         if len(egreso)>0:
             updateData=EXPENSES.objects.get(EGR_Code=code) 
-            updateData.EGR_Total = data['Total_egreso']        
+            updateData.EGR_Name = data['EGR_Name']
+            updateData.EGR_Fecha = data['EGR_Fecha']
+            updateData.EGR_Total = data['EGR_Total']        
             updateData.save()
-            mensaje={"mensaje":"El total de egreso ha sido actualizado exitosamente"}
+            mensaje={"mensaje":"Actualizado exitosamente"}
         else:
-            mensaje={"mensaje":"No se encontro el egreso indicado."}
+            mensaje={"mensaje":"No se encontró el egreso indicado."}
             
         return JsonResponse(mensaje)
         
     def delete(self,request,code):
-
         egreso= list(EXPENSES.objects.filter(EGR_Code=code).values())
         if len(egreso)>0:
             EXPENSES.objects.filter(EGR_Code=code).delete()
             mensaje={"mensaje":"Egreso eliminado exitosamente"}
         else:
-            mensaje={"mensaje":"No se encontro el egreso indicado."}
-            
+            mensaje={"mensaje":"No se encontró el egreso indicado."}         
         return JsonResponse(mensaje)
 
 

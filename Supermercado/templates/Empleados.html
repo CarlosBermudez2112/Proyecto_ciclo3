@@ -14,7 +14,7 @@
     <div class ="container mt-1">
 
         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-            <a href="#" class="link-primary">Cerrar sesión</a>
+            <a href="{% url 'cerrar' %}" class="link-primary">Cerrar sesión</a>
                 
             </div>   
     </div>
@@ -25,7 +25,7 @@
         <div class="d-grid gap-2 d-md-flex justify-content-md-center">
         <a href="../FormularioAgregarEmpleado/">
             <button class="btn btn-outline-primary" type="button">Agregar Empleados</button></a>
-        <a href="../ListaDeEmpleados/">
+        <a href="{% url 'MenuAdmin' %}">
             <button class="btn btn-outline-warning" type="button">Regresar Pág. Prin</button></a>
         <a href="../ListaDeEmpleados/">
             <button class="btn btn-outline-success" type="button">Mostrar todos</button></a>
@@ -70,8 +70,8 @@
                 </tr>
                 </thead>
                 <tbody>
-                    {% if mensaje %}
-                    {% for emple in mensaje%}
+                    
+                    {% for emple in empleados%}
                 <tr>
                     
                     <td>{{emple.EMP_USER}}</td>
@@ -91,7 +91,7 @@
                         <button type="button" class="btn btn-outline-warning">Editar</button></td></a>
                 </tr>
                 {%endfor%}
-                {%endif%}
+                
                 </tbody>
             </table>
         </div>
