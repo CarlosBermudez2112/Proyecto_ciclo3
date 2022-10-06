@@ -64,6 +64,7 @@ urlpatterns = [
     path('RegistrarIngreso/',registrarIngreso, name='RegistrarIngreso'),
     path('FormEditarIngreso/<str:codigo>', formEditarIngreso, name='FormEditarIngreso'),
     path('ActualizarIngreso/',editarIngreso, name='ActualizarIngreso'),
+
     path('EliminarIngreso/<str:codigo>',eliminarIngreso, name='EliminarIngreso'),
 
     # #URLs PARA LA TABLA EGRESOS
@@ -84,6 +85,7 @@ urlpatterns = [
     path('ActualizarProducto/',editarProducto, name='ActualizarProducto'),
     path('EliminarProducto/<str:codigo>', eliminarProducto, name='EliminarProducto'),
 
+
     # #URLs PARA LA TABLA EMPRESAS
     path('ListaEmpresas/', listaEmpresas, name='ListaEmpresas'),
     path('BuscarEmpresa/', buscarEmpresa, name='BuscarEmpresa'),
@@ -103,5 +105,6 @@ urlpatterns = [
     path('GuardarEmpleado/',GuardarEmpleado,name="GuardarEmpleado"),
     path('Cargarform/<str:EMP_User>',CrearFormulario,name="Carfor"),
     path('EditarFormularioEmpleado/',EditarEmpleado,name="Editar"),
+
 
 ]

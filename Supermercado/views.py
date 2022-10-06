@@ -183,7 +183,9 @@ class EMPLOYEESView(View):
             empresa=BUSINESS.objects.get(EM_NIT=dato['EMP_EM_NIT_id'])
             admin=ADMINISTRATOR.objects.get(AD_USER=dato['EMP_AD_USER_id'])
 
+
             
+
 
             employees=EMPLOYEES.objects.create(
                                                 EMP_USER=dato['EMP_USER'],
@@ -194,7 +196,8 @@ class EMPLOYEESView(View):
                                                 EMP_CELLPHONE=dato['EMP_CELLPHONE'],
                                                 EMP_ROLE=dato['EMP_ROLE'],
                                                 EMP_EM_NIT=empresa,
-                                                EMP_AD_USER=admin)
+                                                EMP_AD_USER=admin
+                                                )
             employees.save()
             datos={'mensaje':'Empleado registrado exitosamente'}  
         except ADMINISTRATOR.DoesNotExist:
@@ -556,6 +559,10 @@ class INCOMEView(View):
         try:
             dat=json.loads(request.body)
             #llaves foraneas
+            #empresa=BUSINESS.objects.get(EM_NIT=dat['ING_EM_NIT_id'])
+            #empleado=EMPLOYEES.objects.get(EMP_USER=dat['ING_EMP_User_id'])
+            #procod=PRODUCTS.objects.get(PRO_Code=dat['ING_PRO_Code_id'])
+
             empresa=BUSINESS.objects.get(EM_NIT=dat['Empresa'])
             empleado=EMPLOYEES.objects.get(EMP_USER=dat['Empleado'])
             procod=PRODUCTS.objects.get(PRO_Code=dat['Producto'])
@@ -567,6 +574,14 @@ class INCOMEView(View):
                 ING_Quantity=dat['ING_Quantity'],
                 ING_Total=dat['ING_Total']
             )
+
+            # newing=INCOME.objects.create(
+            #     ING_EM_NIT_id=7984651,
+            #     ING_EMP_User_id="Samuel456", 
+            #     ING_PRO_Code_id=1,
+            #     ING_Quantity=dat['ING_Quantity'],
+            #     ING_Total=dat['ING_Total']
+            # )
             newing.save()                                 
             datos={'mensaje':'Ingreso registrado'}
         

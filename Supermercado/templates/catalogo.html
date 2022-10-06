@@ -83,10 +83,10 @@
                     <p class="tituloNAV">CATALOGO</p>
                     
                     <ul class="catalogoIND">
-                        <li class="Inicio b1" ><a href="{% url 'catalogo' %}">Inicio</a></li>
-                        <li class="opcion2 b1" href="#"><a >opcion2</a></li>
-                        <li class="opcion3 b1" href="#"><a >opcion3</a></li>
-                        <li class="opcion3 b1" href="#"><a >opcion3</a></li>
+                        <li class="Inicio b1" ><a href="{% url 'catalogo' %}">Todo</a></li>
+                        <li class="opcion2 b1" href="#"><a >Verduras</a></li>
+                        <li class="opcion3 b1" href="#"><a >Fruta</a></li>
+                        <li class="opcion3 b1" href="#"><a >Tuberculos</a></li>
                     </ul>
                 </div>
                 <div class="catalogoPRO">
@@ -101,7 +101,7 @@
                         </div>
                         {% endif%}
                         
-                    {% for pro in mensaje%}
+                    {% for pro in productos%}
                         <div class="gridCard2">
                             <div class="card">
                                 <img src="{%static 'css/fruta.jpg'%}">
@@ -124,7 +124,7 @@
                                     
                                     <input type="hidden" value="{{pro.PRO_Code}}" name="PRO_Code">
                                     <input class="labelcua" type="label" value="{{request.session.user}}" name="userPri">
-                                <input class="b1" type="submit" value="comprar" name="comprarP">
+                                <input class="b1 comprar" type="submit" value="comprar" name="comprarP">
                             </form>
                             </div>
                         
