@@ -440,19 +440,16 @@ def GuardarEmpleado(request):
 
 ####actuzliaxr empleado
 
-def FormularioActualizarEmpleado(request):
-    response=requests.get('http://localhost:8000/Supermercado/BUSINESS/')
-    empresa = response.json()
-    listaempresa = empresa
-    #return render(request, "ingresoRegistrar.html",datos)
-    print(listaempresa)
-    return render (request,'EditarFormularioEmpleado.html',listaempresa)
+def CrearFormulario(request,EMP_User):
+    
+    response=requests.get('http://127.0.0.1:8000/Supermercado/EMPLOYEES/'+EMP_User)
+    empleadosu = response.json()
+    print(empleadosu)
+    return render (request,'EditarFormularioEmpleado.html',empleadosu)
 
 def EditarEmpleado(request):
     IdUsuario=request.POST["IdUsuario"]
     datos={
-       
-      "EMP_USER": request.POST["IdUsuario"] ,
       "EMP_PASSWORD": request.POST["exampleInputPassword1"],
       "EMP_EMAIL":  request.POST["exampleInputEmail1"],
       "EMP_NAMES": request.POST["Nombre"],

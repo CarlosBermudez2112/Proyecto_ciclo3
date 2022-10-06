@@ -101,8 +101,7 @@ urlpatterns = [
     path('eliminar/<str:EMP_User>',EliminarEmpleados,name="eliminar"),
     path('FormularioAgregarEmpleado/',CrearEmpleado,name="CrearEmpleado"),
     path('GuardarEmpleado/',GuardarEmpleado,name="GuardarEmpleado"),
-    
-    path('EditarFormularioAgregarEmpleado/',FormularioActualizarEmpleado,name="EditarEmpleado"),
-    path('EditarFormularioAgregarEmpleado1',EditarEmpleado,name="EditarGuardarEmpleado"),
+    path('Cargarform/<str:EMP_User>',CrearFormulario,name="Carfor"),
+    path('EditarFormularioEmpleado/',EditarEmpleado,name="Editar"),
 
 ]
